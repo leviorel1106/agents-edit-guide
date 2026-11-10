@@ -553,6 +553,65 @@ html:not(.aw-rv) .rv{opacity:1;transform:none}
 .eh-stats .stat:first-child b{background:var(--grad-text);-webkit-background-clip:text;background-clip:text;color:transparent}
 .eh-stats .stat span{color:var(--ink2)}
 
+/* ---- v2 cards: colour, hits, sound, hooks + cover, check report ---- */
+.eh-bento > .eh-full{grid-column:1/-1}
+.eh-cm{display:grid;gap:6px;direction:ltr}
+.eh-cmr{display:grid;grid-template-columns:44px repeat(3,minmax(0,1fr));gap:5px;align-items:center}
+.eh-cmr > b{font:600 10.5px/1 var(--mono);color:var(--muted)}
+.eh-sw{position:relative;aspect-ratio:9/12;border-radius:6px;box-shadow:0 0 0 1px var(--line2) inset;background:
+  radial-gradient(circle at 50% 58%,var(--bg) 0 12%,transparent 13%),
+  linear-gradient(180deg,color-mix(in srgb,var(--v1) 75%,var(--bg)),var(--pink) 55%,var(--amber) 70%,var(--bg2) 71%)}
+.eh-sw-hdr{filter:saturate(.25) contrast(.6) brightness(1.15)}
+.eh-sw-hdr::after{content:"HDR";position:absolute;top:3px;left:3px;font:700 8px/1 var(--mono);color:var(--bg);background:var(--ink2);padding:2px 3px;border-radius:3px}
+.eh-sw-dk{filter:brightness(.45) saturate(.8)}
+.eh-sw-br{filter:brightness(1.45) saturate(.7)}
+.eh-sw:empty:not(.eh-sw-dk):not(.eh-sw-br):not(.eh-sw-hdr){box-shadow:0 0 0 1px color-mix(in srgb,var(--cy) 55%,transparent) inset}
+.eh-looks{display:flex;gap:6px;margin-top:10px;direction:rtl;flex-wrap:wrap}
+.eh-look{--c:var(--muted);display:inline-flex;align-items:center;gap:6px;padding:6px 11px;border-radius:999px;font:700 12.5px/1 var(--body);color:var(--ink2);box-shadow:0 0 0 1px color-mix(in srgb,var(--c) 45%,transparent) inset;background:color-mix(in srgb,var(--c) 10%,transparent)}
+.eh-look::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--c)}
+.eh-look.on{--c:var(--cy);color:var(--ink)}
+.eh-look.on::after{content:"ברירת מחדל";font:500 10.5px/1 var(--body);color:var(--muted)}
+.eh-lw{--c:var(--amber)}.eh-lc{--c:var(--v2)}
+.eh-wavew{position:relative}
+.eh-mk{--mc:var(--cy);position:absolute;top:-6px;bottom:-4px;left:var(--x);width:2px;border-radius:2px;background:var(--mc);box-shadow:0 0 10px var(--mc);font-size:0}
+.eh-mk::before{position:absolute;top:8px;left:5px;padding:3px 5px;border-radius:4px;background:var(--mc);color:var(--bg);font:700 9px/1 var(--mono);letter-spacing:.06em;white-space:nowrap}
+.eh-mk-s::before{content:"START"}
+.eh-mk-d{--mc:var(--pink)}
+.eh-mk-d::before{content:"DROP"}
+.eh-segs i{position:relative;overflow:hidden}
+.eh-segs em{position:absolute;inset:0;display:grid;place-items:center;font:700 9px/1 var(--mono);font-style:normal;color:var(--ink);white-space:nowrap;text-shadow:0 1px 3px var(--bg)}
+.eh-segs i:nth-child(2){box-shadow:0 0 0 1.5px var(--ink) inset,0 0 14px -2px var(--ink)}
+.eh-snd{display:grid;gap:8px;direction:ltr}
+.eh-trk{display:grid;grid-template-columns:42px minmax(0,1fr);gap:8px;align-items:center}
+.eh-trk > b{font:600 10.5px/1 var(--mono);color:var(--muted)}
+.eh-mus,.eh-vox{position:relative;height:30px;border-radius:7px;background:var(--bg);box-shadow:0 0 0 1px var(--line) inset;overflow:hidden}
+.eh-mus i{position:absolute;inset:4px 2px;border-radius:5px;background:
+  repeating-linear-gradient(90deg,color-mix(in srgb,var(--ag4) 70%,transparent) 0 2px,transparent 2px 4px);
+  -webkit-mask:linear-gradient(90deg,#000 0 34%,rgba(0,0,0,.28) 40% 70%,#000 76%);mask:linear-gradient(90deg,#000 0 34%,rgba(0,0,0,.28) 40% 70%,#000 76%)}
+.eh-vox i{position:absolute;top:4px;bottom:4px;left:36%;width:36%;border-radius:5px;background:color-mix(in srgb,var(--amber) 35%,var(--surface2));box-shadow:0 0 0 1px color-mix(in srgb,var(--amber) 60%,transparent) inset;font:700 9px/22px var(--mono);font-style:normal;color:var(--ink);text-align:center}
+.eh-vox::after{content:"";position:absolute;top:0;bottom:0;left:40%;width:0;border-left:1.5px dashed var(--ink2)}
+.eh-meter{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 10px;align-items:center;margin-top:2px}
+.eh-meter > span:first-child{font:800 15px/1 var(--display);color:var(--ag4)}
+.eh-mbar{height:8px;border-radius:5px;background:linear-gradient(90deg,var(--ag4) 0 78%,var(--amber) 78% 90%,var(--pink) 90%);opacity:.9;position:relative}
+.eh-mbar i{position:absolute;top:-3px;bottom:-3px;left:72%;width:2px;background:var(--ink);border-radius:2px}
+.eh-meter small{grid-column:1/-1;font:500 10.5px/1 var(--mono);color:var(--muted)}
+.eh-abw{direction:ltr}
+.eh-abs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;align-items:end}
+.eh-ab{position:relative;aspect-ratio:9/16;border-radius:9px;overflow:hidden;background:linear-gradient(180deg,var(--surface3),var(--bg));box-shadow:0 0 0 1px var(--line2) inset}
+.eh-ab::after{content:attr(data-k);position:absolute;top:4px;left:4px;font:800 10px/1 var(--mono);color:var(--bg);background:var(--ink);padding:3px 5px;border-radius:4px}
+.eh-ab-h{position:absolute;inset:0 0 62% 0;background:linear-gradient(180deg,color-mix(in srgb,var(--pink) 70%,var(--bg)),color-mix(in srgb,var(--amber) 55%,var(--bg)))}
+.eh-ab[data-k="B"] .eh-ab-h{background:radial-gradient(circle at 50% 60%,var(--ink2) 0 18%,transparent 19%),linear-gradient(180deg,color-mix(in srgb,var(--cy) 60%,var(--bg)),color-mix(in srgb,var(--v1) 55%,var(--bg)))}
+.eh-ab[data-k="C"] .eh-ab-h{background:radial-gradient(60% 50% at 50% 70%,color-mix(in srgb,var(--v2) 80%,transparent),transparent 72%),var(--bg2)}
+.eh-ab-b{position:absolute;inset:38% 0 0 0;background:repeating-linear-gradient(180deg,color-mix(in srgb,var(--c) 22%,var(--surface2)) 0 14%,color-mix(in srgb,var(--c) 10%,var(--bg)) 14% 28%)}
+.eh-ab-b::before{content:"same body";position:absolute;inset:auto 0 6px;text-align:center;font:600 7.5px/1 var(--mono);color:var(--ink2)}
+.eh-cov{box-shadow:0 0 0 2px var(--ok),0 0 18px -4px var(--ok);background:
+  radial-gradient(circle at 50% 56%,var(--bg) 0 11%,transparent 12%),
+  linear-gradient(180deg,color-mix(in srgb,var(--v1) 70%,var(--bg)) 0 33%,var(--pink) 60%,var(--amber) 72%,var(--bg2) 73%)}
+.eh-cov::after{background:var(--ok)}
+.eh-abn{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-top:10px;font:500 11px/1.3 var(--mono);color:var(--muted)}
+.eh-rep{font-size:11.5px;line-height:1.7;margin-top:4px;padding-top:8px;border-top:1px solid var(--line)}
+.eh-bad{color:var(--pink)}
+
 /* ---- responsive ---- */
 @media (max-width:1060px){
   .eh-grid{grid-template-columns:minmax(0,1fr)}
@@ -561,7 +620,7 @@ html:not(.aw-rv) .rv{opacity:1;transform:none}
 }
 @media (max-width:900px){
   .eh-bento{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .eh-bento > .eh-w,.eh-bento > .eh-w2{grid-column:span 2}
+  .eh-bento > .eh-w,.eh-bento > .eh-w2,.eh-bento > .eh-full{grid-column:span 2}
 }
 @media (max-width:640px){
   .eh-stage{grid-template-columns:minmax(0,1fr)}
@@ -569,7 +628,7 @@ html:not(.aw-rv) .rv{opacity:1;transform:none}
   .eh-meta{justify-items:start;text-align:right}
   .eh-tl i.hk::after{content:""}
   .eh-bento{grid-template-columns:minmax(0,1fr)}
-  .eh-bento > .eh-w,.eh-bento > .eh-w2{grid-column:auto}
+  .eh-bento > .eh-w,.eh-bento > .eh-w2,.eh-bento > .eh-full{grid-column:auto}
   .eh-w .eh-card{grid-template-columns:minmax(0,1fr)}
   .eh-ctas{width:100%}
 }
@@ -591,8 +650,8 @@ html:not(.aw-rv) .rv{opacity:1;transform:none}
         <div class="fill"><span class="pill eh-kick"><span class="dot"></span>Claude Code · סוכני עריכה <span class="eh-k-tag">edit-agents</span></span></div>
       </div>
       <h1 class="eh-h1" data-block data-agent="פתיחה" data-log="הקליד את הכותרת הראשית" data-code='<h1 class="eh-h1" data-type>' data-type data-sk="title"><span class="fill">סוכנים עורכים לכם <span class="grad-text">כמה רילים במקביל</span></span></h1>
-      <div data-block data-agent="פתיחה" data-log="שורת משנה · הודעה אחת, עורך לכל ריל" data-code='<p class="eh-sub">' data-sk="line">
-        <p class="fill eh-sub">שמים קליפים בתיקייה ושולחים <b>הודעה אחת</b>. כל ריל מקבל עורך משלו, וכולם חותכים <b>באותו זמן</b>, עד קובץ <span class="eh-ltr">9:16</span> שמוכן לאינסטגרם.</p>
+      <div data-block data-agent="פתיחה" data-log="שורת משנה · צבע, להיטים, סאונד, קאבר" data-code='<p class="eh-sub">' data-sk="line">
+        <p class="fill eh-sub">שמים קליפים בתיקייה ושולחים <b>הודעה אחת</b>. כל ריל מקבל עורך משלו, וכולם עובדים <b>באותו זמן</b>: צבע אחיד בין הקליפים, חיתוכים על הלהיטים של השיר, סאונד ברמה של אינסטגרם וקאבר מוכן.</p>
       </div>
       <div class="eh-ctas" data-block data-agent="פתיחה" data-log="2 כפתורים · למדריך ולחבילה" data-code='<a class="btn btn-primary" href="#steps">' data-sk="btn">
         <div class="fill ctas">
@@ -607,26 +666,26 @@ html:not(.aw-rv) .rv{opacity:1;transform:none}
         <div class="fill win eh-win" role="img" aria-label="חלון Claude Code שבו שלושה סוכני עורך חותכים שלושה רילים במקביל">
           <div class="win-top"><i></i><i></i><i></i><span class="win-title">edit-agents — Claude Code</span><b>3 editors</b></div>
           <div class="win-body">
-            <div class="eh-ask he">תערוך לי רילים עם הסוכנים.</div>
+            <div class="eh-ask he">תערוך לי רילים עם הסוכנים. 12 שניות, חם, 3 פתיחות לריל 1</div>
             <div class="eh-run"><span class="c">reel-cut</span><span>→ 3 × <span class="v">editor</span> · launched in one message</span></div>
             <div class="mc eh-mc">
               <div class="lane eh-lane done" data-lane="1" style="--c:var(--ag1)">
                 <span class="av">1</span>
-                <div><div class="who">עורך · reel-1</div><div class="what"><span class="eh-wip">final.jpg checked · 12.0s</span><span class="eh-fin">reel-1.mp4 · 12.0s · 12 shots</span></div></div>
+                <div><div class="who">עורך · reel-1</div><div class="what"><span class="eh-wip">check_reel.sh · −13.9 LUFS ✓</span><span class="eh-fin">reel-1_A/B/C.mp4 · cover · −14 LUFS</span></div></div>
                 <span class="st">✓ סיים</span>
                 <div class="eh-tl" aria-hidden="true"><i class="on hk" style="--n:2"></i><i class="on" style="--n:1"></i><i class="on" style="--n:2"></i><i class="on" style="--n:1"></i><i class="on" style="--n:1"></i><i class="on" style="--n:2"></i><i class="on" style="--n:3"></i><i class="on" style="--n:1"></i><i class="on" style="--n:2"></i><i class="on" style="--n:2"></i><i class="on" style="--n:3"></i><i class="on" style="--n:4"></i><b class="eh-ph" style="--x:100%"></b></div>
                 <div class="track"><b style="--w:100%"></b></div>
               </div>
               <div class="lane eh-lane" data-lane="2" style="--c:var(--ag2)">
                 <span class="av">2</span>
-                <div><div class="who">עורך · reel-2</div><div class="what"><span class="eh-wip">render shot 7/11 · 1080×1920</span><span class="eh-fin">reel-2.mp4 · 12.0s · 11 shots</span></div></div>
+                <div><div class="who">עורך · reel-2</div><div class="what"><span class="eh-wip">render_shots.sh · HDR→SDR · shot 7/11</span><span class="eh-fin">reel-2.mp4 · cover · −14 LUFS</span></div></div>
                 <span class="st">בונה…</span>
                 <div class="eh-tl" aria-hidden="true"><i class="on hk" style="--n:2"></i><i class="on" style="--n:2"></i><i class="on" style="--n:1"></i><i class="on" style="--n:3"></i><i class="on" style="--n:2"></i><i class="on" style="--n:2"></i><i class="on" style="--n:3"></i><i style="--n:2"></i><i style="--n:1"></i><i style="--n:2"></i><i style="--n:4"></i><b class="eh-ph" style="--x:62.5%"></b></div>
                 <div class="track"><b style="--w:64%"></b></div>
               </div>
               <div class="lane eh-lane" data-lane="3" style="--c:var(--ag3)">
                 <span class="av">3</span>
-                <div><div class="who">עורך · reel-3</div><div class="what"><span class="eh-wip">sheet_clip3.jpg · finding cuts</span><span class="eh-fin">reel-3.mp4 · 12.0s · 9 shots</span></div></div>
+                <div><div class="who">עורך · reel-3</div><div class="what"><span class="eh-wip">hits.py · drop @ 13.51s · 9 hits</span><span class="eh-fin">reel-3.mp4 · cover · −14 LUFS</span></div></div>
                 <span class="st">כותב…</span>
                 <div class="eh-tl" aria-hidden="true"><i class="on hk" style="--n:2"></i><i class="on" style="--n:1"></i><i class="on" style="--n:2"></i><i style="--n:3"></i><i style="--n:2"></i><i style="--n:4"></i><i style="--n:2"></i><i style="--n:3"></i><i style="--n:5"></i><b class="eh-ph" style="--x:20.8%"></b></div>
                 <div class="track"><b style="--w:22%"></b></div>
@@ -634,13 +693,13 @@ html:not(.aw-rv) .rv{opacity:1;transform:none}
             </div>
             <div class="eh-outrow">
               <span class="folder"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 6.5A2.5 2.5 0 0 1 5.5 4h4l2 2.2h7A2.5 2.5 0 0 1 21 8.7v8.8a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 3 17.5z"/></svg>output/</span>
-              <span class="eh-file ok" data-f="1">reel-1.mp4</span><span class="eh-file" data-f="2">reel-2.mp4</span><span class="eh-file" data-f="3">reel-3.mp4</span>
+              <span class="eh-file ok" data-f="1">reel-1_A·B·C.mp4</span><span class="eh-file ok" data-f="1">reel-1_cover.jpg</span><span class="eh-file" data-f="2">reel-2.mp4</span><span class="eh-file" data-f="3">reel-3.mp4</span>
             </div>
           </div>
         </div>
       </div>
 
-      <div data-block data-agent="פתיחה" data-log="טלפון 9:16 · output/reel-1.mp4" data-code='.eh-phone{width:100%;aspect-ratio:9/16;border-radius:30px;…}' data-sk="media">
+      <div data-block data-agent="פתיחה" data-log="טלפון 9:16 · output/reel-1_A.mp4" data-code='.eh-phone{width:100%;aspect-ratio:9/16;border-radius:30px;…}' data-sk="media">
         <div class="fill eh-out">
           <div class="eh-phone" role="img" aria-label="ריל מוכן במסך טלפון, השליש העליון נשאר נקי לכותרת">
             <div class="eh-scr">
@@ -659,9 +718,9 @@ html:not(.aw-rv) .rv{opacity:1;transform:none}
             </div>
           </div>
           <div class="eh-meta">
-            <span class="eh-fn">output/reel-1.mp4</span>
-            <small>1080×1920 · 30fps · H.264</small>
-            <p>בלי טקסט צרוב. השליש העליון נשאר נקי לכותרת.</p>
+            <span class="eh-fn">output/reel-1_A.mp4</span>
+            <small>1080×1920 · 30fps · −14 LUFS</small>
+            <p>בלי טקסט צרוב. השליש העליון נשאר נקי לכותרת, והקאבר מוכן לידו.</p>
           </div>
         </div>
       </div>
@@ -675,7 +734,7 @@ html:not(.aw-rv) .rv{opacity:1;transform:none}
       <div class="fill" style="display:grid;gap:14px">
         <span class="eyebrow eh-eyebrow">.claude/agents/editor.md</span>
         <h2>מה העורך <span class="grad-text">באמת עושה</span></h2>
-        <p class="lead">זה לא תבנית שמדביקה קליפים. כל עורך עובר על הקליפים שלו כמו עורך אמיתי: מסתכל, מתכנן, חותך, ובודק את עצמו לפני שהוא מחזיר לכם קובץ.</p>
+        <p class="lead">זה לא תבנית שמדביקה קליפים. כל עורך עובד כמו עורך אמיתי: מסתכל, מיישר צבע, חותך על השיר, מערבב סאונד, ובודק את עצמו לפני שהוא מחזיר לכם קובץ.</p>
       </div>
     </div>
 
@@ -685,8 +744,8 @@ html:not(.aw-rv) .rv{opacity:1;transform:none}
           <div class="eh-txt">
             <span class="eh-step">01 · look</span>
             <h3>מסתכל על כל קליפ לפני שהוא חותך</h3>
-            <p>לכל קליפ הוא מכין דף פריימים, פריים כל חצי שנייה, ובאמת מסתכל עליו. ככה הוא מוצא את הרגעים החזקים ומדלג על מה שרועד, מטושטש או חשוך.</p>
-            <p class="eh-small">קליפ מהטלפון כבר ערוך? הוא מזהה את החיתוכים שבתוכו, ואף שוט לא עובר דרך חיתוך כזה.</p>
+            <p>לכל קליפ הוא מכין דף פריימים, פריים כל חצי שנייה, ובאמת מסתכל עליו. ככה הוא מוצא את הרגעים החזקים ומדלג על מה שרועד, מטושטש, חשוך, או שמשהו עובר בו מול העדשה.</p>
+            <p class="eh-small">לפני שהוא נועל שוט, הוא בודק אותו שוב ב-10 פריימים לשנייה, כי מה שעובר ב-0.3 שנייה לא נראה בדף הרגיל.</p>
           </div>
           <div class="eh-vis">
             <div class="win eh-mini" aria-hidden="true">
@@ -697,7 +756,7 @@ html:not(.aw-rv) .rv{opacity:1;transform:none}
                   <span class="b cut" data-t="3.0"></span><span class="b" data-t="3.5"></span><span class="b" data-t="4.0"></span><span class="b hot" data-t="4.5"></span><span class="b" data-t="5.0"></span><span class="b blur" data-t="5.5"></span>
                 </div>
                 <div class="eh-legend"><em style="--c:var(--ok)">רגע חזק</em><em style="--c:var(--pink)">חיתוך בתוך הקליפ</em><em style="--c:var(--muted)">מטושטש, מדלג</em></div>
-                <div class="eh-cap2"><span>fps=2 · tile 6×5</span><b>scene &gt; 0.3 → cut @ 3.0s</b></div>
+                <div class="eh-cap2"><span>fps=2 · tile 6×5</span><b>strip fps=10 before lock</b></div>
               </div>
             </div>
           </div>
@@ -707,86 +766,133 @@ html:not(.aw-rv) .rv{opacity:1;transform:none}
       <div data-block data-agent="פתיחה" data-log="כרטיס · פתיחה ושליש עליון נקי" data-code='.eh-hookf::before{content:"כותרת";position:absolute;…}' data-sk="media">
         <article class="fill card eh-card" style="--c:var(--ag2)">
           <div class="eh-txt">
-            <span class="eh-step">02 · plan · hook</span>
+            <span class="eh-step">02 · hook</span>
             <h3>פותח ברגע הכי חזק</h3>
-            <p>השוט הראשון הוא מה שהכי תופס עין מכל מה שהוא ראה, בערך שנייה אחת. את השליש העליון של הפריים הוא משאיר רגוע, כי שם תשימו את הכותרת.</p>
-          </div>
-          <div class="eh-vis eh-hookv" aria-hidden="true">
-            <div class="eh-hookf"></div>
-            <div class="eh-hookl">
-              <div class="on"><i style="width:44px"></i>shot 1 · hook</div>
-              <div><i style="width:28px"></i>shot 2</div>
-              <div><i style="width:52px"></i>shot 3</div>
-              <div><i style="width:22px"></i>shot 4</div>
-              <div><i style="width:38px"></i>…</div>
-            </div>
-          </div>
-        </article>
-      </div>
-
-      <div data-block data-agent="פתיחה" data-log="כרטיס · חיתוך ל-9:16 ב-1080×1920" data-code='<span class="eh-win916"></span>' data-sk="media">
-        <article class="fill card eh-card" style="--c:var(--cy)">
-          <div class="eh-txt">
-            <span class="eh-step">03 · render</span>
-            <h3>חותך למסך מלא של טלפון</h3>
-            <p>כל שוט נחתך ל-<span class="eh-ltr">9:16</span> וממורכז על מי שבפריים. הנושא בצד? החיתוך זז אליו. קליפ ברזולוציה נמוכה יותר פשוט מוגדל.</p>
+            <p>השוט הראשון הוא מה שהכי תופס עין מכל מה שהוא ראה, 0.6 עד 1.5 שניות, עד הדרופ של השיר. את השליש העליון הוא משאיר רגוע, כי שם תשימו את הכותרת.</p>
           </div>
           <div class="eh-vis" aria-hidden="true">
-            <div class="eh-crop"><span class="eh-src">clip 16:9</span><span class="eh-shift">→</span><span class="eh-win916"></span></div>
-            <div class="eh-specs"><span>1080×1920</span><span>30fps</span><span>H.264 + AAC</span><span>+faststart</span></div>
+            <div class="eh-hookv">
+              <div class="eh-hookf"></div>
+              <div class="eh-hookl">
+                <div class="on"><i style="width:44px"></i>shot 1 · hook</div>
+                <div><i style="width:28px"></i>shot 2 · drop</div>
+                <div><i style="width:52px"></i>shot 3</div>
+                <div><i style="width:22px"></i>shot 4</div>
+                <div><i style="width:38px"></i>…</div>
+              </div>
+            </div>
+            <div class="eh-specs"><span>9:16</span><span>1080×1920</span><span>30fps</span></div>
           </div>
         </article>
       </div>
 
-      <div class="eh-w" data-block data-agent="פתיחה" data-log="כרטיס · גל קול וחיתוך על הביט" data-code='.eh-wave i:nth-child(4n+1){height:92%;…}' data-sk="media">
+      <div data-block data-agent="פתיחה" data-log="כרטיס · צבע אחיד, HDR ל-SDR, 3 גוונים" data-code='<span class="eh-look on">נקי</span>' data-sk="media">
+        <article class="fill card eh-card" style="--c:var(--cy)">
+          <div class="eh-txt">
+            <span class="eh-step">03 · colour</span>
+            <h3>צבע אחיד בין כל הקליפים</h3>
+            <p>סרטון HDR מהאייפון נראה אפור ושטוף בלי המרה. העורך ממיר אותו לצבע רגיל (SDR), ואז מיישר בעדינות בהירות, ניגודיות ורוויה בכל שוט, כדי שכל הריל ייראה כמו צילום אחד.</p>
+          </div>
+          <div class="eh-vis" aria-hidden="true">
+            <div class="eh-cm">
+              <div class="eh-cmr"><b>before</b><span class="eh-sw eh-sw-hdr"></span><span class="eh-sw eh-sw-dk"></span><span class="eh-sw eh-sw-br"></span></div>
+              <div class="eh-cmr"><b>after</b><span class="eh-sw"></span><span class="eh-sw"></span><span class="eh-sw"></span></div>
+            </div>
+            <div class="eh-looks"><span class="eh-look on">נקי</span><span class="eh-look eh-lw">חם</span><span class="eh-look eh-lc">קר</span></div>
+          </div>
+        </article>
+      </div>
+
+      <div class="eh-w" data-block data-agent="פתיחה" data-log="כרטיס · להיטים, דרופ ותנועה בקצב" data-code='python3 scripts/hits.py MUSIC --start 13.51 --len 12' data-sk="media">
         <article class="fill card eh-card" style="--c:var(--amber)">
           <div class="eh-txt">
-            <span class="eh-step">02 · plan · beat</span>
-            <h3>חותך על הביט של השיר</h3>
-            <p>שמתם קובץ מוזיקה בתיקייה? הוא מוצא את הקצב, וכל שוט נמשך מספר שלם של ביטים. השיר נכנס על ביט חזק, בלי הפתיח השקט.</p>
-            <p class="eh-small">בלי מוזיקה? הוא משתמש בסאונד של הקליפים, עם מעברים רכים בכל חיתוך כדי שלא יישמעו קליקים.</p>
+            <span class="eh-step">04 · music + motion</span>
+            <h3>חותך על הלהיטים של השיר</h3>
+            <p>שמתם קובץ מוזיקה בתיקייה? הסקריפט <code>hits.py</code> מוצא בו את הלהיטים החזקים, את הדרופ ואת נקודת ההתחלה הכי טובה. השוט השני נוחת בדיוק על הדרופ, והריל נגמר על להיט.</p>
+            <p class="eh-small">ומשחק בקצב: הליכה מואצת, האטה ברגע המפתח (רק מקליפ של 60fps), זום קצר על להיט חזק, ועד שני הבזקים לבנים על הדרופ.</p>
           </div>
           <div class="eh-vis win eh-mini" aria-hidden="true">
-            <div class="win-top"><i></i><i></i><i></i><span class="win-title">work/reel-2/plan.md</span></div>
+            <div class="win-top"><i></i><i></i><i></i><span class="win-title">hits.py · song.mp3</span></div>
             <div class="win-body eh-beat">
-              <div class="eh-beatk"><span>music.mp3 · onset envelope</span><b>beat = 60 / BPM</b></div>
-              <div class="eh-wave"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
-              <div class="eh-segs"><i style="--n:2"></i><i style="--n:1"></i><i style="--n:1"></i><i style="--n:2"></i><i style="--n:2"></i><i style="--n:1"></i><i style="--n:3"></i></div>
-              <div class="eh-beatk"><span>cuts = whole beats</span><span>70–180 BPM</span></div>
+              <div class="eh-beatk"><span>strong hits · drop · start</span><b>cut ON the hits</b></div>
+              <div class="eh-wavew">
+                <div class="eh-wave"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+                <span class="eh-mk eh-mk-s" style="--x:8%">START</span>
+                <span class="eh-mk eh-mk-d" style="--x:33.5%">DROP</span>
+              </div>
+              <div class="eh-segs"><i style="--n:4"><em>hook</em></i><i style="--n:2"><em>flash</em></i><i style="--n:3"><em>1.75×</em></i><i style="--n:3"><em>0.6×</em></i><i style="--n:1"><em></em></i><i style="--n:2"><em>zoom</em></i><i style="--n:3"><em>end</em></i></div>
+              <div class="eh-beatk"><span>hits → frame numbers @30fps</span><span>not a BPM grid</span></div>
             </div>
           </div>
         </article>
       </div>
 
-      <div class="eh-w2" data-block data-agent="פתיחה" data-log="כרטיס · בדיקת פריימים בקצוות" data-code='<div class="eh-erow"><b>out</b>' data-sk="media">
+      <div data-block data-agent="פתיחה" data-log="כרטיס · ‎-14 LUFS, דאקינג ו-J-cut" data-code='loudnorm=I=-14:TP=-1.5:LRA=11' data-sk="media">
+        <article class="fill card eh-card" style="--c:var(--ag4)">
+          <div class="eh-txt">
+            <span class="eh-step">05 · sound</span>
+            <h3>סאונד ברמה של אינסטגרם</h3>
+            <p>הכל יוצא ב-<bdi dir="ltr">−14 LUFS</bdi>, העוצמה שאינסטגרם מכוון אליה. מישהו מדבר? המוזיקה יורדת מתחת לקול ועולה בחזרה, והקול נכנס רגע לפני התמונה (J-cut), כמו בעריכה מקצועית.</p>
+          </div>
+          <div class="eh-vis eh-snd" aria-hidden="true">
+            <div class="eh-trk"><b>music</b><span class="eh-mus"><i></i></span></div>
+            <div class="eh-trk"><b>voice</b><span class="eh-vox"><i>J-cut</i></span></div>
+            <div class="eh-meter"><span><bdi dir="ltr">−14 LUFS</bdi></span><span class="eh-mbar"><i></i></span><small>peak −1.5 dBTP</small></div>
+          </div>
+        </article>
+      </div>
+
+      <div data-block data-agent="פתיחה" data-log="כרטיס · 3 פתיחות וקאבר לכל ריל" data-code='<span class="eh-ab">reel-1_B.mp4</span>' data-sk="media">
         <article class="fill card eh-card" style="--c:var(--pink)">
           <div class="eh-txt">
-            <span class="eh-step">04 · check</span>
+            <span class="eh-step">06 · hooks + cover</span>
+            <h3>3 פתיחות, וקאבר לכל ריל</h3>
+            <p>כותבים <b>3 פתיחות</b> ומקבלים שלוש גרסאות: אותו ריל, פתיחה שונה. מעלים ובודקים איזו מחזיקה צופים. ולכל ריל יוצא גם קאבר, הפריים הכי חד מתוך הריל עצמו.</p>
+          </div>
+          <div class="eh-vis eh-abw" aria-hidden="true">
+            <div class="eh-abs">
+              <span class="eh-ab" data-k="A"><i class="eh-ab-h"></i><i class="eh-ab-b"></i></span>
+              <span class="eh-ab" data-k="B"><i class="eh-ab-h"></i><i class="eh-ab-b"></i></span>
+              <span class="eh-ab" data-k="C"><i class="eh-ab-h"></i><i class="eh-ab-b"></i></span>
+              <span class="eh-ab eh-cov" data-k="cover"></span>
+            </div>
+            <div class="eh-abn"><span>reel-1_A · _B · _C.mp4</span><span>reel-1_cover.jpg</span></div>
+          </div>
+        </article>
+      </div>
+
+      <div class="eh-w2" data-block data-agent="פתיחה" data-log="כרטיס · בדיקה: פריימים, עוצמה, שרוף" data-code='<div class="eh-erow"><b>out</b>' data-sk="media">
+        <article class="fill card eh-card" style="--c:var(--v2)">
+          <div class="eh-txt">
+            <span class="eh-step">07 · check</span>
             <h3>בודק את העבודה של עצמו</h3>
-            <p>הוא מסתכל על 3 הפריימים הראשונים ו-3 האחרונים של כל שוט, ועל דף סיכום של כל הריל. פריים שחור, ראש שנחתך, הבזק של שוט אחר? מזיז כמה פריימים ומרנדר שוב.</p>
+            <p>הוא מסתכל על 3 הפריימים הראשונים ו-3 האחרונים של כל שוט, ובודק גודל, אורך, עוצמת סאונד ופריימים שרופים ללבן. משהו לא טוב? מזיז כמה פריימים ומרנדר שוב.</p>
           </div>
           <div class="eh-vis win eh-mini" aria-hidden="true">
-            <div class="win-top"><i></i><i></i><i></i><span class="win-title">edges · shot 3</span></div>
+            <div class="win-top"><i></i><i></i><i></i><span class="win-title">check_reel.sh</span></div>
             <div class="win-body eh-edges">
-              <div class="eh-erow"><b>in</b><span></span><span></span><span></span></div>
-              <div class="eh-erow"><b>out</b><span></span><span></span><span class="bad"></span></div>
-              <div class="eh-fix"><span class="bad">flash at last frame</span><span class="ok">out −3 frames → ✓</span></div>
+              <div class="eh-erow"><b>s03 in</b><span></span><span></span><span></span></div>
+              <div class="eh-erow"><b>s03 out</b><span></span><span></span><span class="bad"></span></div>
+              <div class="term eh-rep"><span class="ok">✓</span> 1080,1920 · 30/1 · bt709
+<span class="ok">✓</span> loudness −13.9 LUFS
+<span class="ok">✓</span> blown-out: none
+<span class="eh-bad">✗</span> s03 last frame → in −3 frames</div>
             </div>
           </div>
         </article>
       </div>
 
-      <div class="eh-w" data-block data-agent="פתיחה" data-log="כרטיס · עורך לכל תיקייה במקביל" data-code='<div class="eh-prow" style="--c:var(--ag1)">' data-sk="media">
+      <div class="eh-w eh-full" data-block data-agent="פתיחה" data-log="כרטיס · עורך לכל תיקייה במקביל" data-code='<div class="eh-prow" style="--c:var(--ag1)">' data-sk="media">
         <article class="fill card card-glow eh-card" style="--c:var(--v2)">
           <div class="eh-txt">
             <span class="eh-step">reel-cut · parallel</span>
             <h3>כל תיקייה מקבלת עורך משלה</h3>
-            <p>כמה תיקיות יש בתוך <code>input</code>, ככה עורכים יוצאים לדרך. Claude מפעיל את כולם באותה הודעה, ואף אחד לא מחכה לשני. בסוף הוא אוסף הכל ופותח לכם את <code>output</code>.</p>
+            <p>כמה תיקיות יש בתוך <code>input</code>, ככה עורכים יוצאים לדרך. Claude מפעיל את כולם באותה הודעה, ואף אחד לא מחכה לשני. בסוף הוא אוסף הכל, אומר לכם לכל ריל אורך, עוצמה ובמה הוא פותח, ופותח לכם את <code>output</code>.</p>
             <p class="eh-small">הקבצים המקוריים שלכם לא משתנים.</p>
           </div>
           <div class="eh-vis eh-par" aria-hidden="true">
             <div class="eh-par-h">הודעה אחת <span>←</span> עורך לכל ריל, באותו רגע</div>
-            <div class="eh-prow" style="--c:var(--ag1)"><span class="folder"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 6.5A2.5 2.5 0 0 1 5.5 4h4l2 2.2h7A2.5 2.5 0 0 1 21 8.7v8.8a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 3 17.5z"/></svg>reel-1/</span><span class="eh-line"></span><span class="chip" style="--c:var(--ag1)">עורך 1</span><span class="eh-line"></span><span class="eh-mp4">reel-1.mp4</span></div>
+            <div class="eh-prow" style="--c:var(--ag1)"><span class="folder"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 6.5A2.5 2.5 0 0 1 5.5 4h4l2 2.2h7A2.5 2.5 0 0 1 21 8.7v8.8a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 3 17.5z"/></svg>reel-1/</span><span class="eh-line"></span><span class="chip" style="--c:var(--ag1)">עורך 1</span><span class="eh-line"></span><span class="eh-mp4">reel-1_A·B·C</span></div>
             <div class="eh-prow" style="--c:var(--ag2)"><span class="folder"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 6.5A2.5 2.5 0 0 1 5.5 4h4l2 2.2h7A2.5 2.5 0 0 1 21 8.7v8.8a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 3 17.5z"/></svg>reel-2/</span><span class="eh-line"></span><span class="chip" style="--c:var(--ag2)">עורך 2</span><span class="eh-line"></span><span class="eh-mp4">reel-2.mp4</span></div>
             <div class="eh-prow" style="--c:var(--ag3)"><span class="folder"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 6.5A2.5 2.5 0 0 1 5.5 4h4l2 2.2h7A2.5 2.5 0 0 1 21 8.7v8.8a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 3 17.5z"/></svg>reel-3/</span><span class="eh-line"></span><span class="chip" style="--c:var(--ag3)">עורך 3</span><span class="eh-line"></span><span class="eh-mp4">reel-3.mp4</span></div>
           </div>
@@ -796,10 +902,10 @@ html:not(.aw-rv) .rv{opacity:1;transform:none}
 
     <div class="eh-stats-b" data-block data-agent="פתיחה" data-log="פס עובדות · 4 נתונים אמיתיים" data-code='<div class="stats eh-stats">' data-sk="stat">
       <div class="fill stats eh-stats">
-        <div class="stat"><b>1</b><span>עורך לכל ריל</span></div>
-        <div class="stat"><b>כולם</b><span>במקביל, מהודעה אחת</span></div>
-        <div class="stat"><b><bdi dir="ltr">9:16</bdi></b><span><bdi dir="ltr">1080×1920</bdi>, מוכן לאינסטגרם</span></div>
-        <div class="stat"><b>0</b><span>עריכה ידנית</span></div>
+        <div class="stat"><b>1</b><span>עורך לכל ריל, כולם במקביל</span></div>
+        <div class="stat"><b><bdi dir="ltr">−14</bdi></b><span><bdi dir="ltr">LUFS</bdi>, עוצמת הסאונד של אינסטגרם</span></div>
+        <div class="stat"><b><bdi dir="ltr">9:16</bdi></b><span><bdi dir="ltr">1080×1920</bdi>, מוכן להעלאה</span></div>
+        <div class="stat"><b>3</b><span>פתיחות לבדיקה, אם ביקשתם</span></div>
       </div>
     </div>
   </div>
@@ -1005,12 +1111,109 @@ html:not(.aw-rv) .rv{opacity:1;transform:none}
 .es-cols i{width:16px;height:16px;border-radius:50%;box-shadow:0 0 0 2px var(--ink) inset}
 .es-next{font:700 12px/1 var(--body);padding:9px 14px;border-radius:999px;background:var(--ink);color:var(--bg);direction:rtl}
 
+/* ---- START prompt: exact START.txt, option lines drawn as a grid ---- */
+.es-sec .step-body > [data-block]{min-width:0}
+.es-sec .note code,.es-or code{white-space:normal;overflow-wrap:anywhere}
+.es-sp{display:none}
+.es-start pre{font-size:15.5px}
+.es-ol{display:grid;grid-template-columns:minmax(0,9.4em) minmax(0,1fr);gap:0 12px;padding:3px 0;border-top:1px dashed var(--line)}
+.es-ol b{font-weight:700;color:var(--cy)}
+.es-ol span{color:var(--ink2)}
+.es-opts{display:grid;border-radius:16px;overflow:hidden;box-shadow:0 0 0 1px var(--line2) inset;background:rgba(255,255,255,.02)}
+.es-or{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);gap:8px 14px;align-items:center;padding:11px 14px;border-top:1px solid var(--line);font-size:15px;line-height:1.45;color:var(--ink2)}
+.es-or:first-child{border-top:0}
+.es-oc{display:flex;flex-wrap:wrap;gap:6px}
+.es-oc i{font-style:normal;font:700 13.5px/1 var(--body);color:var(--ink);padding:7px 11px;border-radius:999px;background:color-mix(in srgb,var(--v2) 14%,transparent);box-shadow:0 0 0 1px color-mix(in srgb,var(--v2) 45%,transparent) inset;white-space:nowrap}
+
+/* ---- 4 · Kolbo (optional): music + extra shots ---- */
+.step-n.es-n-opt{background:var(--surface2);box-shadow:0 0 0 1.5px color-mix(in srgb,var(--cy) 60%,transparent) inset,0 0 30px -10px var(--cy)}
+.es-kgo{display:grid;gap:12px;justify-items:start}
+.es-kgo .btn-dl{gap:14px}
+.es-codes{display:grid;gap:8px;width:100%}
+.es-codes>small{font-size:14px;color:var(--muted)}
+.es-code{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;min-height:60px;padding:6px;padding-inline:14px 6px;border-radius:16px;background:linear-gradient(90deg,color-mix(in srgb,var(--v2) 12%,transparent),color-mix(in srgb,var(--cy) 6%,transparent));box-shadow:0 0 0 1px color-mix(in srgb,var(--v2) 40%,transparent) inset}
+.es-code b{font:700 16px/1 var(--mono);letter-spacing:.06em;color:var(--ink);direction:ltr}
+.es-code span{flex:1;min-width:0;font-size:14.5px;color:var(--ink2);line-height:1.35}
+.es-code .copy{height:48px;padding:0 18px;margin-inline-start:auto}
+.es-kb{display:grid;gap:12px;padding:14px;background:linear-gradient(180deg,#101019,#0c0c14)}
+.es-kb-h{display:flex;align-items:center;gap:10px;padding-bottom:10px;border-bottom:1px solid var(--line)}
+.es-klogo{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;flex:none;background:var(--grad);color:var(--on-grad);font:900 15px/1 var(--display);box-shadow:var(--glow-v)}
+.es-kb-h b{display:block;font:700 14px/1.1 var(--body);color:var(--ink)}
+.es-kb-h small{display:block;font-size:11.5px;color:var(--muted);margin-top:3px}
+.es-kb-on{margin-inline-start:auto;display:inline-flex;align-items:center;gap:6px;font:600 11px/1 var(--body);color:var(--ok)}
+.es-kb-on::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--ok);box-shadow:0 0 8px var(--ok)}
+.es-kb-me{justify-self:end;max-width:88%;padding:9px 12px;border-radius:14px 14px 4px 14px;background:var(--surface3);box-shadow:0 0 0 1px var(--line2) inset;font-size:12.5px;line-height:1.5;color:var(--ink)}
+.es-kb-ai{display:grid;grid-template-columns:26px minmax(0,1fr);gap:8px;align-items:start}
+.es-kb-av{width:26px;height:26px;border-radius:8px;display:grid;place-items:center;background:var(--grad);color:var(--on-grad);font:800 12px/1 var(--display)}
+.es-kb-msg{display:grid;gap:8px;min-width:0}
+.es-kb-msg p{margin:0;font-size:12.5px;line-height:1.5;color:var(--ink2)}
+.es-kb-trk{display:grid;grid-template-columns:auto minmax(0,1fr) auto auto;align-items:center;gap:9px;padding:8px 10px;border-radius:12px;background:var(--bg2);box-shadow:0 0 0 1px color-mix(in srgb,var(--pink) 40%,transparent) inset}
+.es-kb-pl{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;background:var(--ink);color:var(--bg);font-size:10px;padding-left:2px}
+.es-kb-wv{display:flex;align-items:center;gap:2px;height:24px;min-width:0;overflow:hidden}
+.es-kb-wv i{flex:1;min-width:2px;border-radius:2px;background:color-mix(in srgb,var(--pink) 70%,var(--ink2))}
+.es-kb-wv i.d{background:var(--amber);box-shadow:0 0 8px var(--amber)}
+.es-kb-tm{font:600 10.5px/1 var(--mono);color:var(--ink2);white-space:nowrap}
+.es-kb-dl{width:22px;height:22px;border-radius:7px;display:grid;place-items:center;background:var(--paper);color:var(--on-paper);font:800 12px/1 var(--body);flex:none}
+.es-kb-clips{display:grid;grid-template-columns:repeat(2,minmax(0,92px));gap:8px}
+.es-kb-clips .es-th{border-radius:10px}
+.es-kb-clips .es-kb-dl{position:absolute;left:6px;top:6px;z-index:3}
+.es-kfold{display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:10px 12px;border-top:1px solid var(--line);background:#0b0b15}
+.es-kfold .folder{padding:6px 9px;font-size:12px;gap:6px}
+.es-kfold .folder svg{width:15px;height:15px}
+.es-kf{font:600 11.5px/1 var(--mono);color:var(--ink);padding:6px 8px;border-radius:8px;background:color-mix(in srgb,var(--ok) 10%,transparent);box-shadow:0 0 0 1px color-mix(in srgb,var(--ok) 50%,transparent) inset;white-space:nowrap}
+.es-kf::before{content:"✓ ";color:var(--ok)}
+.es-kpaths,.es-knotes{grid-column:1/-1;min-width:0}
+.es-kp2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;align-items:start}
+.es-kpc{display:grid;gap:14px;align-content:start}
+.es-kpc > p{margin:0;color:var(--ink2);font-size:16px}
+.es-kpe{box-shadow:0 0 0 1px var(--line) inset,var(--shadow),0 0 60px -28px var(--cy)}
+.es-kph{display:grid;gap:6px}
+.es-kph h4{margin:0;font:800 clamp(20px,2vw,24px)/1.2 var(--display);color:var(--ink);text-wrap:balance}
+.es-kph small{font-size:15px;color:var(--muted);line-height:1.4}
+.es-kpt{justify-self:start;display:inline-flex;align-items:center;height:28px;padding:0 12px;border-radius:999px;font:700 13px/1 var(--body);color:var(--ink);background:rgba(255,255,255,.06);box-shadow:0 0 0 1px var(--line2) inset}
+.es-kpe .es-kpt{background:color-mix(in srgb,var(--cy) 16%,transparent);box-shadow:0 0 0 1px color-mix(in srgb,var(--cy) 50%,transparent) inset}
+.es-kpc .prompt pre{font-size:15px}
+.es-cmd pre{direction:ltr;text-align:left;font:600 15px/1.6 var(--mono)}
+.es-dol{color:var(--v2);user-select:none}
+.es-mini{list-style:none;margin:0;padding:0;display:grid;gap:10px;counter-reset:esm}
+.es-mini li{counter-increment:esm;display:grid;grid-template-columns:26px minmax(0,1fr);gap:10px;color:var(--ink2);font-size:15.5px;line-height:1.5}
+.es-mini li::before{content:counter(esm);width:26px;height:26px;border-radius:9px;display:grid;place-items:center;font:800 12.5px/1 var(--display);color:var(--ink);background:color-mix(in srgb,var(--v2) 18%,transparent);box-shadow:0 0 0 1px color-mix(in srgb,var(--v2) 45%,transparent) inset}
+.es-knotes-in{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+
+/* ---- 8 · output: covers ---- */
+.es-jpg{position:absolute;left:4px;top:4px;z-index:2;font:700 9px/1 var(--mono);color:var(--bg);background:var(--ok);padding:3px 4px;border-radius:4px}
+.es-cv .es-th{box-shadow:0 0 0 1.5px var(--ok),0 8px 16px -8px #000}
+.es-cv b{color:var(--ok)}
+
+/* ---- 9 · instagram: cover sheet ---- */
+.es-phw{grid-template-columns:minmax(0,262px) 200px;justify-content:center;align-items:end;gap:16px}
+.es-phw > .es-phone{width:100%}
+.win.es-covr{width:200px;padding:12px;display:grid;gap:10px;justify-items:center;border-radius:22px;background:linear-gradient(180deg,#14141f,#0b0b14)}
+.es-covr-h{display:flex;justify-content:space-between;align-items:center;width:100%;font-size:13px}
+.es-covr-h b{color:var(--ink)}
+.es-covr-h span{color:var(--cy);font-weight:700;font-size:12.5px}
+.es-covr-img{width:66%;border-radius:10px;box-shadow:0 0 0 2px var(--ok),0 14px 30px -12px #000}
+.es-covr-strip{display:flex;gap:3px;width:100%}
+.es-covr-strip i{flex:1;border-radius:3px}
+.es-covr-btn{position:relative;display:inline-flex;align-items:center;justify-content:center;min-height:40px;width:100%;border-radius:12px;background:var(--surface3);box-shadow:0 0 0 1px var(--line2) inset;font:700 13px/1 var(--body);color:var(--ink)}
+.es-covr-btn .es-ptr{left:72%;top:22px}
+.es-covr-fn{font:600 11px/1 var(--mono);color:var(--ok)}
+
 @keyframes esShim{from{background-position:-60% 0}to{background-position:160% 0}}
 @keyframes esPulse{50%{opacity:.35}}
 @keyframes esBlink{55%{opacity:0}}
 @keyframes esEq{from{transform:scaleY(.3)}to{transform:scaleY(1)}}
 
+@media (max-width:760px){
+  .es-kp2,.es-knotes-in{grid-template-columns:minmax(0,1fr)}
+  .es-phw{grid-template-columns:minmax(0,262px);justify-items:center}
+}
 @media (max-width:560px){
+  .es-or{grid-template-columns:minmax(0,1fr)}
+  .es-ol{grid-template-columns:minmax(0,1fr)}
+  .es-start pre{font-size:15px}
+  .es-code{padding:8px;padding-inline:14px 8px}
+  .es-code span{order:3;flex:1 1 100%;padding-bottom:4px}
   .es-fd{grid-template-columns:minmax(0,1fr)}
   .es-col{display:flex;gap:6px;overflow:hidden;border-right:0;border-bottom:1px solid var(--line);padding:8px}
   .es-col .h{display:none}
@@ -1041,11 +1244,11 @@ html:not(.aw-rv) .rv{opacity:1;transform:none}
 <section class="sec es-sec" id="steps" data-section>
   <div class="wrap">
 
-    <div class="sec-head" data-block data-agent="שלבים" data-log="פתיחת סקשן השלבים · 8 שלבים" data-code='<section class="sec es-sec" id="steps" data-section>' data-sk="title">
+    <div class="sec-head" data-block data-agent="שלבים" data-log="פתיחת סקשן השלבים · 9 שלבים" data-code='<section class="sec es-sec" id="steps" data-section>' data-sk="title">
       <div class="fill" style="display:grid;gap:14px">
-        <span class="eyebrow">Step by step · 8 steps</span>
+        <span class="eyebrow">Step by step · 9 steps</span>
         <h2>מתיקייה של קליפים <span class="grad-text">לרילים מוכנים</span></h2>
-        <p class="lead">שמונה שלבים. את השניים הראשונים עושים פעם אחת. מהפעם השנייה זה רק לשים קליפים בתיקיות ולשלוח הודעה.</p>
+        <p class="lead">תשעה שלבים, ואחד מהם לא חובה. את השניים הראשונים עושים פעם אחת. מהפעם השנייה זה רק לשים קליפים בתיקיות ולשלוח הודעה.</p>
       </div>
     </div>
 
@@ -1098,10 +1301,10 @@ html:not(.aw-rv) .rv{opacity:1;transform:none}
             <div class="fill step-txt">
               <div class="es-kick"><span class="chip" style="--c:var(--ag4)">פעם אחת</span><small>STEP 02</small></div>
               <h3>מורידים את החבילה</h3>
-              <p>לוחצים פעמיים על הקובץ, ונפתחת תיקייה בשם <code>edit-agents</code>. הסקיל והסוכן העורך כבר בפנים.</p>
+              <p>לוחצים פעמיים על הקובץ, ונפתחת תיקייה בשם <code>edit-agents</code>. הסקיל, הסוכן העורך, דף המתכונים ושלושת הסקריפטים כבר בפנים.</p>
               <a class="btn btn-primary btn-dl es-dl" href="edit-agents.zip" download>
                 <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M6.5 10 12 15.5 17.5 10M4 20h16"/></svg>
-                <span class="es-dl-t"><span>הורדת החבילה</span><span class="meta">edit-agents.zip · 6 KB</span></span>
+                <span class="es-dl-t"><span>הורדת החבילה</span><span class="meta">edit-agents.zip · 22 KB</span></span>
               </a>
             </div>
           </div>
@@ -1112,7 +1315,7 @@ html:not(.aw-rv) .rv{opacity:1;transform:none}
                 <div class="es-uz">
                   <div class="es-ico">
                     <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M14 4h26l12 12v42a2 2 0 0 1-2 2H14a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z" style="fill:var(--surface3)"/><path d="M40 4v10a2 2 0 0 0 2 2h10z" style="fill:var(--line2)"/><g style="fill:var(--muted)"><rect x="28" y="6" width="5" height="4" rx="1"/><rect x="33" y="11" width="5" height="4" rx="1"/><rect x="28" y="16" width="5" height="4" rx="1"/><rect x="33" y="21" width="5" height="4" rx="1"/><rect x="28" y="26" width="5" height="4" rx="1"/></g><rect x="27" y="33" width="12" height="12" rx="3" style="fill:none;stroke:var(--muted);stroke-width:2.5"/><text x="32" y="56" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="8" font-weight="700" style="fill:var(--ink2)">ZIP</text></svg>
-                    <b>edit-agents.zip</b><small>6 KB</small>
+                    <b>edit-agents.zip</b><small>22 KB</small>
                   </div>
                   <div class="es-arw"><svg viewBox="0 0 34 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 7h28M24 2l6 5-6 5"/></svg>double<br>click</div>
                   <div class="es-ico on">
@@ -1145,7 +1348,7 @@ html:not(.aw-rv) .rv{opacity:1;transform:none}
               <ul>
                 <li>בתוך <code>input</code> יש <code>reel-1</code> ו-<code>reel-2</code>. כל תיקייה היא ריל אחד.</li>
                 <li>שמים בכל תיקייה את הקליפים של הריל הזה, <code>mp4</code> או <code>mov</code> מהטלפון.</li>
-                <li>רוצים מוזיקה? קובץ שיר אחד באותה תיקייה, והעורך חותך על הקצב שלו. לא חובה.</li>
+                <li>רוצים מוזיקה? קובץ שמע אחד באותה תיקייה (<code>mp3</code>, <code>wav</code> או <code>m4a</code>), והעורך חותך על הלהיטים שלו. לא חובה.</li>
                 <li>עוד ריל? יוצרים <code>reel-3</code>, <code>reel-4</code> וכן הלאה.</li>
               </ul>
               <div class="note"><span aria-hidden="true">●</span><span>הקבצים המקוריים <b>לא משתנים</b>. העורך רק קורא אותם.</span></div>
@@ -1182,13 +1385,108 @@ html:not(.aw-rv) .rv{opacity:1;transform:none}
         </div>
       </li>
 
-      <!-- ============ 4 · open in Code ============ -->
-      <li class="step">
-        <span class="step-n" aria-hidden="true">4</span>
+      <!-- ============ 4 · Kolbo: music + extra shots (optional) ============ -->
+      <li class="step" id="kolbo">
+        <span class="step-n es-n-opt" aria-hidden="true">4</span>
         <div class="step-body">
-          <div data-block data-agent="שלבים" data-log="שלב 4 · לשונית Code ובחירת התיקייה" data-code='<span class="on">Code</span>' data-sk="line">
+          <div data-block data-agent="שלבים" data-log="שלב 4 · קולבו: מוזיקה ושוטים, לא חובה" data-code='<a class="btn btn-primary btn-dl" href="https://app.kolbo.ai?via=orellevi">' data-sk="line">
             <div class="fill step-txt">
-              <div class="es-kick"><span class="chip" style="--c:var(--ag2)">בכל פעם</span><small>STEP 04</small></div>
+              <div class="es-kick"><span class="chip" style="--c:var(--muted)">לא חובה</span><small>STEP 04 · KOLBO</small></div>
+              <h3>אין מוזיקה או חסרים שוטים? <span class="grad-text">קולבו</span></h3>
+              <p>קולבו (Kolbo) הוא סטודיו של <b>תמונות, וידאו ומוזיקה</b> בחשבון אחד. שם מייצרים לריל שיר, וקליפים קצרים שחסרים לכם (B-roll).</p>
+              <p>את הקבצים שמים בתיקייה של הריל: <b>קובץ שמע הופך למוזיקה של הריל</b>, וקליפים נכנסים כשוטים נוספים.</p>
+              <div class="es-kgo">
+                <a class="btn btn-primary btn-dl" href="https://app.kolbo.ai?via=orellevi" target="_blank" rel="noopener">
+                  <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg>
+                  <span class="es-dl-t"><span>נרשמים לקולבו</span><span class="meta">app.kolbo.ai</span></span>
+                </a>
+                <div class="es-codes">
+                  <small>קוד הנחה לרכישה ראשונה, רק במנוי חודשי:</small>
+                  <div class="es-code"><b id="es-c50">ORELLEVI50</b><span>50% הנחה על החודש הראשון</span><button class="copy" type="button" data-copy="es-c50">העתקה</button></div>
+                  <div class="es-code"><b id="es-c30">ORELLEVI30</b><span>30% הנחה ל-3 חודשים</span><button class="copy" type="button" data-copy="es-c30">העתקה</button></div>
+                </div>
+                <div class="note"><span aria-hidden="true">●</span><span>כשנפתח האתר של קולבו – <b>אשרו עוגיות</b>, וכשמשלמים <b>הזינו את הקוד</b>.</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="es-mk" data-block data-agent="שלבים" data-log="ציור קובי · שיר ושני קליפים לריל" data-code='.es-kb-trk{display:grid;grid-template-columns:auto 1fr auto}' data-sk="media">
+            <div class="fill">
+              <div class="win" role="img" aria-label="קובי, הסוכן של קולבו, מחזיר שיר של 15 שניות ושני קליפים אנכיים, והקבצים נכנסים לתיקייה input/reel-1">
+                <div class="win-top"><i></i><i></i><i></i>
+                  <span class="es-url"><svg viewBox="0 0 12 12" fill="currentColor" aria-hidden="true"><path d="M3 5V3.6a3 3 0 0 1 6 0V5h.5a1 1 0 0 1 1 1v4.5a1 1 0 0 1-1 1h-7a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1zm1.4 0h3.2V3.6a1.6 1.6 0 0 0-3.2 0z"/></svg>app.kolbo.ai</span>
+                </div>
+                <div class="es-kb es-he">
+                  <div class="es-kb-h"><span class="es-klogo">K</span><span><b>קובי</b><small>הסוכן של קולבו</small></span><span class="es-kb-on">מחובר</span></div>
+                  <div class="es-kb-me">מוזיקה אנרגטית של 15 שניות לריל, עם דרופ חזק, ו-2 קליפים אנכיים קצרים של לחם יוצא מהתנור</div>
+                  <div class="es-kb-ai">
+                    <span class="es-kb-av">K</span>
+                    <div class="es-kb-msg">
+                      <p>הנה השיר ושני הקליפים:</p>
+                      <div class="es-kb-trk" dir="ltr">
+                        <span class="es-kb-pl">▶</span>
+                        <span class="es-kb-wv"><i style="height:30%"></i><i style="height:45%"></i><i style="height:35%"></i><i style="height:55%"></i><i style="height:40%"></i><i style="height:60%"></i><i style="height:50%"></i><i class="d" style="height:100%"></i><i style="height:85%"></i><i style="height:70%"></i><i style="height:90%"></i><i style="height:75%"></i><i style="height:95%"></i><i style="height:65%"></i><i style="height:80%"></i><i style="height:60%"></i><i style="height:70%"></i><i style="height:50%"></i></span>
+                        <span class="es-kb-tm">music · 0:15</span>
+                        <span class="es-kb-dl">↓</span>
+                      </div>
+                      <div class="es-kb-clips" dir="ltr">
+                        <span class="es-th es-s4"><span class="es-play"></span><span class="es-dur">0:05</span><span class="es-kb-dl">↓</span></span>
+                        <span class="es-th es-s1"><span class="es-play"></span><span class="es-dur">0:05</span><span class="es-kb-dl">↓</span></span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="es-kfold"><span class="folder"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 6.5A2.5 2.5 0 0 1 5.5 4h4l2 2.2h7A2.5 2.5 0 0 1 21 8.7v8.8a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 3 17.5z"/></svg>input/reel-1/</span><span class="es-kf">music.mp3</span><span class="es-kf">bread-1.mp4</span><span class="es-kf">bread-2.mp4</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="es-kpaths" data-block data-agent="שלבים" data-log="שתי דרכים: קובי או חיבור ל-Claude" data-code='<span id="es-kcmd">npx -y @kolbo/mcp install</span>' data-sk="media">
+            <div class="fill es-kp2">
+              <article class="card card-glow es-kpc es-kpe">
+                <div class="es-kph"><span class="es-kpt">דרך א · הכי קל</span><h4>מבקשים מקובי, הסוכן של קולבו</h4><small>בלי חיבורים ובלי פרומפטים</small></div>
+                <p>פותחים את קולבו בדפדפן ומבקשים במילים פשוטות, למשל:</p>
+                <div class="prompt">
+                  <div class="prompt-h"><b>KOBI</b><button class="copy" type="button" data-copy="es-kobi">העתקה</button></div>
+                  <pre id="es-kobi">מוזיקה אנרגטית של 15 שניות לריל, עם דרופ חזק, ו-2 קליפים אנכיים קצרים של לחם יוצא מהתנור</pre>
+                </div>
+                <ol class="es-mini">
+                  <li><span>מורידים את הקבצים לתיקייה של הריל, למשל <code>input/reel-1</code>.</span></li>
+                  <li><span>קובץ שמע אחד בתיקייה = המוזיקה של הריל. קליפים = עוד שוטים לעורך.</span></li>
+                </ol>
+              </article>
+              <article class="card es-kpc">
+                <div class="es-kph"><span class="es-kpt">דרך ב</span><h4>מחברים את קולבו ל-Claude</h4><small>מבקשים מ-Claude, והוא מייצר בקולבו</small></div>
+                <p>פותחים Terminal (ב-Mac) או PowerShell (ב-Windows) ומריצים פעם אחת:</p>
+                <div class="prompt es-cmd">
+                  <div class="prompt-h"><b>TERMINAL</b><button class="copy" type="button" data-copy="es-kcmd">העתקה</button></div>
+                  <pre><span class="es-dol" aria-hidden="true">$ </span><span id="es-kcmd">npx -y @kolbo/mcp install</span></pre>
+                </div>
+                <ol class="es-mini">
+                  <li><span>סוגרים ופותחים מחדש את Claude. ביצירה הראשונה נפתח בדפדפן חלון של קולבו: לוחצים <b>Allow</b>.</span></li>
+                  <li><span>כותבים ל-Claude מה צריך, למשל:</span></li>
+                </ol>
+                <div class="prompt">
+                  <div class="prompt-h"><b>CLAUDE</b><button class="copy" type="button" data-copy="es-kask">העתקה</button></div>
+                  <pre id="es-kask">תייצר בקולבו מוזיקה של 15 שניות עם דרופ חזק, ותשים אותה בתיקייה input/reel-1</pre>
+                </div>
+              </article>
+            </div>
+          </div>
+          <div class="es-knotes" data-block data-agent="שלבים" data-log="קרדיטים, ולפני הודעת העריכה" data-code='<div class="note warn">' data-sk="line">
+            <div class="fill es-knotes-in">
+              <div class="note warn"><span aria-hidden="true">●</span><span>יצירה עולה קרדיטים של קולבו. עושים את זה <b>לפני</b> ששולחים את הודעת העריכה, כדי שהקבצים כבר יחכו בתיקייה.</span></div>
+              <div class="note"><span aria-hidden="true">●</span><span><b>לא חובה.</b> יש לכם שיר וקליפים? מדלגים על השלב הזה. ובלי שיר בכלל, את הצליל בוחרים אחר כך באינסטגרם.</span></div>
+            </div>
+          </div>
+        </div>
+      </li>
+
+      <!-- ============ 5 · open in Code ============ -->
+      <li class="step">
+        <span class="step-n" aria-hidden="true">5</span>
+        <div class="step-body">
+          <div data-block data-agent="שלבים" data-log="שלב 5 · לשונית Code ובחירת התיקייה" data-code='<span class="on">Code</span>' data-sk="line">
+            <div class="fill step-txt">
+              <div class="es-kick"><span class="chip" style="--c:var(--ag2)">בכל פעם</span><small>STEP 05</small></div>
               <h3>פותחים את התיקייה ב-Code</h3>
               <ul>
                 <li>באפליקציה עוברים ללשונית <b>Code</b> שבראש החלון.</li>
@@ -1226,13 +1524,13 @@ html:not(.aw-rv) .rv{opacity:1;transform:none}
         </div>
       </li>
 
-      <!-- ============ 5 · model ============ -->
+      <!-- ============ 6 · model ============ -->
       <li class="step">
-        <span class="step-n" aria-hidden="true">5</span>
+        <span class="step-n" aria-hidden="true">6</span>
         <div class="step-body">
-          <div data-block data-agent="שלבים" data-log="שלב 5 · Fable 5.2, גיבוי Opus 5.5" data-code='<div class="opt on">Claude Fable 5.2</div>' data-sk="line">
+          <div data-block data-agent="שלבים" data-log="שלב 6 · Fable 5.2, גיבוי Opus 5.5" data-code='<div class="opt on">Claude Fable 5.2</div>' data-sk="line">
             <div class="fill step-txt">
-              <div class="es-kick"><span class="chip" style="--c:var(--ag1)">שנייה אחת</span><small>STEP 05</small></div>
+              <div class="es-kick"><span class="chip" style="--c:var(--ag1)">שנייה אחת</span><small>STEP 06</small></div>
               <h3>בוחרים Claude Fable 5.2</h3>
               <p>ליד תיבת הכתיבה יש בחירת מודל. בוחרים <b>Claude Fable 5.2</b>.</p>
               <div class="note"><span aria-hidden="true">●</span><span>לא מופיע אצלכם, או שהגעתם למגבלת השימוש שלו? בוחרים <b>Claude Opus 5.5</b>. החבילה נבדקה עליו.</span></div>
@@ -1267,37 +1565,53 @@ html:not(.aw-rv) .rv{opacity:1;transform:none}
         </div>
       </li>
 
-      <!-- ============ 6 · START prompt ============ -->
+      <!-- ============ 7 · START prompt ============ -->
       <li class="step">
-        <span class="step-n" aria-hidden="true">6</span>
+        <span class="step-n" aria-hidden="true">7</span>
         <div class="step-body">
-          <div data-block data-agent="שלבים" data-log="שלב 6 · הודעת START עם כפתור העתקה" data-code='<button class="copy" type="button" data-copy="edit-start">' data-sk="line">
+          <div data-block data-agent="שלבים" data-log="שלב 7 · START, טבלת אפשרויות, העתקה" data-code='<button class="copy" type="button" data-copy="edit-start">' data-sk="line">
             <div class="fill step-txt">
-              <div class="es-kick"><span class="chip" style="--c:var(--ag2)">בכל פעם</span><small>STEP 06</small></div>
+              <div class="es-kick"><span class="chip" style="--c:var(--ag2)">בכל פעם</span><small>STEP 07</small></div>
               <h3>שולחים הודעה אחת</h3>
-              <div class="prompt">
+              <div class="prompt es-start">
                 <div class="prompt-h"><b>START.txt</b><button class="copy" type="button" data-copy="edit-start">העתקה</button></div>
                 <pre id="edit-start">תערוך לי רילים עם הסוכנים.
 
-שמתי את הקליפים בתיקיות בתוך input (כל תיקייה = ריל אחד).
-אורך כל ריל: <span class="ph">[למשל 12 שניות]</span></pre>
+שמתי את הקליפים בתיקיות בתוך input (כל תיקייה = ריל אחד, ואם יש מוזיקה – קובץ אחד בתוך התיקייה).
+אורך כל ריל: <span class="ph">[למשל 12 שניות]</span>
+
+אפשר להוסיף (לא חובה):<span class="es-sp">
+</span><span class="es-ol"><b>חם / קר</b><span class="es-sp">            – </span><span>גוון צבע (ברירת מחדל: נקי וטבעי)</span><span class="es-sp">
+</span></span><span class="es-ol"><b>3 פתיחות</b><span class="es-sp">           – </span><span>שלוש גרסאות עם פתיחה שונה, לבדוק מה עובד הכי טוב</span><span class="es-sp">
+</span></span><span class="es-ol"><b>בלי מוזיקה</b><span class="es-sp">         – </span><span>רק הסאונד של הקליפים</span><span class="es-sp">
+</span></span><span class="es-ol"><b>בלי פלאש / בלי האטה / בלי זום</b><span class="es-sp"> – </span><span>לכבות אפקט מסוים</span></span></pre>
               </div>
-              <p>מחליפים את מה שבצהוב באורך שאתם רוצים, ושולחים.</p>
-              <div class="note warn"><span aria-hidden="true">●</span><span><b>בפעם הראשונה</b> Claude בודק אם מותקן אצלכם ffmpeg, כלי חינמי לעריכת וידאו. אם הוא חסר, Claude מתקין אותו בעצמו. ב-Mac המחשב יכול לבקש סיסמה: מקלידים את סיסמת המחשב. ב-Windows ההתקנה היא עם winget, ואחריה פותחים את Claude מחדש.</span></div>
+              <p>מחליפים את מה שבצהוב באורך שאתם רוצים. רוצים משהו מהרשימה? כותבים אותו במילים, באותה הודעה:</p>
+              <div class="es-opts" role="table" aria-label="מה אפשר לכתוב בהודעה">
+                <div class="es-or" role="row"><span class="es-oc" role="cell"><i>12 שניות</i><i>20 שניות</i><i>קצר</i></span><span role="cell">אורך הריל. בלי אורך? Claude שואל פעם אחת (ברירת מחדל 12, קצר = 8)</span></div>
+                <div class="es-or" role="row"><span class="es-oc" role="cell"><i>חם</i><i>קר</i><i>נקי</i></span><span role="cell">גוון הצבע. נקי וטבעי זו ברירת המחדל</span></div>
+                <div class="es-or" role="row"><span class="es-oc" role="cell"><i>3 פתיחות</i></span><span role="cell">שלוש גרסאות, <code>reel-1_A/B/C.mp4</code>, עם פתיחה שונה</span></div>
+                <div class="es-or" role="row"><span class="es-oc" role="cell"><i>בלי מוזיקה</i></span><span role="cell">רק הסאונד של הקליפים, גם אם יש שיר בתיקייה</span></div>
+                <div class="es-or" role="row"><span class="es-oc" role="cell"><i>בלי פלאש</i><i>בלי האטה</i><i>בלי זום</i></span><span role="cell">מכבה אפקט מסוים</span></div>
+                <div class="es-or" role="row"><span class="es-oc" role="cell"><i>לכל הרילים</i><i>רק לריל 2</i></span><span role="cell">על אילו רילים זה חל. ברירת מחדל: כולם</span></div>
+              </div>
+              <div class="note warn"><span aria-hidden="true">●</span><span><b>בפעם הראשונה</b> Claude בודק שמותקנים אצלכם ffmpeg (כלי חינמי לעריכת וידאו) ו-python3. חסר משהו? הוא מתקין לבד. ב-Mac המחשב יכול לבקש סיסמה: מקלידים את סיסמת המחשב. ב-Windows ההתקנה היא עם winget (גם Python, אם חסר: <code>winget install --id Python.Python.3.12 -e</code>), ואחריה פותחים את Claude מחדש.</span></div>
+              <div class="note"><span aria-hidden="true">●</span><span>הוא בודק גם שה-ffmpeg מספיק חדש להמרת HDR של האייפון. ישן מדי? ב-Mac הוא מעדכן: <code>brew upgrade ffmpeg</code>. העריכה עובדת גם בלי, רק עם צבע קצת יותר שטוח.</span></div>
             </div>
           </div>
-          <div class="es-mk" data-block data-agent="שלבים" data-log="ציור שליחת ההודעה והתקנת ffmpeg" data-code='<span class="p">$</span> brew install ffmpeg' data-sk="media">
+          <div class="es-mk" data-block data-agent="שלבים" data-log="ציור ההודעה, ffmpeg, python3 ו-HDR" data-code='<span class="p">$</span> brew install ffmpeg' data-sk="media">
             <div class="fill">
               <div class="win" role="img" aria-label="ההודעה נשלחה, ו-Claude מתקין את ffmpeg בטרמינל ומבקש את סיסמת המחשב">
                 <div class="win-top"><i></i><i></i><i></i><span class="win-title">Claude Code</span></div>
                 <div class="es-app">
                   <div class="es-msg es-he">תערוך לי רילים עם הסוכנים.
-שמתי את הקליפים בתיקיות בתוך input (כל תיקייה = ריל אחד).
-אורך כל ריל: <span class="f">12 שניות</span></div>
+שמתי את הקליפים בתיקיות בתוך input…
+אורך כל ריל: <span class="f">12 שניות</span>
+<span class="f">חם</span>, <span class="f">3 פתיחות</span> <span class="f">רק לריל 1</span></div>
                   <span class="es-sent">sent · Claude Fable 5.2</span>
                   <div class="es-cl">
                     <span class="av" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 1.5l2.2 7.1 7.3 2.4-7.3 2.4L12 22.5l-2.2-9.1L2.5 11l7.3-2.4z"/></svg></span>
-                    <p class="es-he">חסר ffmpeg, כלי חינמי לעריכת וידאו. מתקין אותו עכשיו. אם המחשב מבקש סיסמה, מקלידים את סיסמת המחשב.</p>
+                    <p class="es-he">חסר ffmpeg, כלי חינמי לעריכת וידאו. מתקין אותו עכשיו, ובודק גם את python3. אם המחשב מבקש סיסמה, מקלידים את סיסמת המחשב.</p>
                   </div>
                   <div class="es-tool">
                     <div class="h"><b>Bash</b><span>running…</span></div>
@@ -1306,7 +1620,10 @@ html:not(.aw-rv) .rv{opacity:1;transform:none}
 <span class="p">$</span> <span class="c">/bin/bash -c "$(curl -fsSL …/install.sh)"</span>
 <span class="es-pw">Password: <span class="dots">••••••••</span><span class="k">סיסמת המחשב</span></span>
 <span class="p">$</span> brew install ffmpeg
-<span class="dim">==&gt; Downloading ffmpeg</span><span class="es-pbar"><b></b></span><span class="ok">✓ ffmpeg installed</span></div>
+<span class="dim">==&gt; Downloading ffmpeg</span><span class="es-pbar"><b></b></span><span class="ok">✓ ffmpeg installed</span>
+<span class="p">$</span> python3 --version   <span class="ok">✓ Python 3</span>
+<span class="p">$</span> ffmpeg -h filter=scale | grep -c intent
+<span class="ok">1 → HDR → SDR ready</span></div>
                   </div>
                 </div>
               </div>
@@ -1315,16 +1632,17 @@ html:not(.aw-rv) .rv{opacity:1;transform:none}
         </div>
       </li>
 
-      <!-- ============ 7 · editors in parallel ============ -->
+      <!-- ============ 8 · editors in parallel ============ -->
       <li class="step">
-        <span class="step-n" aria-hidden="true">7</span>
+        <span class="step-n" aria-hidden="true">8</span>
         <div class="step-body">
-          <div data-block data-agent="שלבים" data-log="שלב 7 · עורך לכל ריל, כולם במקביל" data-code='<code>output/reel-1.mp4</code>' data-sk="line">
+          <div data-block data-agent="שלבים" data-log="שלב 8 · עורכים במקביל, רילים וקאבר" data-code='<code>output/reel-1.mp4</code>' data-sk="line">
             <div class="fill step-txt">
-              <div class="es-kick"><span class="chip" style="--c:var(--ag3)">Claude עובד</span><small>STEP 07</small></div>
+              <div class="es-kick"><span class="chip" style="--c:var(--ag3)">Claude עובד</span><small>STEP 08</small></div>
               <h3>העורכים עובדים במקביל</h3>
-              <p>Claude פותח עורך לכל תיקייה, כולם באותו רגע. כל עורך מסתכל על הקליפים שלו פריים אחרי פריים, בוחר פתיחה שעוצרת גלילה, חותך על הקצב ובודק את עצמו: בלי פריים שחור ובלי ראש חתוך.</p>
-              <p>בסוף נפתחת התיקייה <code>output</code>, ובה <code>reel-1.mp4</code>, <code>reel-2.mp4</code>… בגודל 1080×1920, מוכנים להעלאה.</p>
+              <p>Claude פותח עורך לכל תיקייה, כולם באותו רגע. כל עורך מסתכל על הקליפים שלו, ממפה את הלהיטים בשיר, מיישר צבע, מרנדר, מערבב סאונד ל-<bdi dir="ltr">−14 LUFS</bdi> ובודק את עצמו.</p>
+              <p>בסוף נפתחת התיקייה <code>output</code>. לכל ריל: <code>reel-1.mp4</code> וקאבר <code>reel-1_cover.jpg</code>. ביקשתם 3 פתיחות? <code>reel-1_A.mp4</code>, <code>_B</code> ו-<code>_C</code>. הכל ב-1080×1920, מוכן להעלאה.</p>
+              <div class="note"><span aria-hidden="true">●</span><span>Claude גם מסכם לכם לכל ריל: אורך, כמה שוטים, אם יש מוזיקה, עוצמה, <b>ובמה הוא פתח ולמה</b>.</span></div>
             </div>
           </div>
           <div class="es-mk" data-block data-agent="שלבים" data-log="ציור מסלולי עורכים ותיקיית output" data-code='<div class="lane" style="--c:var(--ag2)">' data-sk="media">
@@ -1335,9 +1653,9 @@ html:not(.aw-rv) .rv{opacity:1;transform:none}
                   <div class="es-mch"><b class="es-he">3 עורכים במקביל</b><span class="es-live">LIVE</span></div>
                   <div class="mc es-mc">
                     <div class="lane lead" style="--c:var(--ag1)"><span class="av">C</span><div><div class="who">Claude · מנהל</div><div class="what">3 editors launched in one message</div></div><span class="st">LEAD</span></div>
-                    <div class="lane" style="--c:var(--ag2)"><span class="av">1</span><div><div class="who">עורך · reel-1</div><div class="what">sheet_IMG_4821.jpg · looking</div></div><span class="st">38%</span><span class="track"><b style="--w:38%"></b></span></div>
-                    <div class="lane" style="--c:var(--ag3)"><span class="av">2</span><div><div class="who">עורך · reel-2</div><div class="what">plan.md · cuts on the beat</div></div><span class="st">64%</span><span class="track"><b style="--w:64%"></b></span></div>
-                    <div class="lane done" style="--c:var(--ag4)"><span class="av">3</span><div><div class="who">עורך · reel-3</div><div class="what">edge check · final.jpg clean</div></div><span class="st">✓ done</span><span class="track"><b style="--w:100%"></b></span></div>
+                    <div class="lane" style="--c:var(--ag2)"><span class="av">1</span><div><div class="who">עורך · reel-1</div><div class="what">hits.py · drop @ 13.51s</div></div><span class="st">38%</span><span class="track"><b style="--w:38%"></b></span></div>
+                    <div class="lane" style="--c:var(--ag3)"><span class="av">2</span><div><div class="who">עורך · reel-2</div><div class="what">render_shots.sh · HDR→SDR · 7/11</div></div><span class="st">64%</span><span class="track"><b style="--w:64%"></b></span></div>
+                    <div class="lane done" style="--c:var(--ag4)"><span class="av">3</span><div><div class="who">עורך · reel-3</div><div class="what">check_reel.sh · −13.9 LUFS · clean</div></div><span class="st">✓ done</span><span class="track"><b style="--w:100%"></b></span></div>
                   </div>
                   <div class="es-sheet">
                     <div class="h"><span>reel-1 · sheet_IMG_4821.jpg</span><span>fps=2</span></div>
@@ -1352,7 +1670,7 @@ html:not(.aw-rv) .rv{opacity:1;transform:none}
                   </div>
                 </div>
               </div>
-              <div class="win es-out" role="img" aria-label="Finder: התיקייה output עם reel-1.mp4, reel-2.mp4 ו-reel-3.mp4">
+              <div class="win es-out" role="img" aria-label="Finder: התיקייה output עם שלוש פתיחות של reel-1, reel-2, וקאבר לכל ריל">
                 <div class="win-top"><i></i><i></i><i></i>
                   <span class="es-ftb"><span class="nav"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M10 3 5 8l5 5"/></svg><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="m6 3 5 5-5 5"/></svg></span><b>output</b></span>
                 </div>
@@ -1360,35 +1678,40 @@ html:not(.aw-rv) .rv{opacity:1;transform:none}
                   <div class="es-col">
                     <span class="h">edit-agents</span>
                     <span class="es-fr"><svg viewBox="0 0 18 18" style="fill:var(--amber)" aria-hidden="true"><path d="M1 4.5A1.5 1.5 0 0 1 2.5 3h4l1.6 1.6h7.4A1.5 1.5 0 0 1 17 6.1v7.4a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 1 13.5z"/></svg><span>input</span></span>
-                    <span class="es-fr on"><svg viewBox="0 0 18 18" style="fill:var(--amber)" aria-hidden="true"><path d="M1 4.5A1.5 1.5 0 0 1 2.5 3h4l1.6 1.6h7.4A1.5 1.5 0 0 1 17 6.1v7.4a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 1 13.5z"/></svg><span>output</span><span class="cnt">3</span></span>
+                    <span class="es-fr on"><svg viewBox="0 0 18 18" style="fill:var(--amber)" aria-hidden="true"><path d="M1 4.5A1.5 1.5 0 0 1 2.5 3h4l1.6 1.6h7.4A1.5 1.5 0 0 1 17 6.1v7.4a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 1 13.5z"/></svg><span>output</span><span class="cnt">6</span></span>
                     <span class="es-fr dim"><svg viewBox="0 0 18 18" style="fill:var(--amber)" aria-hidden="true"><path d="M1 4.5A1.5 1.5 0 0 1 2.5 3h4l1.6 1.6h7.4A1.5 1.5 0 0 1 17 6.1v7.4a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 1 13.5z"/></svg><span>work</span></span>
                   </div>
                   <div class="es-grid">
-                    <div class="es-cell"><span class="es-box"><span class="es-th p es-s1"><span class="es-play"></span><span class="es-dur">0:12</span></span></span><b>reel-1.mp4</b></div>
+                    <div class="es-cell"><span class="es-box"><span class="es-th p es-s1"><span class="es-play"></span><span class="es-dur">0:12</span></span></span><b>reel-1_A.mp4</b></div>
+                    <div class="es-cell"><span class="es-box"><span class="es-th p es-s3"><span class="es-play"></span><span class="es-dur">0:12</span></span></span><b>reel-1_B.mp4</b></div>
+                    <div class="es-cell"><span class="es-box"><span class="es-th es-s4"><span class="es-play"></span><span class="es-dur">0:12</span></span></span><b>reel-1_C.mp4</b></div>
+                    <div class="es-cell es-cv"><span class="es-box"><span class="es-th p es-s1"><span class="es-jpg">JPG</span></span></span><b>reel-1_cover.jpg</b></div>
                     <div class="es-cell"><span class="es-box"><span class="es-th es-s2"><span class="es-play"></span><span class="es-dur">0:12</span></span></span><b>reel-2.mp4</b></div>
-                    <div class="es-cell"><span class="es-box"><span class="es-th p es-s5"><span class="es-play"></span><span class="es-dur">0:12</span></span></span><b>reel-3.mp4</b></div>
+                    <div class="es-cell es-cv"><span class="es-box"><span class="es-th es-s2"><span class="es-jpg">JPG</span></span></span><b>reel-2_cover.jpg</b></div>
                   </div>
                 </div>
-                <div class="es-fst"><span>edit-agents › output</span><span class="es-res">1080×1920 · 9:16</span></div>
+                <div class="es-fst"><span>edit-agents › output</span><span class="es-res">1080×1920 · −14 LUFS</span></div>
               </div>
             </div>
           </div>
         </div>
       </li>
 
-      <!-- ============ 8 · instagram ============ -->
+      <!-- ============ 9 · instagram ============ -->
       <li class="step">
-        <span class="step-n" aria-hidden="true">8</span>
+        <span class="step-n" aria-hidden="true">9</span>
         <div class="step-body">
-          <div data-block data-agent="שלבים" data-log="שלב 8 · כותרת וצליל באינסטגרם" data-code='<span class="on">Aa</span>' data-sk="line">
+          <div data-block data-agent="שלבים" data-log="שלב 9 · כותרת, קאבר ו-3 פתיחות" data-code='<span class="on">Aa</span>' data-sk="line">
             <div class="fill step-txt">
-              <div class="es-kick"><span class="chip" style="--c:var(--ag3)">באפליקציה</span><small>STEP 08</small></div>
+              <div class="es-kick"><span class="chip" style="--c:var(--ag3)">באפליקציה</span><small>STEP 09</small></div>
               <h3>מעלים לאינסטגרם</h3>
-              <p>את הכותרת והמוזיקה מוסיפים באפליקציה של אינסטגרם: <b>Aa</b> לטקסט, ואייקון המוזיקה לצליל טרנדי. אין טקסט צרוב בסרטון, וככה זה נראה טבעי בפיד.</p>
+              <p>את הכותרת מוסיפים באפליקציה של אינסטגרם עם <b>Aa</b>. אין טקסט צרוב בסרטון, וככה זה נראה טבעי בפיד. לא היה שיר בתיקייה? שם בוחרים גם צליל.</p>
+              <p><b>הקאבר:</b> במסך השיתוף לוחצים <b>"עריכת קאבר"</b> ← <b>"הוספה מגלריה"</b> ובוחרים את <code>reel-1_cover.jpg</code>.</p>
+              <div class="note"><span aria-hidden="true">●</span><span>ביקשתם <b>3 פתיחות</b>? מעלים את שלושתן כבדיקה (או אחת לפיד והשאר למודעות), ומשאירים את זו שמחזיקה צופים הכי טוב.</span></div>
               <div class="note"><span aria-hidden="true">●</span><span>העורך משאיר את <b>השליש העליון</b> של הפתיחה נקי, בדיוק בשביל הכותרת.</span></div>
             </div>
           </div>
-          <div class="es-mk" data-block data-agent="שלבים" data-log="ציור עורך אינסטגרם 9:16 · Aa וצליל" data-code='.es-safe{height:33.33%;border-bottom:1.5px dashed…}' data-sk="media">
+          <div class="es-mk" data-block data-agent="שלבים" data-log="ציור אינסטגרם · Aa ועריכת קאבר" data-code='.es-safe{height:33.33%;border-bottom:1.5px dashed…}' data-sk="media">
             <div class="fill es-phw">
               <div class="win es-phone" role="img" aria-label="עורך הריל של אינסטגרם: כלי הטקסט Aa פעיל, כותרת בשליש העליון ומדבקת מוזיקה">
                 <div class="es-scr p es-s1">
@@ -1415,6 +1738,13 @@ html:not(.aw-rv) .rv{opacity:1;transform:none}
                     <span class="es-next">הבא</span>
                   </div>
                 </div>
+              </div>
+              <div class="win es-covr" role="img" aria-label="מסך השיתוף באינסטגרם: עריכת קאבר, הוספה מגלריה, נבחר reel-1_cover.jpg">
+                <div class="es-covr-h es-he"><b>עריכת קאבר</b><span>סיום</span></div>
+                <div class="es-covr-img es-th p es-s1"></div>
+                <div class="es-covr-strip" aria-hidden="true"><i class="es-th es-s1"></i><i class="es-th p es-s3"></i><i class="es-th es-s4"></i><i class="es-th p es-s6"></i><i class="es-th es-s2"></i></div>
+                <span class="es-covr-btn es-he">הוספה מגלריה<svg class="es-ptr" viewBox="0 0 16 22" aria-hidden="true"><path d="M1.5 1.5v16.5l4.2-3.9 2.9 6.6 2.9-1.3-2.9-6.5h5.9z"/></svg></span>
+                <span class="es-covr-fn">reel-1_cover.jpg ✓</span>
               </div>
             </div>
           </div>
@@ -1481,7 +1811,7 @@ html:not(.aw-rv) .rv{opacity:1;transform:none}
 .ep-legend .chip{font-size:12px}
 
 /* editor flow */
-.ep-flow{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.ep-flow{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
 .ep-flow li{display:grid;gap:5px;padding:11px 10px;border-radius:12px;background:color-mix(in srgb,var(--c) 7%,transparent);box-shadow:0 0 0 1px var(--line) inset;font:700 15px/1.2 var(--body);color:var(--ink)}
 .ep-flow li i{font:700 11px/1 var(--mono);font-style:normal;color:var(--c);letter-spacing:.08em}
 .ep-flow li small{font:500 11px/1.2 var(--mono);color:var(--muted);direction:ltr;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -1499,11 +1829,13 @@ html:not(.aw-rv) .rv{opacity:1;transform:none}
 .ep-inside:has(.ep-card[data-f="skill"]:hover) .n[data-f="skill"],
 .ep-inside:has(.ep-card[data-f="editor"]:hover) .n[data-f="editor"],
 .ep-inside:has(.ep-card[data-f="input"]:hover) .n[data-f="input"],
-.ep-inside:has(.ep-card[data-f="input"]:hover) .n[data-f="start"]{background:color-mix(in srgb,var(--c) 14%,transparent);box-shadow:0 0 0 1px color-mix(in srgb,var(--c) 45%,transparent) inset}
+.ep-inside:has(.ep-card[data-f="input"]:hover) .n[data-f="start"],
+.ep-inside:has(.ep-card[data-f="tools"]:hover) .n[data-f="tools"]{background:color-mix(in srgb,var(--c) 14%,transparent);box-shadow:0 0 0 1px color-mix(in srgb,var(--c) 45%,transparent) inset}
 .ep-inside:has(.n[data-f="skill"]:hover) .ep-card[data-f="skill"],
 .ep-inside:has(.n[data-f="editor"]:hover) .ep-card[data-f="editor"],
 .ep-inside:has(.n[data-f="input"]:hover) .ep-card[data-f="input"],
-.ep-inside:has(.n[data-f="start"]:hover) .ep-card[data-f="input"]{box-shadow:0 0 0 1px color-mix(in srgb,var(--c) 55%,transparent) inset,0 24px 60px -20px color-mix(in srgb,var(--c) 45%,transparent);transform:translateY(-2px)}
+.ep-inside:has(.n[data-f="start"]:hover) .ep-card[data-f="input"],
+.ep-inside:has(.n[data-f="tools"]:hover) .ep-card[data-f="tools"]{box-shadow:0 0 0 1px color-mix(in srgb,var(--c) 55%,transparent) inset,0 24px 60px -20px color-mix(in srgb,var(--c) 45%,transparent);transform:translateY(-2px)}
 
 /* fixes */
 .ep-fix{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:clamp(20px,4vw,56px);align-items:center}
@@ -1541,14 +1873,43 @@ html:not(.aw-rv) .rv{opacity:1;transform:none}
 .ep-meta u{display:block;height:3px;border-radius:3px;background:color-mix(in srgb,var(--ink) 12%,transparent);overflow:hidden;text-decoration:none}
 .ep-meta u::before{content:"";display:block;height:100%;width:100%;background:var(--c);box-shadow:0 0 10px var(--c)}
 
+.ep-tree .d5{padding-left:118px}
+.ep-tree .n .nm{min-width:0}
+/* scripts card */
+.ep-scripts{display:grid;gap:8px}
+.ep-sc{display:grid;grid-template-columns:minmax(0,9.5em) minmax(0,1fr);gap:6px 14px;align-items:start;padding:11px 14px;border-radius:12px;background:color-mix(in srgb,var(--c) 6%,transparent);box-shadow:0 0 0 1px var(--line) inset}
+.ep-sc code{justify-self:start;color:var(--c)}
+.ep-sc span{color:var(--ink2);font-size:15.5px;line-height:1.5}
+.ep-chips{display:flex;flex-wrap:wrap;gap:6px}
+.ep-chips span{font:700 13px/1 var(--body);color:var(--ink);padding:7px 11px;border-radius:999px;background:color-mix(in srgb,var(--v2) 13%,transparent);box-shadow:0 0 0 1px color-mix(in srgb,var(--v2) 42%,transparent) inset}
+.ep-faq details>div a{color:var(--cy);font-weight:700;text-underline-offset:4px}
+/* kolbo strip */
+.ep-kolbo{display:grid;grid-template-columns:minmax(0,1fr) auto auto;align-items:center;gap:14px 22px;margin-top:16px;padding:16px 18px;border-radius:var(--r-lg);background:linear-gradient(90deg,color-mix(in srgb,var(--cy) 8%,var(--surface)),var(--surface));box-shadow:0 0 0 1px var(--line2) inset}
+.ep-kt{display:grid;gap:4px;min-width:0}
+.ep-kt b{font:700 18px/1.3 var(--display);color:var(--ink)}
+.ep-kt span{font-size:14.5px;color:var(--muted);line-height:1.45}
+.ep-kt .ep-kn{color:var(--ink2);font-weight:600}
+.ep-kc{display:grid;gap:8px}
+.ep-kc .ep-code{justify-content:space-between}
+.ep-code{display:inline-flex;align-items:center;gap:10px;min-height:52px;padding-inline:14px 4px;border-radius:999px;background:var(--bg2);box-shadow:0 0 0 1px color-mix(in srgb,var(--v2) 40%,transparent) inset}
+.ep-code b{font:700 14.5px/1 var(--mono);letter-spacing:.05em;color:var(--ink);direction:ltr}
+.ep-code small{font-size:12.5px;color:var(--muted);white-space:nowrap}
+.ep-code .copy{height:44px;min-height:44px;padding:0 14px}
+.ep-kolbo .btn-ghost{--h:52px;font-size:15.5px;padding:0 20px}
+.ep-kolbo .btn-ghost .ic{width:16px;height:16px}
+
 @media (max-width:900px){
+  .ep-kolbo{grid-template-columns:minmax(0,1fr)}
+  .ep-kc{display:grid}
+  .ep-code{justify-content:space-between}
   .ep-grid,.ep-fix,.ep-stuck,.ep-end{grid-template-columns:minmax(0,1fr)}
   .ep-side > .fill,.ep-stuck > [data-block]:first-child > .fill{position:static}
   .ep-reels{justify-content:flex-start;padding-inline-start:10px}
 }
 @media (max-width:560px){
   .ep-tree{font-size:13.5px}
-  .ep-tree .d1{padding-left:22px}.ep-tree .d2{padding-left:36px}.ep-tree .d3{padding-left:50px}.ep-tree .d4{padding-left:64px}
+  .ep-tree .d1{padding-left:18px}.ep-tree .d2{padding-left:30px}.ep-tree .d3{padding-left:42px}.ep-tree .d4{padding-left:54px}.ep-tree .d5{padding-left:66px}
+  .ep-sc{grid-template-columns:minmax(0,1fr)}
   .ep-tree .n .tag{font-size:11px;padding:4px 7px}
   .ep-flow{grid-template-columns:repeat(2,minmax(0,1fr))}
   .ep-list li{font-size:16px}
@@ -1569,12 +1930,12 @@ html:not(.aw-rv) .rv{opacity:1;transform:none}
       <div class="fill sec-head">
         <span class="eyebrow">INSIDE · edit-agents</span>
         <h2>מה יש <span class="grad-text">בחבילה</span></h2>
-        <p class="lead">שני קבצים עושים את כל העבודה: סקיל שמנהל את העריכה, וסוכן עורך שנפתח פעם אחת לכל ריל. כל השאר זה התיקיות שלכם.</p>
+        <p class="lead">סקיל שמנהל את העריכה, וסוכן עורך שנפתח פעם אחת לכל ריל. מאחוריהם דף מתכונים שנבדק על צילומי אייפון אמיתיים, ושלושה סקריפטים שעושים את העבודה הכבדה. כל השאר זה התיקיות שלכם.</p>
       </div>
     </div>
 
     <div class="ep-grid">
-      <div class="ep-side" data-block data-agent="חבילה" data-log="סייר קבצים · עץ החבילה עם תגיות" data-code='<div class="n d3" data-f="editor" style="--c:var(--ag2)">' data-sk="media">
+      <div class="ep-side" data-block data-agent="חבילה" data-log="סייר קבצים · עץ החבילה עם תגיות" data-code='<div class="n d5" data-f="tools" style="--c:var(--ag5)">' data-sk="media">
         <div class="fill">
           <div class="win">
             <div class="win-top"><i></i><i></i><i></i><span class="win-title">edit-agents</span></div>
@@ -1590,15 +1951,21 @@ html:not(.aw-rv) .rv{opacity:1;transform:none}
                 <div class="n d2 ep-hid" role="listitem" style="--c:var(--muted)"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><span class="nm">skills/</span></div>
                 <div class="n d3" role="listitem" style="--c:var(--ag1)"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><span class="nm">reel-cut/</span></div>
                 <div class="n d4" role="listitem" data-f="skill" style="--c:var(--ag1)"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg><span class="nm">SKILL.md</span><span class="tag">הסקיל</span></div>
+                <div class="n d4" role="listitem" data-f="tools" style="--c:var(--ag5)"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><span class="nm">references/</span></div>
+                <div class="n d5" role="listitem" data-f="tools" style="--c:var(--ag5)"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg><span class="nm">recipes.md</span><span class="tag">מתכונים</span></div>
+                <div class="n d4" role="listitem" data-f="tools" style="--c:var(--ag5)"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><span class="nm">scripts/</span></div>
+                <div class="n d5" role="listitem" data-f="tools" style="--c:var(--ag5)"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="m10 12-2 2 2 2M14 12l2 2-2 2"/></svg><span class="nm">hits.py</span><span class="tag">להיטים בשיר</span></div>
+                <div class="n d5" role="listitem" data-f="tools" style="--c:var(--ag5)"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="m10 12-2 2 2 2M14 12l2 2-2 2"/></svg><span class="nm">render_shots.sh</span><span class="tag">מרנדר שוטים</span></div>
+                <div class="n d5" role="listitem" data-f="tools" style="--c:var(--ag5)"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="m10 12-2 2 2 2M14 12l2 2-2 2"/></svg><span class="nm">check_reel.sh</span><span class="tag">בדיקה עצמית</span></div>
                 <div class="n d2 ep-hid" role="listitem" style="--c:var(--muted)"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><span class="nm">agents/</span></div>
                 <div class="n d3" role="listitem" data-f="editor" style="--c:var(--ag2)"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg><span class="nm">editor.md</span><span class="tag">העורך</span></div>
                 <div class="n d1" role="listitem" data-f="input" style="--c:var(--ag4)"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><span class="nm">input/</span><span class="tag">הקליפים</span></div>
                 <div class="n d2" role="listitem" data-f="input" style="--c:var(--ag4)"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><span class="nm">reel-1/</span><span class="tag">ריל 1</span></div>
                 <div class="n d2" role="listitem" data-f="input" style="--c:var(--ag3)"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><span class="nm">reel-2/</span><span class="tag">ריל 2</span></div>
-                <div class="n d1" role="listitem" data-f="start" style="--c:var(--ag5)"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg><span class="nm">START.txt</span><span class="tag">ההודעה</span></div>
+                <div class="n d1" role="listitem" data-f="start" style="--c:var(--ag4)"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg><span class="nm">START.txt</span><span class="tag">ההודעה</span></div>
                 <div class="n d1 ep-ghost ep-mut" role="listitem" style="--c:var(--muted)"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><span class="nm">output/</span><span class="tag">נוצרת בהרצה</span></div>
               </div>
-              <div class="ep-status"><span>edit-agents.zip · 6 KB</span><span>1080×1920 · 30fps</span></div>
+              <div class="ep-status"><span>edit-agents.zip · 22 KB</span><span>1080×1920 · −14 LUFS</span></div>
             </div>
           </div>
           <div class="note"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true" style="flex:none;margin-top:2px;color:var(--cy)"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg><span>התיקייה <code>.claude</code> מוסתרת במחשב, <b>וזה תקין</b>. Claude רואה אותה גם ככה. רוצים לראות אותה בעצמכם? ב-Mac לוחצים <code>⌘⇧.</code> בתוך Finder. ב-Windows: תצוגה ← הצג ← פריטים מוסתרים.</span></div>
@@ -1606,33 +1973,36 @@ html:not(.aw-rv) .rv{opacity:1;transform:none}
       </div>
 
       <div class="ep-cards">
-        <div data-block data-agent="חבילה" data-log="כרטיס הסקיל · מנהל ומתקין ffmpeg" data-code='<article class="card ep-card" data-f="skill">' data-sk="line">
+        <div data-block data-agent="חבילה" data-log="כרטיס הסקיל · כלים, אפשרויות, דיווח" data-code='<article class="card ep-card" data-f="skill">' data-sk="line">
           <article class="fill card ep-card" data-f="skill" style="--c:var(--ag1)">
-            <div class="ep-fh"><span class="ep-file"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg>skills/reel-cut/SKILL.md</span><span class="ep-no">01 / 03</span></div>
+            <div class="ep-fh"><span class="ep-file"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg>skills/reel-cut/SKILL.md</span><span class="ep-no">01 / 04</span></div>
             <h3>הסקיל: <em>המנהל</em> של העריכה</h3>
             <ul class="ep-list">
-              <li><span><b>בודק שיש ffmpeg.</b> חסר? מתקין לבד: ב-Mac דרך Homebrew, ב-Windows דרך winget, ואומר לכם בשורה אחת מה הוא מתקין.</span></li>
-              <li><span><b>כל תיקייה ב-input היא ריל.</b> תיקייה ריקה הוא מדלג עליה ואומר לכם. לא כתבתם אורך? הוא שואל פעם אחת.</span></li>
+              <li><span><b>בודק שיש ffmpeg ו-python3.</b> חסר? מתקין לבד: ב-Mac דרך Homebrew, ב-Windows דרך winget. בודק גם שה-ffmpeg מספיק חדש ל-HDR של האייפון, ואומר לכם בשורה אחת מה הוא מתקין ולמה.</span></li>
+              <li><span><b>כל תיקייה ב-input היא ריל.</b> תיקייה ריקה הוא מדלג עליה ואומר לכם. שמתם קליפים ישר ב-input? הוא שואל כמה רילים ומחלק אותם לתיקיות.</span></li>
+              <li><span><b>קורא את מה שכתבתם בעברית.</b> אורך, חם / קר / נקי, 3 פתיחות, בלי מוזיקה, בלי פלאש / האטה / זום, לכל הרילים או רק לריל 2. לא כתבתם אורך? שואל פעם אחת.</span></li>
               <li><span><b>עורך לכל תיקייה, כולם באותו רגע.</b> כל העורכים יוצאים בהודעה אחת. הוא לא מחכה שאחד יסיים, ולא עורך בעצמו.</span></li>
-              <li><span><b>אוסף ופותח.</b> לכל ריל: אורך, כמה חיתוכים, אם יש מוזיקה ומה הפתיחה. בסוף פותח לכם את <code>output/</code>.</span></li>
+              <li><span><b>מסכם ופותח.</b> לכל ריל: הקבצים, הקאבר, אורך, כמה שוטים, מוזיקה, עוצמה ובמה הוא פתח. מזכיר איך שמים קאבר, ואיך בודקים 3 פתיחות. בסוף פותח לכם את <code>output/</code>.</span></li>
             </ul>
-            <div class="term ep-term" aria-hidden="true"><span class="p">$</span> ffmpeg -version
-<span class="dim">  missing →</span> brew install ffmpeg
-<span class="c">▶</span> editor <span class="ok">reel-1</span> → output/reel-1.mp4
-<span class="c">▶</span> editor <span class="pk">reel-2</span> → output/reel-2.mp4
+            <div class="term ep-term" aria-hidden="true"><span class="p">$</span> ffmpeg -version · python3 --version
+<span class="dim">  HDR check →</span> scale intent <span class="ok">✓</span>
+<span class="c">▶</span> editor <span class="ok">reel-1</span> · warm · hooks 3 → reel-1_A/B/C.mp4
+<span class="c">▶</span> editor <span class="pk">reel-2</span> · clean → reel-2.mp4
 <span class="ok">✓</span> open output</div>
           </article>
         </div>
 
-        <div data-block data-agent="חבילה" data-log="כרטיס העורך · גיליון פריימים וחיתוכים" data-code='.ep-tiles{display:grid;grid-template-columns:repeat(6,1fr)' data-sk="line">
+        <div data-block data-agent="חבילה" data-log="כרטיס העורך · 6 שלבים מהקליפ לריל" data-code='.ep-flow{grid-template-columns:repeat(3,minmax(0,1fr))}' data-sk="line">
           <article class="fill card ep-card" data-f="editor" style="--c:var(--ag2)">
-            <div class="ep-fh"><span class="ep-file"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg>agents/editor.md</span><span class="ep-no">02 / 03</span></div>
+            <div class="ep-fh"><span class="ep-file"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg>agents/editor.md</span><span class="ep-no">02 / 04</span></div>
             <h3>העורך: <em>אחד לכל ריל</em></h3>
             <ol class="ep-flow">
-              <li><i>01</i>מסתכל<small>sheet.jpg</small></li>
-              <li><i>02</i>מתכנן<small>plan.md</small></li>
-              <li><i>03</i>מרנדר<small>1080×1920</small></li>
-              <li><i>04</i>בודק<small>edges</small></li>
+              <li><i>01</i>מסתכל<small>sheet · strip</small></li>
+              <li><i>02</i>שיר<small>hits.py</small></li>
+              <li><i>03</i>מתכנן<small>plan.tsv</small></li>
+              <li><i>04</i>מרנדר<small>render_shots.sh</small></li>
+              <li><i>05</i>סאונד וקאבר<small>−14 LUFS</small></li>
+              <li><i>06</i>בודק<small>check_reel.sh</small></li>
             </ol>
             <div class="ep-sheet" aria-hidden="true">
               <div class="ep-sh-top"><b>sheet_clip.jpg</b><span>1 frame / 0.5 s</span></div>
@@ -1643,28 +2013,49 @@ html:not(.aw-rv) .rv{opacity:1;transform:none}
               <div class="ep-legend"><span class="chip" style="--c:var(--ag2)">הפתיחה</span><span class="chip" style="--c:var(--pink)">חיתוך בתוך הקליפ</span><span class="chip" style="--c:var(--muted)">מטושטש או חשוך · מדלג</span></div>
             </div>
             <ul class="ep-list">
-              <li><span><b>מסתכל לפני שהוא חותך.</b> גיליון פריימים לכל קליפ, פריים כל חצי שנייה, והוא באמת עובר עליו.</span></li>
-              <li><span><b>מוצא חיתוכים בתוך הקליפ.</b> קליפ מהטלפון יכול להיות כבר ערוך. כל שוט שהוא לוקח יושב בתוך קטע רציף אחד.</span></li>
-              <li><span><b>פתיחה שעוצרת גלילה.</b> השוט הראשון הוא הרגע הכי חזק, והשליש העליון שלו נשאר נקי לכותרת.</span></li>
-              <li><span><b>חותך על פעמות שלמות.</b> יש שיר בתיקייה? הוא מוצא את הקצב, וכל שוט נמשך מספר שלם של פעמות.</span></li>
-              <li><span><b>חותך ל-9:16.</b> ‎1080×1920, ומזיז את החיתוך כשהנושא עומד בצד.</span></li>
-              <li><span><b>בודק את עצמו.</b> 3 הפריימים הראשונים ו-3 האחרונים של כל שוט, ואז מבט על כל הריל: פריים שחור, ראש חתוך, שוט קפוא.</span></li>
-              <li><span><b>לא נוגע בקבצים שלכם.</b> הקליפים ב-<code>input/</code> נשארים כמו שהם. הוא עובד רק ב-<code>work/</code> ומוציא קובץ ל-<code>output/</code>.</span></li>
+              <li><span><b>מסתכל לפני שהוא חותך.</b> דף פריימים לכל קליפ, פריים כל חצי שנייה, ובדיקה ב-10 פריימים לשנייה לפני שהוא נועל שוט. מוצא גם חיתוכים שכבר יש בתוך הקליפ.</span></li>
+              <li><span><b>חותך על הלהיטים.</b> יש שיר בתיקייה? הלהיטים, הדרופ ונקודת ההתחלה באים מ-<code>hits.py</code>. השוט השני נוחת על הדרופ, והריל נגמר על להיט.</span></li>
+              <li><span><b>פתיחה שעוצרת גלילה.</b> הרגע הכי חזק, 0.6 עד 1.5 שניות, והשליש העליון שלו נשאר נקי לכותרת.</span></li>
+              <li><span><b>תנועה, כל כלי במקום שלו.</b> הליכה מואצת פי 1.5 עד 2, האטה ברגע המפתח (רק מקליפ 60fps), זום של 10% על להיט חזק, דחיפה איטית בשוט רחב, ועד שני הבזקים לבנים על הדרופ.</span></li>
+              <li><span><b>צבע אחיד.</b> ממיר HDR של האייפון ל-SDR, מיישר בהירות, ניגודיות ורוויה בכל שוט, ומוסיף גוון חם, קר או נקי. מחדד רק שוטים שהוגדלו.</span></li>
+              <li><span><b>סאונד נקי.</b> מישהו מדבר? המוזיקה יורדת מתחת לקול והקול נכנס רגע לפני התמונה (J-cut). בלי מוזיקה, הסאונד של הקליפים עם מעברים רכים. ובסוף הכל מכוון ל-<bdi dir="ltr">−14 LUFS</bdi>.</span></li>
+              <li><span><b>3 פתיחות וקאבר.</b> שלוש פתיחות באותו אורך בדיוק, כדי שהלהיטים לא זזים: פעולה, פנים בתקריב, חשיפה. הקאבר הוא הפריים הכי חד מהריל המוגמר, ולכן הצבע שלו זהה.</span></li>
+              <li><span><b>בודק את עצמו.</b> גודל, אורך, עוצמה, שיא, פריימים שרופים ללבן, ו-3 הפריימים הראשונים והאחרונים של כל שוט. משהו לא טוב? מתקן ומרנדר שוב.</span></li>
+              <li><span><b>לא נוגע בקבצים שלכם.</b> הקליפים ב-<code>input/</code> נשארים כמו שהם. הוא עובד רק ב-<code>work/</code> ומוציא קבצים ל-<code>output/</code>.</span></li>
             </ul>
+          </article>
+        </div>
+
+        <div data-block data-agent="חבילה" data-log="כרטיס המתכונים ו-3 הסקריפטים" data-code='<article class="card ep-card" data-f="tools">' data-sk="line">
+          <article class="fill card ep-card" data-f="tools" style="--c:var(--ag5)">
+            <div class="ep-fh"><span class="ep-file"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>references/ · scripts/</span><span class="ep-no">03 / 04</span></div>
+            <h3>המתכונים <em>והסקריפטים</em></h3>
+            <p>העורך לא ממציא פקודות. כל צעד כתוב ב-<code>recipes.md</code>, דף מתכונים שכל פקודה בו הורצה על צילומי אייפון אמיתיים (HDR, 30 ו-60fps). שלושה סקריפטים עושים את העבודה הכבדה:</p>
+            <div class="ep-scripts">
+              <div class="ep-sc"><code>hits.py</code><span>מוצא בשיר את הלהיטים החזקים, הדרופ ונקודת ההתחלה, ומתרגם אותם למספרי פריים בריל.</span></div>
+              <div class="ep-sc"><code>render_shots.sh</code><span>הופך כל שורה בתוכנית לשוט מוכן: HDR ל-SDR, יישור צבע, גוון, מהירות, זום, חיתוך ל-9:16 והבזק.</span></div>
+              <div class="ep-sc"><code>check_reel.sh</code><span>בודק את הריל המוגמר: גודל, אורך, עוצמה, שיא ופריימים שרופים, ומכין דפי פריימים לבדיקה.</span></div>
+            </div>
+            <div class="term ep-term" aria-hidden="true"><span class="p">$</span> bash check_reel.sh output/reel-1.mp4 …
+video:    1080,1920,30/1,yuv420p,bt709
+loudness: <span class="ok">-13.9 LUFS</span>   (want -14 +-1)
+peak:     <span class="ok">-1.4 dBFS</span>    (want &lt;= -1.0)
+blown-out frames (not counting flashes): <span class="ok">none</span></div>
           </article>
         </div>
 
         <div data-block data-agent="חבילה" data-log="כרטיס input ו-START.txt" data-code='<article class="card ep-card" data-f="input">' data-sk="line">
           <article class="fill card ep-card" data-f="input" style="--c:var(--ag4)">
-            <div class="ep-fh"><span class="ep-file"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>input/ · START.txt</span><span class="ep-no">03 / 03</span></div>
+            <div class="ep-fh"><span class="ep-file"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>input/ · START.txt</span><span class="ep-no">04 / 04</span></div>
             <h3>הקליפים <em>וההודעה</em></h3>
             <div class="ep-folders">
-              <div class="folder on"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>input/reel-1</span><em>קליפים mp4/mov + שיר אחד, לא חובה</em></div>
+              <div class="folder on"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>input/reel-1</span><em>קליפים mp4/mov + קובץ שמע אחד, לא חובה</em></div>
               <div class="folder"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>input/reel-2</span><em>הריל השני, עורך משלו</em></div>
               <div class="folder ep-more"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>reel-3, reel-4…</span><em>עוד תיקייה = עוד ריל</em></div>
             </div>
-            <p><b>START.txt</b> זאת ההודעה שמעתיקים ל-Claude. משנים בה רק את האורך:</p>
+            <p><b>START.txt</b> זאת ההודעה שמעתיקים ל-Claude. משנים בה את האורך, ומוסיפים אם רוצים:</p>
             <p class="ep-q">תערוך לי רילים עם הסוכנים. … אורך כל ריל: <span class="ph">[למשל 12 שניות]</span></p>
+            <div class="ep-chips"><span>חם / קר</span><span>3 פתיחות</span><span>בלי מוזיקה</span><span>בלי פלאש</span><span>בלי האטה</span><span>בלי זום</span><span>רק לריל 2</span></div>
           </article>
         </div>
       </div>
@@ -1681,7 +2072,7 @@ html:not(.aw-rv) .rv{opacity:1;transform:none}
         <p class="lead">לא צריך לפתוח תוכנת עריכה. כותבים ל-Claude באותו צ'אט מה לשנות, והעורך חוזר לקליפים וחותך מחדש.</p>
         <div class="prompt">
           <div class="prompt-h"><b>FIX · reel-2</b><button class="copy" type="button" data-copy="ep-fix">העתקה</button></div>
-          <pre id="ep-fix">בריל 2 תפתח עם <span class="ph">השוט שבו היא מסתובבת</span>, ותקצר אותו ל-<span class="ph">10 שניות</span></pre>
+          <pre id="ep-fix">בריל 2 תפתח עם <span class="ph">השוט שבו היא מסתובבת</span>, תקצר אותו ל-<span class="ph">10 שניות</span> ותעשה אותו <span class="ph">חם</span></pre>
           <div class="ep-pf"><span class="sw" aria-hidden="true"></span><span>מחליפים את מה שבצהוב במה שאתם רוצים. אפשר כמה תיקונים באותה הודעה.</span></div>
         </div>
       </div>
@@ -1696,7 +2087,7 @@ html:not(.aw-rv) .rv{opacity:1;transform:none}
       <div class="fill sec-head">
         <span class="eyebrow">TROUBLESHOOTING</span>
         <h2>אם משהו <span class="grad-text">נתקע</span></h2>
-        <p class="lead">חמישה דברים שקורים באמת, ומה כותבים ל-Claude כדי לשחרר אותם.</p>
+        <p class="lead">שבעה דברים שקורים באמת, ומה כותבים ל-Claude כדי לשחרר אותם.</p>
       </div>
     </div>
     <div class="faq ep-faq">
@@ -1705,30 +2096,40 @@ html:not(.aw-rv) .rv{opacity:1;transform:none}
           <div><p>הם אמורים לרוץ כולם באותו זמן. כתבו לו באותו צ'אט:</p><span class="ep-say">תריץ את כל העורכים במקביל, באותה הודעה</span></div>
         </details>
       </div>
-      <div data-block data-agent="חבילה" data-log="שאלה 2 · ffmpeg ב-Mac וב-Windows" data-code='<div class="ep-os"><div><b>Mac</b>' data-sk="line">
-        <details class="fill"><summary><span class="ep-sq"><i>02</i>ffmpeg לא הותקן</span></summary>
+      <div data-block data-agent="חבילה" data-log="שאלה 2 · ffmpeg ו-python לא הותקנו" data-code='<div class="ep-os"><div><b>Mac</b>' data-sk="line">
+        <details class="fill"><summary><span class="ep-sq"><i>02</i>ffmpeg או python לא הותקנו</span></summary>
           <div>
             <div class="ep-os">
               <div><b>Mac</b><span class="ep-say">תתקין לי Homebrew ו-ffmpeg</span></div>
-              <div><b>Windows</b><span class="ep-say">תתקין ffmpeg עם winget</span></div>
+              <div><b>Windows</b><span class="ep-say">תתקין ffmpeg ו-Python עם winget</span></div>
             </div>
-            <p>ב-Mac המחשב יבקש סיסמה: מקלידים את סיסמת המחשב בחלון שנפתח. אחרי ההתקנה סוגרים את Claude ופותחים אותו מחדש.</p>
+            <p>ב-Mac כבר יש python3, והמחשב יבקש סיסמה: מקלידים את סיסמת המחשב בחלון שנפתח. אחרי ההתקנה סוגרים את Claude ופותחים אותו מחדש.</p>
           </div>
         </details>
       </div>
-      <div data-block data-agent="חבילה" data-log="שאלה 3 · מגבלת שימוש ו-Opus 5.5" data-code='<details class="fill"><summary>' data-sk="line">
-        <details class="fill"><summary><span class="ep-sq"><i>03</i>הגעתי למגבלת שימוש</span></summary>
+      <div data-block data-agent="חבילה" data-log="שאלה 3 · אייפון אפור או שרוף · HDR" data-code='<span class="ep-say">תעדכן את ffmpeg</span>' data-sk="line">
+        <details class="fill"><summary><span class="ep-sq"><i>03</i>הסרטונים מהאייפון יצאו אפורים או שרופים</span></summary>
+          <div><p>אלה סרטוני HDR. העורך ממיר אותם לצבע רגיל, אבל בשביל המרה טובה צריך ffmpeg חדש. ב-Mac כתבו לו:</p><span class="ep-say">תעדכן את ffmpeg ותערוך מחדש את ריל 1</span><p>הוא מריץ <code>brew upgrade ffmpeg</code> וחותך שוב. הבדיקה העצמית שלו גם מחפשת פריימים שרופים ללבן, ואם משהו עדיין לא נראה טוב, תגידו לו במילים איזה שוט.</p></div>
+        </details>
+      </div>
+      <div data-block data-agent="חבילה" data-log="שאלה 4 · מגבלת שימוש ו-Opus 5.5" data-code='<details class="fill"><summary>' data-sk="line">
+        <details class="fill"><summary><span class="ep-sq"><i>04</i>הגעתי למגבלת שימוש</span></summary>
           <div><p>מחליפים מודל ל-<b>Claude Opus 5.5</b> וממשיכים מאותה נקודה. החבילה נבדקה עליו. אפשר גם לחכות שהמגבלה תתאפס.</p></div>
         </details>
       </div>
-      <div data-block data-agent="חבילה" data-log="שאלה 4 · הריל חתוך לא טוב" data-code='<span class="ep-say">' data-sk="line">
-        <details class="fill"><summary><span class="ep-sq"><i>04</i>הריל חתוך לא טוב</span></summary>
-          <div><p>תגידו לו במילים מה לא טוב, כמו לעורך אמיתי:</p><span class="ep-say">השוט השלישי מטושטש, תחליף אותו</span><p>הוא חוזר לקליפים וחותך מחדש.</p></div>
+      <div data-block data-agent="חבילה" data-log="שאלה 5 · הריל חתוך לא טוב" data-code='<span class="ep-say">' data-sk="line">
+        <details class="fill"><summary><span class="ep-sq"><i>05</i>הריל חתוך לא טוב</span></summary>
+          <div><p>תגידו לו במילים מה לא טוב, כמו לעורך אמיתי:</p><span class="ep-say">השוט השלישי מטושטש, תחליף אותו</span><p>הוא חוזר לקליפים וחותך מחדש. אפקט מסוים מפריע? <b>בלי פלאש</b>, <b>בלי האטה</b> או <b>בלי זום</b>.</p></div>
         </details>
       </div>
-      <div data-block data-agent="חבילה" data-log="שאלה 5 · איפה הכותרת" data-code='box-shadow:inset -3px 0 0 var(--v2)' data-sk="line">
-        <details class="fill"><summary><span class="ep-sq"><i>05</i>איפה הכותרת? אין טקסט על הסרטון</span></summary>
-          <div><p>בכוונה. את הכותרת מוסיפים באפליקציה של אינסטגרם, עם כלי הטקסט שלה, וככה היא נראית טבעית בפיד. לא שמתם שיר בתיקייה? שם בוחרים גם צליל.</p><p>העורך משאיר את השליש העליון של הפתיחה נקי, בדיוק בשביל הכותרת.</p></div>
+      <div data-block data-agent="חבילה" data-log="שאלה 6 · איך שמים את הקאבר" data-code='<span class="ep-say">עריכת קאבר ← הוספה מגלריה</span>' data-sk="line">
+        <details class="fill"><summary><span class="ep-sq"><i>06</i>איך שמים את הקאבר?</span></summary>
+          <div><p>לכל ריל יש בתיקייה <code>output</code> קובץ קאבר, למשל <code>reel-1_cover.jpg</code>. מעבירים אותו לטלפון יחד עם הריל, ובמסך השיתוף באינסטגרם:</p><span class="ep-say">עריכת קאבר ← הוספה מגלריה ← reel-1_cover.jpg</span><p>הקאבר נלקח מהריל המוגמר עצמו, אז הצבע והחיתוך שלו זהים לסרטון.</p></div>
+        </details>
+      </div>
+      <div data-block data-agent="חבילה" data-log="שאלה 7 · כותרת ומוזיקה · קולבו" data-code='box-shadow:inset -3px 0 0 var(--v2)' data-sk="line">
+        <details class="fill"><summary><span class="ep-sq"><i>07</i>איפה הכותרת? ואין לי מוזיקה</span></summary>
+          <div><p>אין טקסט על הסרטון, בכוונה. את הכותרת מוסיפים באפליקציה של אינסטגרם עם כלי הטקסט שלה, וככה היא נראית טבעית בפיד. העורך משאיר את השליש העליון של הפתיחה נקי, בדיוק בשביל זה.</p><p>אין שיר? בוחרים צליל באינסטגרם, או מייצרים שיר עם דרופ חזק <a href="#kolbo">בקולבו</a> ושמים אותו בתיקייה של הריל לפני העריכה, כדי שהעורך יחתוך על הלהיטים שלו.</p></div>
         </details>
       </div>
     </div>
@@ -1743,16 +2144,26 @@ html:not(.aw-rv) .rv{opacity:1;transform:none}
         <div class="ep-endtxt">
           <span class="eyebrow">edit-agents.zip</span>
           <h2>הקליפים כבר בטלפון. <span class="grad-text">העורכים מחכים.</span></h2>
-          <p class="lead">מורידים את החבילה, שמים קליפים בתוך <code>input</code> ושולחים הודעה אחת. כל ריל מקבל עורך משלו, וכולם עובדים באותו זמן.</p>
+          <p class="lead">מורידים את החבילה, שמים קליפים בתוך <code>input</code> ושולחים הודעה אחת. כל ריל מקבל עורך משלו, וכולם עובדים באותו זמן, עד ריל עם צבע אחיד, חיתוכים על השיר, סאונד של אינסטגרם וקאבר.</p>
           <div class="ctas">
-            <a class="btn btn-primary btn-dl" href="edit-agents.zip" download><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>הורדת החבילה<span class="meta">zip · 6 KB</span></a>
+            <a class="btn btn-primary btn-dl" href="edit-agents.zip" download><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>הורדת החבילה<span class="meta">zip · 22 KB</span></a>
             <a class="btn btn-ghost" href="https://www.instagram.com/leviorel/" target="_blank" rel="noopener"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/></svg>@leviorel באינסטגרם</a>
           </div>
         </div>
         <div class="ep-reels" aria-hidden="true">
-          <div class="ep-ph"><div class="ep-scr"><span class="ep-safe">כאן הכותרת</span><span class="ep-meta"><b>reel-1.mp4</b><span>1080×1920 · 30fps</span><u></u></span></div></div>
-          <div class="ep-ph"><div class="ep-scr"><span class="ep-safe">כאן הכותרת</span><span class="ep-meta"><b>reel-2.mp4</b><span>1080×1920 · 30fps</span><u></u></span></div></div>
+          <div class="ep-ph"><div class="ep-scr"><span class="ep-safe">כאן הכותרת</span><span class="ep-meta"><b>reel-1_A.mp4</b><span>1080×1920 · −14 LUFS</span><u></u></span></div></div>
+          <div class="ep-ph"><div class="ep-scr"><span class="ep-safe">כאן הכותרת</span><span class="ep-meta"><b>reel-2.mp4</b><span>1080×1920 · −14 LUFS</span><u></u></span></div></div>
         </div>
+      </div>
+    </div>
+    <div data-block data-agent="חבילה" data-log="רצועת קולבו · מוזיקה ושוטים לרילים" data-code='<div class="ep-kolbo"><span class="ep-code">' data-sk="line">
+      <div class="fill ep-kolbo">
+        <div class="ep-kt"><b>מוזיקה ושוטים נוספים לרילים מייצרים בקולבו</b><span>שיר עם דרופ חזק, או קליפים קצרים שחסרים לריל. מבקשים מקובי, הסוכן של קולבו, או מחברים את קולבו ל-Claude.</span><span>קוד לרכישה ראשונה, רק במנוי חודשי.</span><span class="ep-kn">כשנפתח האתר של קולבו – אשרו עוגיות, וכשמשלמים הזינו את הקוד</span></div>
+        <div class="ep-kc">
+          <span class="ep-code"><b id="ep-c50">ORELLEVI50</b><small>50% על החודש הראשון</small><button class="copy" type="button" data-copy="ep-c50">העתקה</button></span>
+          <span class="ep-code"><b id="ep-c30">ORELLEVI30</b><small>30% ל-3 חודשים</small><button class="copy" type="button" data-copy="ep-c30">העתקה</button></span>
+        </div>
+        <a class="btn btn-ghost" href="https://app.kolbo.ai?via=orellevi" target="_blank" rel="noopener">לקולבו<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></a>
       </div>
     </div>
   </div>
