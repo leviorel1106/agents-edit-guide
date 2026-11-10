@@ -1,0 +1,2231 @@
+<!doctype html>
+<html lang="he" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>סוכנים עורכים רילים · אוראל לוי</title><meta name="description" content="מדריך חינמי: סוכני Claude עורכים כמה רילים במקביל">
+<meta property="og:title" content="סוכנים עורכים רילים"><meta property="og:description" content="מדריך חינמי: סוכני Claude עורכים כמה רילים במקביל"><meta property="og:image" content="media/avatar.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet"><style>/* =====================================================================
+   Agents guides — design system (dark cinematic, leviorel guide brand)
+   Single deliberate dark theme. Every colour is a token below.
+   ===================================================================== */
+:root{
+  color-scheme:dark;
+  --bg:#0c0d10; --bg2:#101114; --surface:#141619; --surface2:#1b1d21; --surface3:#24272c;
+  --ink:#f5f5f5; --ink2:#d3d6da; --muted:#b7bbc0; --line:#26282c; --line2:#3b3d40; --paper:#f2eee6; --on-paper:#111418;
+  --v1:#7a16e0; --v2:#a16cff; --cy:#2bd7d6; --pink:#f43f9e; --ok:#2fd18a; --amber:#fbbf24;
+  --grad:linear-gradient(97deg,#7a16e0,#008786);
+  --grad-text:linear-gradient(97deg,#a16cff,#2bd7d6);
+  --on-grad:#ffffff;
+  /* one colour per agent (cursor, lane, chip, file-tree tag) */
+  --ag1:#a16cff; --ag2:#2bd7d6; --ag3:#f43f9e; --ag4:#2fd18a; --ag5:#fbbf24;
+  --display:"Rubik","Segoe UI",Arial,sans-serif;
+  --body:"Rubik","Segoe UI",Arial,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+  --r-sm:10px; --r:16px; --r-lg:24px; --r-xl:32px;
+  --gut:max(16px,env(safe-area-inset-left,0px));
+  --gutr:max(16px,env(safe-area-inset-right,0px));
+  --wrap:1180px;
+  --shadow:0 24px 60px -24px rgba(0,0,0,.75),0 2px 0 rgba(255,255,255,.03) inset;
+  --glow-v:0 0 0 1px rgba(161,108,255,.35),0 18px 50px -12px rgba(122,22,224,.5);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:18px;line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:clip}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:90}
+img{max-width:100%;display:block}
+a{color:inherit}
+::selection{background:rgba(168,85,247,.45);color:#fff}
+
+/* ---------- atmosphere ---------- */
+.atmo{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
+.atmo::before{content:"";position:absolute;width:90vmax;height:90vmax;top:-45vmax;inset-inline-end:-30vmax;background:radial-gradient(closest-side,rgba(122,22,224,.22),transparent 70%)}
+.atmo::after{content:"";position:absolute;width:70vmax;height:70vmax;bottom:-40vmax;inset-inline-start:-25vmax;background:radial-gradient(closest-side,rgba(0,135,134,.16),transparent 70%)}
+.grid-bg{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:56px 56px;mask-image:radial-gradient(ellipse 80% 60% at 50% 20%,#000 30%,transparent 80%)}
+
+/* ---------- layout ---------- */
+.wrap{max-width:var(--wrap);margin-inline:auto;padding-left:var(--gut);padding-right:var(--gutr)}
+.sec{padding-block:clamp(72px,10vw,140px);position:relative}
+.sec-head{display:grid;gap:14px;margin-bottom:clamp(32px,5vw,56px);max-width:760px}
+.eyebrow{display:inline-flex;align-items:center;gap:10px;font:600 13px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--cy);direction:ltr;justify-self:start}
+[dir="rtl"] .eyebrow{justify-self:start}
+.eyebrow::before{content:"";width:22px;height:1px;background:currentColor}
+h1,h2,h3{font-family:var(--display);margin:0;text-wrap:balance;letter-spacing:-.01em}
+h2{font-size:clamp(34px,5.2vw,64px);line-height:1.04;font-weight:800}
+h3{font-size:clamp(22px,2.4vw,28px);line-height:1.2;font-weight:700}
+.lead{font-size:clamp(18px,1.6vw,21px);color:var(--ink2);max-width:62ch;margin:0}
+.grad-text{background:var(--grad-text);-webkit-background-clip:text;background-clip:text;color:transparent}
+.muted{color:var(--muted)}
+code,.code{font-family:var(--mono);font-size:.86em;background:rgba(255,255,255,.06);border:1px solid var(--line);border-radius:7px;padding:.08em .45em;direction:ltr;unicode-bidi:isolate;white-space:nowrap}
+
+/* ---------- brand bar ---------- */
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:80;background:rgba(7,7,13,.72);-webkit-backdrop-filter:blur(14px) saturate(140%);backdrop-filter:blur(14px) saturate(140%);border-bottom:1px solid var(--line)}
+.bar .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;height:62px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-weight:700}
+.brand img{width:34px;height:34px;border-radius:50%;border:2px solid var(--v2)}
+.brand small{display:block;font:500 12px/1 var(--body);color:var(--muted);margin-top:3px}
+.bar-progress{position:absolute;inset:auto 0 -1px 0;height:2px;background:var(--grad);transform-origin:right;transform:scaleX(var(--p,0))}
+
+/* ---------- buttons ---------- */
+.btn{--h:56px;display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:var(--h);padding:0 26px;border-radius:999px;font:700 17px/1 var(--body);text-decoration:none;border:0;cursor:pointer;transition:transform .2s cubic-bezier(.2,.7,.2,1),box-shadow .2s,background .2s;white-space:nowrap}
+.btn:focus-visible{outline:2px solid var(--cy);outline-offset:3px}
+.btn-primary{background:var(--paper);color:var(--on-paper);box-shadow:0 18px 50px -18px rgba(242,238,230,.35)}
+.btn-primary:hover{transform:translateY(-2px);background:#fff;box-shadow:0 22px 60px -14px rgba(161,108,255,.55)}
+.btn-ghost{background:rgba(255,255,255,.04);color:var(--ink);box-shadow:0 0 0 1px var(--line2) inset}
+.btn-ghost:hover{background:rgba(255,255,255,.08);transform:translateY(-2px)}
+.btn .ic{width:20px;height:20px;flex:none}
+.btn-dl{--h:64px;font-size:18px;padding:0 30px}
+.btn-dl .meta{font:500 12px/1 var(--mono);opacity:.75;direction:ltr}
+.ctas{display:flex;flex-wrap:wrap;gap:12px}
+
+/* ---------- chips & pills ---------- */
+.pill{display:inline-flex;align-items:center;gap:8px;padding:7px 14px;border-radius:999px;background:rgba(255,255,255,.05);box-shadow:0 0 0 1px var(--line2) inset;font-size:14px;font-weight:600;color:var(--ink2)}
+.pill .dot{width:8px;height:8px;border-radius:50%;background:var(--ok);box-shadow:0 0 12px var(--ok)}
+.chip{--c:var(--ag1);display:inline-flex;align-items:center;gap:7px;padding:5px 11px 5px 9px;border-radius:999px;font:600 13px/1 var(--body);color:var(--ink);background:color-mix(in srgb,var(--c) 16%,transparent);box-shadow:0 0 0 1px color-mix(in srgb,var(--c) 45%,transparent) inset;white-space:nowrap}
+.chip::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--c);box-shadow:0 0 10px var(--c)}
+
+/* ---------- cards ---------- */
+.card{background:linear-gradient(180deg,var(--surface),var(--bg2));border-radius:var(--r-lg);box-shadow:0 0 0 1px var(--line) inset,var(--shadow);padding:clamp(20px,3vw,32px);position:relative;min-width:0}
+.card-glow{position:relative}
+.card-glow::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;background:var(--grad);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none;opacity:.8}
+
+/* ---------- mock window (drawn UI) ---------- */
+.win{background:#0d0d18;border-radius:18px;box-shadow:0 0 0 1px var(--line2) inset,0 40px 80px -30px rgba(0,0,0,.9),0 0 80px -30px rgba(124,58,237,.45);overflow:hidden;min-width:0;direction:ltr;text-align:left}
+.win-top{display:flex;align-items:center;gap:8px;height:40px;padding:0 14px;background:linear-gradient(180deg,#191929,#13131f);border-bottom:1px solid var(--line)}
+.win-top i{width:11px;height:11px;border-radius:50%;background:#3a3a55;display:block}
+.win-top i:nth-child(1){background:#ff5f57}.win-top i:nth-child(2){background:#febc2e}.win-top i:nth-child(3){background:#28c840}
+.win-title{flex:1;text-align:center;font:500 12.5px/1 var(--mono);color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-inline-end:44px}
+.win-body{padding:16px;font-size:14px;line-height:1.5}
+.win [dir="rtl"],.win .he{direction:rtl;text-align:right;font-family:var(--body)}
+/* app tabs (Chat / Cowork / Code) */
+.tabs{display:inline-flex;gap:4px;padding:4px;border-radius:12px;background:#15152a;box-shadow:0 0 0 1px var(--line) inset}
+.tabs span{padding:7px 14px;border-radius:9px;font:600 13px/1 var(--body);color:var(--muted)}
+.tabs span.on{background:var(--surface3);color:#fff;box-shadow:0 0 0 1px var(--line2) inset}
+/* folder row / picker */
+.folder{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;background:#121222;box-shadow:0 0 0 1px var(--line) inset;font:500 13.5px/1.2 var(--mono);color:var(--ink2)}
+.folder svg{width:18px;height:18px;flex:none;color:var(--amber)}
+.folder.on{box-shadow:0 0 0 1.5px var(--v2) inset,0 0 24px -6px var(--v2);color:#fff}
+/* model menu */
+.menu{border-radius:14px;background:#14142a;box-shadow:0 0 0 1px var(--line2) inset,0 24px 50px -20px #000;padding:6px;min-width:0}
+.menu .opt{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px;border-radius:10px;font:600 14px/1.2 var(--body);color:var(--ink2)}
+.menu .opt small{display:block;font:500 12px/1.3 var(--body);color:var(--muted);margin-top:3px}
+.menu .opt.on{background:rgba(168,85,247,.16);color:#fff;box-shadow:0 0 0 1px rgba(168,85,247,.45) inset}
+.menu .opt .check{color:var(--v2);font-weight:800}
+/* chat input */
+.input{border-radius:16px;background:#121222;box-shadow:0 0 0 1px var(--line2) inset;padding:12px 14px 10px;display:grid;gap:10px}
+.input .txt{min-height:44px;color:var(--ink);white-space:pre-wrap;font-family:var(--body);direction:rtl;text-align:right}
+.input .row{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.input .send{width:32px;height:32px;border-radius:10px;background:var(--grad);display:grid;place-items:center;color:#fff}
+.input .model{font:600 12px/1 var(--body);color:var(--muted);padding:6px 10px;border-radius:8px;box-shadow:0 0 0 1px var(--line) inset}
+/* terminal / log lines */
+.term{font:500 13px/1.75 var(--mono);color:var(--ink2);white-space:pre-wrap;word-break:break-word}
+.term .p{color:var(--v2)}.term .ok{color:var(--ok)}.term .c{color:var(--cy)}.term .dim{color:var(--muted)}
+
+/* ---------- mission control (agents running in parallel) ---------- */
+.mc{display:grid;gap:10px}
+.lane{--c:var(--ag1);display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:12px;padding:12px 14px;border-radius:14px;background:#11111f;box-shadow:0 0 0 1px var(--line) inset}
+.lane .av{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;background:color-mix(in srgb,var(--c) 22%,transparent);box-shadow:0 0 0 1px color-mix(in srgb,var(--c) 55%,transparent) inset;color:var(--c);font:800 15px/1 var(--display)}
+.lane .who{font:700 14px/1.2 var(--body);color:#fff;direction:rtl;text-align:right}
+.lane .what{font:500 12.5px/1.3 var(--mono);color:var(--muted);direction:ltr;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lane .st{font:600 12px/1 var(--mono);color:var(--c)}
+.lane .track{grid-column:1/-1;height:4px;border-radius:4px;background:rgba(255,255,255,.06);overflow:hidden}
+.lane .track b{display:block;height:100%;width:var(--w,0%);background:var(--c);box-shadow:0 0 12px var(--c);border-radius:inherit;transition:width .6s cubic-bezier(.2,.7,.2,1)}
+.lane.done .st{color:var(--ok)}
+
+/* ---------- prompt card (copy) ---------- */
+.prompt{position:relative;border-radius:var(--r-lg);background:linear-gradient(180deg,#141428,#0e0e1c);padding:0;overflow:hidden}
+.prompt::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1.5px;background:var(--grad);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
+.prompt-h{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 16px;border-bottom:1px solid var(--line)}
+.prompt-h b{font:600 13px/1 var(--mono);letter-spacing:.06em;color:var(--cy)}
+.prompt pre{margin:0;padding:18px 18px 20px;white-space:pre-wrap;font:500 16px/1.75 var(--body);color:var(--ink);direction:rtl;text-align:right}
+.prompt pre .ph{color:var(--amber);background:rgba(251,191,36,.10);border-radius:6px;padding:0 4px}
+.copy{display:inline-flex;align-items:center;gap:7px;height:36px;padding:0 14px;border-radius:999px;border:0;background:#fff;color:#0b0b14;font:700 14px/1 var(--body);cursor:pointer;transition:transform .15s}
+.copy:hover{transform:scale(1.04)}
+.copy.is-done{background:var(--ok);color:#04130b}
+
+/* ---------- file tree ---------- */
+.tree{font:500 14.5px/1 var(--mono);direction:ltr;text-align:left;display:grid;gap:2px}
+.tree .n{--c:var(--muted);display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:10px;white-space:nowrap;min-width:0}
+.tree .n:hover{background:rgba(255,255,255,.04)}
+.tree .n .ic{width:18px;height:18px;flex:none;color:var(--c)}
+.tree .n .nm{overflow:hidden;text-overflow:ellipsis}
+.tree .n .tag{margin-left:auto;font:600 12px/1 var(--body);padding:4px 9px;border-radius:999px;color:#fff;background:color-mix(in srgb,var(--c) 22%,transparent);box-shadow:0 0 0 1px color-mix(in srgb,var(--c) 50%,transparent) inset;direction:rtl}
+.tree .d1{padding-left:30px}.tree .d2{padding-left:52px}.tree .d3{padding-left:74px}
+
+/* ---------- steps timeline ---------- */
+.steps{list-style:none;margin:0;padding:0;display:grid;gap:clamp(28px,4vw,48px);position:relative}
+.steps::before{content:"";position:absolute;top:10px;bottom:10px;inset-inline-start:27px;width:2px;background:linear-gradient(var(--v2),var(--cy) 60%,transparent)}
+.step{display:grid;grid-template-columns:56px minmax(0,1fr);gap:clamp(16px,2.5vw,28px);align-items:start}
+.step-n{width:56px;height:56px;border-radius:18px;display:grid;place-items:center;font:900 24px/1 var(--display);color:#fff;background:var(--grad);box-shadow:var(--glow-v);position:relative;z-index:1}
+.step-body{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:clamp(18px,3vw,36px);align-items:center}
+.step-body.solo{grid-template-columns:minmax(0,1fr)}
+.step-txt{display:grid;gap:12px;min-width:0}
+.step-txt p{margin:0;color:var(--ink2)}
+.step-txt ul{margin:0;padding-inline-start:20px;color:var(--ink2);display:grid;gap:6px}
+.note{display:flex;gap:10px;align-items:flex-start;padding:12px 14px;border-radius:14px;background:rgba(34,211,238,.07);box-shadow:0 0 0 1px rgba(34,211,238,.25) inset;color:var(--ink2);font-size:15.5px;line-height:1.55}
+.note b{color:#fff}
+.note.warn{background:rgba(251,191,36,.07);box-shadow:0 0 0 1px rgba(251,191,36,.28) inset}
+
+/* ---------- stats strip ---------- */
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-radius:var(--r-lg);box-shadow:0 0 0 1px var(--line) inset;background:rgba(255,255,255,.02);overflow:hidden}
+.stat{padding:22px 20px;display:grid;gap:6px;border-inline-start:1px solid var(--line)}
+.stat:first-child{border-inline-start:0}
+.stat b{font:900 clamp(32px,4vw,48px)/1 var(--display)}
+.stat span{color:var(--muted);font-size:15px}
+
+/* ---------- accordion ---------- */
+.faq{display:grid;gap:10px}
+.faq details{border-radius:var(--r);background:var(--surface);box-shadow:0 0 0 1px var(--line) inset;overflow:hidden}
+.faq summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 20px;font:700 17px/1.35 var(--body)}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";font:400 26px/1 var(--display);color:var(--v2);transition:transform .25s}
+.faq details[open] summary::after{transform:rotate(45deg)}
+.faq details>div{padding:0 20px 18px;color:var(--ink2)}
+
+/* ---------- end band & footer ---------- */
+.end{border-radius:var(--r-xl);padding:clamp(32px,6vw,72px);background:radial-gradient(120% 140% at 100% 0%,rgba(124,58,237,.35),transparent 55%),radial-gradient(100% 120% at 0% 100%,rgba(8,145,178,.28),transparent 55%),var(--surface);box-shadow:0 0 0 1px var(--line2) inset;display:grid;gap:18px;justify-items:start}
+.end h2{max-width:16ch}
+.foot{padding-block:40px 120px;color:var(--muted);font-size:15px;text-align:center;display:grid;gap:10px;justify-items:center}
+.foot .me{display:flex;align-items:center;gap:10px;color:var(--ink);font-weight:700}
+.foot .me img{width:30px;height:30px;border-radius:50%}
+.wa{display:inline-flex;width:22px;height:22px}
+
+/* ---------- reveal on scroll ---------- */
+.rv{opacity:0;transform:translateY(18px);transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .7s cubic-bezier(.2,.7,.2,1)}
+.rv.in{opacity:1;transform:none}
+
+/* ---------- responsive ---------- */
+@media (max-width:900px){
+  .step-body{grid-template-columns:minmax(0,1fr)}
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .stat:nth-child(3){border-inline-start:0}
+  .stat:nth-child(n+3){border-top:1px solid var(--line)}
+}
+@media (max-width:560px){
+  body{font-size:17px}
+  .steps::before{inset-inline-start:19px}
+  .step{grid-template-columns:40px minmax(0,1fr);gap:14px}
+  .step-n{width:40px;height:40px;border-radius:13px;font-size:18px}
+  .btn{width:100%}
+  .win-body{padding:12px}
+}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto}.rv{opacity:1;transform:none;transition:none}}
+
+/* =====================================================================
+   aw.css — build-replay engine for the agents guides (dark theme)
+   Load after base.css. Everything here is inert until aw.js adds
+   .is-live to #aw (never added without JS or with reduced motion).
+   ===================================================================== */
+#aw{--aw-sk:rgba(255,255,255,.10);--aw-sk2:rgba(255,255,255,.055);--aw-rec:#ff4d5e}
+
+/* no-JS safety for base.css .rv (aw.js adds .aw-rv to <html>) */
+html:not(.aw-rv) .rv{opacity:1;transform:none}
+
+/* ---------- build states ---------- */
+#aw.is-live{position:relative}
+#aw.is-live [data-block]{position:relative}
+#aw.is-live [data-block]:not([data-state="done"]) > .fill{visibility:hidden}
+/* CSS fail-safe: if a page sets .is-live early but aw.js never runs, show everything after 2.5 s */
+#aw.is-live:not(.aw-run) [data-block] > .fill{animation:awSafe 0s linear 2.5s forwards}
+@keyframes awSafe{to{visibility:visible}}
+#aw.is-live [data-state="mark"]{outline:1px dashed color-mix(in srgb,var(--aw-c,var(--v2)) 55%,transparent);outline-offset:3px;border-radius:6px}
+#aw.is-live [data-state="rough"]{outline:1.5px solid var(--aw-c,var(--v2));outline-offset:3px;border-radius:6px;box-shadow:0 0 30px -10px var(--aw-c,var(--v2))}
+#aw.is-live [data-state="rough"]::before{content:"";position:absolute;inset:12px;pointer-events:none;z-index:2;border-radius:6px;
+  background:
+    linear-gradient(var(--aw-sk),var(--aw-sk)) right 0 top 0/44% 14px no-repeat,
+    linear-gradient(var(--aw-sk2),var(--aw-sk2)) right 0 top 28px/88% 9px no-repeat,
+    linear-gradient(var(--aw-sk2),var(--aw-sk2)) right 0 top 45px/72% 9px no-repeat,
+    linear-gradient(var(--aw-sk2),var(--aw-sk2)) right 0 top 62px/80% 9px no-repeat,
+    linear-gradient(var(--aw-sk),var(--aw-sk)) right 0 bottom 0/32% 10px no-repeat;
+  animation:awSk .6s ease-in-out infinite alternate}
+#aw.is-live [data-sk="title"][data-state="rough"]::before{inset:4px 0;
+  background:
+    linear-gradient(var(--aw-sk),var(--aw-sk)) right 0 top 4%/74% 25% no-repeat,
+    linear-gradient(var(--aw-sk),var(--aw-sk)) right 0 top 38%/92% 25% no-repeat,
+    linear-gradient(var(--aw-sk2),var(--aw-sk2)) right 0 top 72%/56% 24% no-repeat}
+#aw.is-live [data-sk="media"][data-state="rough"]::before{inset:0;
+  background:
+    linear-gradient(to top left,transparent calc(50% - 1px),var(--aw-sk) calc(50% - 1px),var(--aw-sk) calc(50% + 1px),transparent calc(50% + 1px)),
+    linear-gradient(to top right,transparent calc(50% - 1px),var(--aw-sk) calc(50% - 1px),var(--aw-sk) calc(50% + 1px),transparent calc(50% + 1px)),
+    linear-gradient(180deg,var(--surface2),var(--surface))}
+#aw.is-live [data-sk="line"][data-state="rough"]::before{inset:0;background:linear-gradient(var(--aw-sk),var(--aw-sk)) center/100% 64% no-repeat}
+#aw.is-live [data-sk="btn"][data-state="rough"]::before{inset:0;
+  background:linear-gradient(var(--aw-sk),var(--aw-sk)) right 0 center/min(46%,190px) 100% no-repeat,linear-gradient(var(--aw-sk2),var(--aw-sk2)) right min(49%,202px) center/min(42%,180px) 100% no-repeat;border-radius:999px}
+#aw.is-live [data-sk="stat"][data-state="rough"]::before{inset:14px;
+  background:linear-gradient(var(--aw-sk),var(--aw-sk)) right 0 top 0/48% 62% no-repeat,linear-gradient(var(--aw-sk2),var(--aw-sk2)) right 0 bottom 0/70% 12px no-repeat}
+@keyframes awSk{from{opacity:.45}to{opacity:1}}
+/* code tag */
+#aw.is-live [data-state="rough"]::after{content:attr(data-code);position:absolute;bottom:calc(100% + 8px);inset-inline-start:-2px;z-index:6;pointer-events:none;
+  max-width:min(92vw,520px);overflow:hidden;text-overflow:ellipsis;
+  font:500 11px/1 var(--mono);direction:ltr;unicode-bidi:isolate;white-space:nowrap;
+  padding:5px 8px;border-radius:6px;background:var(--aw-c,var(--v2));color:var(--aw-ci,#fff);box-shadow:0 8px 22px rgba(0,0,0,.55)}
+#aw.is-live [data-tip="below"][data-state="rough"]::after{bottom:auto;top:calc(100% + 8px)}
+#aw.is-live [data-tip="in"][data-state="rough"]::after{bottom:auto;top:8px;inset-inline-start:8px}
+/* reveal */
+#aw.is-live [data-state="done"] > .fill{animation:awIn .55s cubic-bezier(.2,.7,.2,1)}
+#aw.is-live [data-state="done"][data-instant] > .fill{animation:none}
+@keyframes awIn{0%{opacity:0;filter:brightness(2.2) saturate(0)}30%{opacity:1}100%{opacity:1;filter:none}}
+/* live typing */
+.aw-type{position:absolute;inset:0;pointer-events:none;display:block;z-index:3}
+.aw-type .aw-g{visibility:hidden}
+.aw-caret{display:inline-block;width:0;height:.8em;vertical-align:-.04em;position:relative}
+.aw-caret::after{content:"";position:absolute;top:0;bottom:0;right:-3px;width:4px;border-radius:2px;background:var(--c);box-shadow:0 0 12px var(--c);animation:awBlink .8s steps(1) infinite}
+@keyframes awBlink{55%{opacity:0}}
+
+/* ---------- cursors & marquee ---------- */
+.aw-layer{position:absolute;left:0;top:0;width:0;height:0;z-index:50;pointer-events:none}
+.aw-cur{position:absolute;left:0;top:0;will-change:transform;opacity:0;transition:opacity .45s ease}
+.aw-cur.is-on{opacity:1}
+.aw-cur.is-rest{opacity:0;transition:opacity 1.1s ease .8s}
+.aw-cur svg{display:block;width:20px;height:22px;overflow:visible;filter:drop-shadow(0 2px 6px rgba(0,0,0,.6))}
+.aw-cur path{fill:var(--c);stroke:#fff;stroke-width:1.3;stroke-linejoin:round}
+.aw-tag{position:absolute;left:14px;top:20px;font:700 11.5px/1 var(--body);letter-spacing:.01em;padding:5px 8px;background:var(--c);color:var(--ci);white-space:nowrap;direction:rtl;unicode-bidi:isolate;border-radius:2px 8px 8px 8px;box-shadow:0 0 0 1px rgba(255,255,255,.18) inset,0 6px 18px rgba(0,0,0,.55)}
+.aw-cur.is-flip .aw-tag{left:auto;right:4px;border-radius:8px 2px 8px 8px}
+.aw-mq{position:absolute;left:0;top:0;width:0;height:0;border:1.5px dashed var(--c);border-radius:4px;background:color-mix(in srgb,var(--c) 10%,transparent);pointer-events:none;z-index:40}
+.aw-mq b{position:absolute;left:-1px;top:calc(100% + 5px);font:600 10.5px/1 var(--mono);padding:3px 6px;border-radius:4px;background:var(--c);color:var(--ci);direction:ltr;white-space:nowrap}
+
+/* ---------- replay log (glass) ---------- */
+.aw-log{position:fixed;z-index:70;left:max(14px,env(safe-area-inset-left,0px));bottom:max(14px,env(safe-area-inset-bottom,0px));width:min(380px,calc(100vw - 28px));
+  background:color-mix(in srgb,var(--surface) 80%,transparent);-webkit-backdrop-filter:blur(14px) saturate(140%);backdrop-filter:blur(14px) saturate(140%);
+  border:1px solid var(--line2);border-radius:14px;box-shadow:0 20px 50px -18px rgba(0,0,0,.85);color:var(--ink);direction:rtl;font:500 12px/1.3 var(--body);overflow:hidden}
+.aw-log-h{display:flex;align-items:center;gap:8px;padding:7px 8px 7px 10px;border-bottom:1px solid var(--line)}
+.aw-rec{display:inline-flex;align-items:center;gap:6px;font:600 10px/1 var(--mono);letter-spacing:.14em;color:var(--aw-rec);direction:ltr;flex:none}
+.aw-rec::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor;box-shadow:0 0 8px currentColor;animation:awBlink 1.4s steps(1) infinite}
+.aw-log.is-fin .aw-rec{color:var(--ok)}
+.aw-log.is-fin .aw-rec::before{animation:none}
+.aw-ttl{font-weight:700;color:var(--ink);font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.aw-clock{font:500 11px/1 var(--mono);color:var(--muted);direction:ltr;flex:none}
+.aw-btns{margin-inline-start:auto;display:flex;gap:6px;flex:none}
+.aw-btn{font:700 12px/1 var(--body);color:var(--ink);background:rgba(255,255,255,.05);border:0;box-shadow:0 0 0 1px var(--line2) inset;padding:0 11px;height:30px;min-width:44px;border-radius:999px;cursor:pointer;transition:background .2s}
+.aw-btn:hover{background:rgba(255,255,255,.11)}
+.aw-btn:disabled{opacity:.35;cursor:default}
+.aw-btn:focus-visible{outline:2px solid var(--cy);outline-offset:2px}
+.aw-log ol{list-style:none;margin:0;padding:6px 10px 8px;height:calc(5 * 20px + 14px);overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end}
+.aw-log li{display:flex;gap:8px;align-items:baseline;white-space:nowrap;line-height:20px;min-width:0;flex:none}
+.aw-log time{font:500 10.5px/1 var(--mono);color:var(--muted);direction:ltr;flex:none}
+.aw-log li b{font:700 11.5px/1 var(--body);direction:rtl;unicode-bidi:isolate;flex:none}
+.aw-log li span{color:var(--ink2);overflow:hidden;text-overflow:ellipsis;min-width:0}
+.aw-log li.is-sys{white-space:normal;line-height:1.35;padding-block:2px}
+.aw-log li.is-sys span{color:var(--ink);font-weight:700;white-space:normal}
+@media (max-width:600px){
+  .aw-log{left:max(10px,env(safe-area-inset-left,0px));right:max(10px,env(safe-area-inset-right,0px));width:auto;bottom:max(10px,env(safe-area-inset-bottom,0px));border-radius:12px}
+  .aw-log-h{padding:5px 6px 5px 9px;border-bottom:0}
+  .aw-btn{height:28px;padding:0 10px}
+  .aw-log ol{height:22px;padding:0 10px 4px}
+  .aw-log li.is-sys{white-space:nowrap}
+  .aw-log li.is-sys span{white-space:nowrap}
+  .aw-log.is-fin ol{display:none}
+  .aw-cur svg{width:17px;height:19px}
+  .aw-tag{font-size:10.5px;left:12px;top:17px;padding:4px 6px}
+  #aw.is-live [data-state="rough"]::after{font-size:10px}
+}
+@media (prefers-reduced-motion:reduce){.aw-rec::before{animation:none}}
+@media print{.aw-log,.aw-layer{display:none}}
+/* lane status text is written in Hebrew by aw.js: keep it in the body face */
+#aw .lane[data-lane] .st{font-family:var(--body);font-weight:700;letter-spacing:0}
+/* bigger invisible hit area for the small log buttons */
+.aw-btn{position:relative}
+.aw-btn::after{content:"";position:absolute;inset:-9px -3px}
+
+.bar-logo{height:26px;width:auto;opacity:.92}@media(max-width:560px){.bar-logo{display:none}}</style></head><body>
+<div class="atmo" aria-hidden="true"><div class="grid-bg"></div></div>
+<header class="bar"><div class="wrap">
+  <a class="brand" href="https://orellevi.co.il" target="_blank" rel="noopener"><img src="media/avatar.jpg" alt="אוראל לוי"><span>leviorel<small>AI Content Creator</small></span></a>
+  <img class="bar-logo" src="media/logo-lockup.png" alt="Orel Levi" width="150" height="30">
+</div><div class="bar-progress"></div></header>
+<main id="aw" dir="rtl" lang="he">
+<style>
+/* ===== edit · פתיחה — hero + what you get (all selectors prefixed .eh-) ===== */
+.eh-hero{position:relative;isolation:isolate;padding-block:clamp(40px,7vw,96px) clamp(56px,8vw,112px);overflow:clip}
+.eh-hero::before{content:"";position:absolute;width:min(980px,120vw);aspect-ratio:1;top:-18%;inset-inline-end:-22%;background:radial-gradient(closest-side,color-mix(in srgb,var(--v1) 34%,transparent),transparent 72%);pointer-events:none;z-index:-1}
+.eh-hero::after{content:"";position:absolute;width:min(760px,100vw);aspect-ratio:1;bottom:-30%;inset-inline-start:-14%;background:radial-gradient(closest-side,color-mix(in srgb,var(--cy) 18%,transparent),transparent 72%);pointer-events:none;z-index:-1}
+.eh-grid{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.3fr);gap:clamp(32px,4.5vw,64px);align-items:center}
+.eh-copy{display:grid;gap:clamp(18px,2.4vw,26px);justify-items:start;min-width:0}
+.eh-kick{display:inline-flex;align-items:center;gap:10px;flex-wrap:wrap;padding:8px 16px 8px 10px}
+.eh-kick .eh-k-tag{font:600 12px/1 var(--mono);color:var(--cy);direction:ltr;padding:5px 8px;border-radius:999px;background:color-mix(in srgb,var(--cy) 12%,transparent);box-shadow:0 0 0 1px color-mix(in srgb,var(--cy) 35%,transparent) inset}
+.eh-h1{font-size:clamp(44px,6vw,86px);line-height:.98;font-weight:900;letter-spacing:-.025em;margin:0}
+.eh-h1 .grad-text{display:inline;padding-bottom:.06em}
+.eh-sub{margin:0;font-size:clamp(18px,1.7vw,22px);line-height:1.6;color:var(--ink2);max-width:40ch}
+.eh-sub b{color:var(--ink);font-weight:700}
+.eh-ltr{direction:ltr;unicode-bidi:isolate;display:inline-block}
+.eh-ctas .btn .ic{width:20px;height:20px}
+
+/* ---- stage: mission control + phone ---- */
+.eh-stage{display:grid;grid-template-columns:minmax(0,1fr) clamp(150px,14vw,190px);gap:clamp(14px,2vw,22px);align-items:end;min-width:0;position:relative}
+.eh-win .win-body{display:grid;gap:12px;padding:14px}
+.eh-win .win-top b{font:600 11px/1 var(--mono);color:var(--ok);display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.eh-win .win-top b::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--ok);box-shadow:0 0 10px var(--ok);animation:ehBlink 1.4s ease-in-out infinite}
+.eh-ask{justify-self:end;max-width:92%;padding:9px 13px;border-radius:14px 14px 4px 14px;background:var(--surface3);box-shadow:0 0 0 1px var(--line2) inset;color:var(--ink);font-size:14px;line-height:1.45}
+.eh-run{font:500 12px/1.5 var(--mono);color:var(--muted);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.eh-run .c{color:var(--cy)}.eh-run .v{color:var(--v2)}
+.eh-mc{gap:9px}
+.eh-lane{padding:11px 12px 12px;gap:8px 11px;background:linear-gradient(180deg,color-mix(in srgb,var(--c) 7%,var(--surface)),var(--bg2));box-shadow:0 0 0 1px color-mix(in srgb,var(--c) 26%,var(--line)) inset}
+.eh-lane > div{min-width:0}
+.eh-lane .av{width:30px;height:30px;border-radius:9px;font-size:14px}
+.eh-lane .who{direction:rtl;text-align:left}
+.eh-lane .st{white-space:nowrap}
+.eh-tl{grid-column:1/-1;position:relative;height:30px;border-radius:7px;display:flex;padding:3px 0;background:
+  repeating-linear-gradient(90deg,color-mix(in srgb,var(--ink) 22%,transparent) 0 1px,transparent 1px calc(100%/6)),
+  repeating-linear-gradient(90deg,color-mix(in srgb,var(--ink) 8%,transparent) 0 1px,transparent 1px calc(100%/24)),
+  var(--bg)}
+.eh-tl i{flex:var(--n,1) 1 0;margin-inline:1px;border-radius:4px;min-width:0;position:relative;outline:1px dashed color-mix(in srgb,var(--c) 45%,transparent);outline-offset:-1px;background:color-mix(in srgb,var(--c) 6%,transparent)}
+.eh-tl i.on{outline:0;box-shadow:0 0 0 1px color-mix(in srgb,var(--c) 70%,transparent) inset;background:
+  repeating-linear-gradient(90deg,transparent 0 13px,color-mix(in srgb,var(--bg) 55%,transparent) 13px 14px),
+  linear-gradient(180deg,color-mix(in srgb,var(--c) 62%,var(--surface2)),color-mix(in srgb,var(--c) 28%,var(--bg)))}
+.eh-tl i.on:nth-child(3n){background:
+  repeating-linear-gradient(90deg,transparent 0 13px,color-mix(in srgb,var(--bg) 55%,transparent) 13px 14px),
+  linear-gradient(180deg,color-mix(in srgb,var(--c) 40%,var(--surface3)),color-mix(in srgb,var(--c) 16%,var(--bg)))}
+.eh-tl i.hk{box-shadow:0 0 0 1.5px var(--ink) inset,0 0 14px -2px var(--c)}
+.eh-tl i.hk::after{content:"HOOK";position:absolute;inset:0;display:grid;place-items:center;font:700 8.5px/1 var(--mono);letter-spacing:.08em;color:var(--ink)}
+.eh-ph{position:absolute;top:-3px;bottom:-3px;left:var(--x,0%);width:2px;background:var(--ink);box-shadow:0 0 10px var(--c);border-radius:2px;z-index:1}
+.eh-ph::before{content:"";position:absolute;top:-4px;left:-4px;border:5px solid transparent;border-top-color:var(--ink)}
+.eh-lane .track{height:3px}
+.eh-outrow{display:flex;align-items:center;gap:6px;flex-wrap:wrap;padding-top:2px}
+.eh-outrow .folder{padding:6px 8px;font-size:11px;gap:6px}
+.eh-outrow .folder svg{width:14px;height:14px}
+.eh-file{font:500 11px/1 var(--mono);padding:6px 8px;border-radius:9px;color:var(--muted);box-shadow:0 0 0 1px var(--line) inset;white-space:nowrap}
+.eh-file.ok{color:var(--ink);box-shadow:0 0 0 1px color-mix(in srgb,var(--ok) 55%,transparent) inset;background:color-mix(in srgb,var(--ok) 10%,transparent)}
+.eh-file.ok::before{content:"✓ ";color:var(--ok)}
+
+.eh-eyebrow{text-transform:none;letter-spacing:.04em}
+.eh-lane .eh-fin{display:none}
+.eh-lane.done .eh-fin{display:inline}
+.eh-lane.done .eh-wip{display:none}
+.eh-lane.done .eh-tl i{outline:0;box-shadow:0 0 0 1px color-mix(in srgb,var(--c) 70%,transparent) inset;background:
+  repeating-linear-gradient(90deg,transparent 0 13px,color-mix(in srgb,var(--bg) 55%,transparent) 13px 14px),
+  linear-gradient(180deg,color-mix(in srgb,var(--c) 62%,var(--surface2)),color-mix(in srgb,var(--c) 28%,var(--bg)))}
+.eh-lane.done .eh-tl i.hk{box-shadow:0 0 0 1.5px var(--ink) inset,0 0 14px -2px var(--c)}
+.eh-ph{transition:left .8s cubic-bezier(.2,.7,.2,1)}
+.eh-lane.done .eh-ph{left:calc(100% - 2px)}
+.eh-win:has(.eh-lane[data-lane="2"].done) .eh-file[data-f="2"],
+.eh-win:has(.eh-lane[data-lane="3"].done) .eh-file[data-f="3"]{color:var(--ink);box-shadow:0 0 0 1px color-mix(in srgb,var(--ok) 55%,transparent) inset;background:color-mix(in srgb,var(--ok) 10%,transparent)}
+.eh-win:has(.eh-lane[data-lane="2"].done) .eh-file[data-f="2"]::before,
+.eh-win:has(.eh-lane[data-lane="3"].done) .eh-file[data-f="3"]::before{content:"✓ ";color:var(--ok)}
+.eh-win:not(:has(.eh-lane[data-lane="1"].done)) .eh-file[data-f="1"]{color:var(--muted);box-shadow:0 0 0 1px var(--line) inset;background:none}
+.eh-win:not(:has(.eh-lane[data-lane="1"].done)) .eh-file[data-f="1"]::before{content:none}
+
+/* ---- phone 9:16 ---- */
+.eh-out{display:grid;gap:12px;justify-items:center;min-width:0}
+.eh-phone{width:100%;aspect-ratio:9/16;border-radius:30px;padding:6px;background:linear-gradient(160deg,var(--surface3),var(--bg) 60%);box-shadow:0 0 0 1px var(--line2) inset,0 30px 70px -20px color-mix(in srgb,var(--v1) 70%,transparent),0 0 0 6px color-mix(in srgb,var(--bg) 70%,transparent);position:relative}
+.eh-scr{position:relative;width:100%;height:100%;border-radius:24px;overflow:hidden;background:var(--bg)}
+.eh-scr::before{content:"";position:absolute;top:7px;left:50%;width:30%;height:15px;transform:translateX(-50%);border-radius:999px;background:var(--bg);z-index:5}
+.eh-scene{position:absolute;inset:0;animation:ehCut 2.7s linear infinite}
+.eh-s1{background:
+  radial-gradient(circle at 74% 53%,color-mix(in srgb,var(--amber) 90%,var(--ink)) 0 7%,transparent 7.5%),
+  radial-gradient(60% 30% at 70% 57%,color-mix(in srgb,var(--amber) 55%,transparent),transparent 70%),
+  linear-gradient(180deg,var(--v1) 0%,var(--pink) 42%,var(--amber) 57.5%,var(--bg2) 58%,color-mix(in srgb,var(--v1) 30%,var(--bg)) 100%)}
+.eh-s1::before{content:"";position:absolute;left:41%;bottom:27%;width:18%;aspect-ratio:1;border-radius:50%;background:var(--bg);box-shadow:inset -2px 2px 0 color-mix(in srgb,var(--amber) 70%,transparent)}
+.eh-s1::after{content:"";position:absolute;left:22%;bottom:-6%;width:56%;height:31%;border-radius:50% 50% 0 0/62% 62% 0 0;background:var(--bg);box-shadow:inset 0 2px 0 color-mix(in srgb,var(--amber) 60%,transparent)}
+.eh-s2{animation-delay:-1.8s;background:
+  radial-gradient(circle at 22% 30%,color-mix(in srgb,var(--cy) 85%,transparent) 0 5%,transparent 9%),
+  radial-gradient(circle at 74% 22%,color-mix(in srgb,var(--pink) 80%,transparent) 0 6%,transparent 11%),
+  radial-gradient(circle at 60% 44%,color-mix(in srgb,var(--v2) 70%,transparent) 0 4%,transparent 8%),
+  radial-gradient(circle at 34% 50%,color-mix(in srgb,var(--amber) 60%,transparent) 0 3%,transparent 6%),
+  linear-gradient(90deg,transparent 0 8%,var(--bg2) 8% 24%,transparent 24% 30%,var(--surface) 30% 52%,transparent 52% 58%,var(--bg2) 58% 80%,transparent 80% 86%,var(--surface) 86%) 0 100%/100% 42% no-repeat,
+  linear-gradient(180deg,var(--bg) 0%,color-mix(in srgb,var(--v1) 40%,var(--bg)) 60%,color-mix(in srgb,var(--pink) 30%,var(--bg)) 100%)}
+.eh-s3{animation-delay:-.9s;background:
+  radial-gradient(46% 30% at 50% 40%,color-mix(in srgb,var(--v2) 70%,transparent),transparent 72%),
+  linear-gradient(180deg,var(--bg) 0 62%,color-mix(in srgb,var(--v1) 35%,var(--bg2)) 62% 100%)}
+.eh-s3::after{content:"";position:absolute;left:39%;top:30%;width:22%;height:36%;border-radius:22% 22% 14% 14%/12% 12% 8% 8%;background:
+  linear-gradient(100deg,transparent 0 18%,color-mix(in srgb,var(--ink) 55%,transparent) 22%,transparent 30%),
+  linear-gradient(180deg,var(--cy),var(--v1));box-shadow:0 26px 30px -12px color-mix(in srgb,var(--bg) 90%,transparent),0 0 40px -6px var(--cy)}
+.eh-vig{position:absolute;inset:0;background:radial-gradient(120% 80% at 50% 40%,transparent 50%,color-mix(in srgb,var(--bg) 80%,transparent));z-index:2}
+.eh-safe{position:absolute;z-index:3;top:9%;left:8%;right:8%;height:23%;border-radius:10px;border:1.5px dashed color-mix(in srgb,var(--ink) 60%,transparent);display:grid;place-items:center;text-align:center;padding:6px;font:700 11.5px/1.3 var(--body);color:var(--ink);background:color-mix(in srgb,var(--bg) 22%,transparent)}
+.eh-side{position:absolute;z-index:3;right:7px;bottom:20%;display:grid;gap:12px;color:var(--ink)}
+.eh-side svg{width:20px;height:20px;filter:drop-shadow(0 1px 3px var(--bg))}
+.eh-cap{position:absolute;z-index:3;left:10px;right:40px;bottom:30px;display:grid;gap:5px}
+.eh-cap span{height:6px;border-radius:4px;background:color-mix(in srgb,var(--ink) 75%,transparent)}
+.eh-cap span:first-child{width:46%;height:8px}.eh-cap span:last-child{width:72%;opacity:.6}
+.eh-prog{position:absolute;z-index:3;left:10px;right:10px;bottom:14px;height:3px;border-radius:3px;background:color-mix(in srgb,var(--ink) 25%,transparent);overflow:hidden}
+.eh-prog b{display:block;height:100%;width:100%;background:var(--ink);transform-origin:left;animation:ehProg 12s linear infinite}
+.eh-meta{display:grid;gap:6px;justify-items:center;text-align:center}
+.eh-meta .eh-fn{font:600 13px/1 var(--mono);color:var(--ink);direction:ltr;padding:8px 12px;border-radius:999px;background:color-mix(in srgb,var(--ok) 10%,transparent);box-shadow:0 0 0 1px color-mix(in srgb,var(--ok) 50%,transparent) inset;white-space:nowrap}
+.eh-meta small{font:500 12px/1.4 var(--mono);color:var(--muted);direction:ltr}
+.eh-meta p{margin:0;font-size:14px;line-height:1.45;color:var(--ink2)}
+
+@keyframes ehCut{0%,33.32%{opacity:1}33.33%,100%{opacity:0}}
+@keyframes ehProg{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes ehBlink{50%{opacity:.35}}
+@keyframes ehFlow{to{background-position:-28px 0}}
+
+/* ---- what you get: bento ---- */
+.eh-bento{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(12px,1.6vw,18px)}
+.eh-bento > [data-block]{min-width:0}
+.eh-bento > [data-block] > .fill{height:100%}
+.eh-bento > .eh-w{grid-column:span 2}
+.eh-card{display:flex;flex-direction:column;gap:18px;overflow:hidden}
+.eh-w .eh-card{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);align-items:center;gap:clamp(18px,2.6vw,32px)}
+.eh-txt{display:grid;gap:10px;align-content:start;min-width:0}
+.eh-txt h3{font-size:clamp(22px,2.2vw,28px)}
+.eh-txt p{margin:0;color:var(--ink2);font-size:16.5px;line-height:1.6}
+.eh-txt p.eh-small{font-size:15px;color:var(--muted)}
+.eh-step{font:600 12px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--c,var(--v2));direction:ltr;justify-self:start}
+.eh-vis{margin-top:auto;min-width:0}
+.eh-mini .win-top{height:32px}
+.eh-mini .win-top i{width:9px;height:9px}
+.eh-mini .win-title{font-size:11px;padding-inline-end:30px}
+.eh-mini .win-body{padding:12px}
+.eh-cap2{font:500 11.5px/1.4 var(--mono);color:var(--muted);margin-top:10px;display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.eh-cap2 b{color:var(--cy);font-weight:600}
+
+/* contact sheet */
+.eh-sheet{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:4px}
+.eh-sheet span{aspect-ratio:16/10;border-radius:4px;position:relative;overflow:hidden;background:
+  radial-gradient(circle at var(--sx,50%) 62%,var(--bg) 0 13%,transparent 14%),
+  linear-gradient(180deg,var(--v1),var(--pink) 55%,var(--amber) 70%,var(--bg2) 71%)}
+.eh-sheet span::after{content:attr(data-t);position:absolute;top:2px;left:2px;font:600 8px/1 var(--mono);color:var(--ink);background:color-mix(in srgb,var(--bg) 65%,transparent);padding:2px 3px;border-radius:2px}
+.eh-sheet span:nth-child(1){--sx:30%}.eh-sheet span:nth-child(2){--sx:36%}.eh-sheet span:nth-child(3){--sx:43%}.eh-sheet span:nth-child(4){--sx:50%}.eh-sheet span:nth-child(5){--sx:57%}.eh-sheet span:nth-child(6){--sx:64%}
+.eh-sheet span.b{background:
+  radial-gradient(circle at 70% 40%,color-mix(in srgb,var(--cy) 80%,transparent) 0 8%,transparent 16%),
+  radial-gradient(circle at 30% 30%,color-mix(in srgb,var(--pink) 70%,transparent) 0 6%,transparent 13%),
+  linear-gradient(180deg,var(--bg),color-mix(in srgb,var(--v1) 45%,var(--bg)))}
+.eh-sheet span.blur{filter:blur(2.5px) brightness(.75)}
+.eh-sheet span.hot{box-shadow:0 0 0 2px var(--ok),0 0 14px -2px var(--ok);z-index:1}
+.eh-sheet span.cut{box-shadow:inset 3px 0 0 var(--pink)}
+.eh-legend{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:10px;font:500 11.5px/1.3 var(--body);color:var(--muted);direction:rtl}
+.eh-legend em{font-style:normal;display:inline-flex;align-items:center;gap:6px}
+.eh-legend em::before{content:"";width:10px;height:10px;border-radius:3px;box-shadow:0 0 0 2px var(--c) inset}
+
+/* hook */
+.eh-hookv{display:grid;grid-template-columns:96px minmax(0,1fr);gap:14px;align-items:center}
+.eh-hookf{aspect-ratio:9/16;border-radius:14px;position:relative;overflow:hidden;box-shadow:0 0 0 1px var(--line2) inset,0 14px 30px -14px var(--v1);background:
+  radial-gradient(circle at 50% 60%,var(--bg) 0 10%,transparent 11%),
+  linear-gradient(180deg,color-mix(in srgb,var(--v1) 70%,var(--bg)) 0 33%,var(--pink) 60%,var(--amber) 72%,var(--bg2) 73%)}
+.eh-hookf::before{content:"כותרת";position:absolute;top:6%;left:7%;right:7%;height:26%;border:1.5px dashed color-mix(in srgb,var(--ink) 65%,transparent);border-radius:7px;display:grid;place-items:center;font:700 11px/1 var(--body);color:var(--ink)}
+.eh-hookl{display:grid;gap:7px;direction:ltr}
+.eh-hookl div{display:flex;align-items:center;gap:8px;font:500 11.5px/1 var(--mono);color:var(--muted)}
+.eh-hookl div i{height:18px;border-radius:4px;background:color-mix(in srgb,var(--ink) 10%,transparent);box-shadow:0 0 0 1px var(--line2) inset;flex:none}
+.eh-hookl div.on{color:var(--ink)}
+.eh-hookl div.on i{background:var(--grad);box-shadow:0 0 14px -2px var(--v2)}
+
+/* crop 16:9 -> 9:16 */
+.eh-crop{position:relative;aspect-ratio:16/9;border-radius:12px;overflow:hidden;box-shadow:0 0 0 1px var(--line2) inset;background:
+  radial-gradient(circle at 58% 46%,var(--bg) 0 7%,transparent 7.5%),
+  linear-gradient(var(--bg),var(--bg)) 58% 100%/9% 44% no-repeat,
+  linear-gradient(180deg,var(--v1),var(--pink) 50%,var(--amber) 64%,var(--bg2) 64.5%,color-mix(in srgb,var(--v1) 25%,var(--bg)))}
+.eh-crop .eh-win916{position:absolute;top:0;bottom:0;left:42%;width:31.64%;border:2px solid var(--ink);border-radius:6px;box-shadow:0 0 0 100vmax color-mix(in srgb,var(--bg) 66%,transparent),0 0 24px var(--cy)}
+.eh-crop .eh-win916::after{content:"1080×1920";position:absolute;bottom:6px;left:50%;transform:translateX(-50%);font:700 9.5px/1 var(--mono);color:var(--bg);background:var(--ink);padding:3px 5px;border-radius:4px;white-space:nowrap;direction:ltr;unicode-bidi:isolate}
+.eh-crop .eh-src{position:absolute;top:8px;left:8px;font:600 9.5px/1 var(--mono);color:var(--muted);direction:ltr}
+.eh-crop .eh-shift{position:absolute;top:50%;left:calc(42% - 30px);transform:translateY(-50%);font:700 14px/1 var(--mono);color:var(--cy)}
+.eh-specs{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;direction:ltr}
+.eh-specs span{font:600 11.5px/1 var(--mono);color:var(--ink2);padding:6px 9px;border-radius:8px;box-shadow:0 0 0 1px var(--line2) inset;background:var(--bg2)}
+
+/* beat */
+.eh-beat{display:grid;gap:8px}
+.eh-wave{height:78px;display:flex;align-items:center;gap:2px;padding:0 1px;border-radius:10px;background:
+  repeating-linear-gradient(90deg,color-mix(in srgb,var(--amber) 55%,transparent) 0 1px,transparent 1px calc(100%/12)),var(--bg)}
+.eh-wave i{flex:1;height:26%;border-radius:2px;background:color-mix(in srgb,var(--cy) 55%,var(--surface3))}
+.eh-wave i:nth-child(3n){height:46%}
+.eh-wave i:nth-child(5n+2){height:36%}
+.eh-wave i:nth-child(7n){height:60%}
+.eh-wave i:nth-child(4n+1){height:92%;background:var(--amber);box-shadow:0 0 8px -1px var(--amber)}
+.eh-wave i:nth-child(8n+5){height:74%}
+.eh-segs{display:flex;height:28px;gap:0}
+.eh-segs i{flex:var(--n) 1 0;margin-inline:1.5px;border-radius:5px;background:
+  repeating-linear-gradient(90deg,transparent 0 15px,color-mix(in srgb,var(--bg) 50%,transparent) 15px 16px),
+  linear-gradient(180deg,color-mix(in srgb,var(--c) 60%,var(--surface2)),color-mix(in srgb,var(--c) 22%,var(--bg)));box-shadow:0 0 0 1px color-mix(in srgb,var(--c) 60%,transparent) inset}
+.eh-segs i:nth-child(1){--c:var(--ag1)}.eh-segs i:nth-child(2){--c:var(--ag2)}.eh-segs i:nth-child(3){--c:var(--ag3)}.eh-segs i:nth-child(4){--c:var(--ag1)}.eh-segs i:nth-child(5){--c:var(--ag2)}.eh-segs i:nth-child(6){--c:var(--ag3)}.eh-segs i:nth-child(7){--c:var(--ag4)}
+.eh-beatk{display:flex;justify-content:space-between;font:500 11px/1 var(--mono);color:var(--muted);direction:ltr}
+.eh-beatk b{color:var(--amber);font-weight:600}
+
+/* self check */
+.eh-edges{display:grid;gap:8px}
+.eh-erow{display:grid;grid-template-columns:42px repeat(3,minmax(0,1fr));gap:4px;align-items:center}
+.eh-erow > b{font:600 10.5px/1 var(--mono);color:var(--muted)}
+.eh-erow span{aspect-ratio:16/10;border-radius:4px;background:
+  radial-gradient(circle at 46% 58%,var(--bg) 0 12%,transparent 13%),
+  linear-gradient(180deg,color-mix(in srgb,var(--v1) 80%,var(--bg)),var(--pink) 58%,var(--amber) 70%,var(--bg2) 71%)}
+.eh-erow span.bad{background:linear-gradient(180deg,var(--ink),color-mix(in srgb,var(--cy) 50%,var(--ink)));box-shadow:0 0 0 2px var(--pink),0 0 14px -2px var(--pink)}
+.eh-fix{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-top:4px;font:500 11.5px/1.3 var(--mono);color:var(--muted)}
+.eh-fix .bad{color:var(--pink)}.eh-fix .ok{color:var(--ok)}
+
+/* parallel */
+.eh-par{display:grid;gap:10px}
+.eh-par-h{font:600 12px/1.3 var(--body);color:var(--ink2);direction:rtl;display:flex;align-items:center;gap:8px}
+.eh-par-h span{font-family:var(--mono);color:var(--cy)}
+.eh-prow{--c:var(--ag1);display:grid;grid-template-columns:auto minmax(14px,1fr) auto minmax(14px,1fr) auto;align-items:center;gap:8px;direction:rtl}
+.eh-prow .folder{padding:8px 9px;font-size:12px;gap:6px;direction:ltr}
+.eh-prow .folder svg{width:15px;height:15px}
+.eh-prow .chip{font-size:12.5px;padding:7px 10px 7px 9px}
+.eh-line{height:2px;border-radius:2px;background:repeating-linear-gradient(90deg,var(--c) 0 8px,transparent 8px 14px);opacity:.85;animation:ehFlow 1s linear infinite}
+.eh-mp4{font:600 12px/1 var(--mono);color:var(--ink);padding:8px 9px;border-radius:9px;background:color-mix(in srgb,var(--c) 12%,transparent);box-shadow:0 0 0 1px color-mix(in srgb,var(--c) 50%,transparent) inset;direction:ltr;white-space:nowrap}
+
+/* stats */
+.eh-stats-b{margin-top:clamp(28px,4vw,44px)}
+.eh-stats .stat b{font-size:clamp(38px,4.6vw,60px);letter-spacing:-.02em}
+.eh-stats .stat:first-child b{background:var(--grad-text);-webkit-background-clip:text;background-clip:text;color:transparent}
+.eh-stats .stat span{color:var(--ink2)}
+
+/* ---- responsive ---- */
+@media (max-width:1060px){
+  .eh-grid{grid-template-columns:minmax(0,1fr)}
+  .eh-copy{max-width:720px}
+  .eh-sub{max-width:52ch}
+}
+@media (max-width:900px){
+  .eh-bento{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .eh-bento > .eh-w,.eh-bento > .eh-w2{grid-column:span 2}
+}
+@media (max-width:640px){
+  .eh-stage{grid-template-columns:minmax(0,1fr)}
+  .eh-out{grid-template-columns:150px minmax(0,1fr);justify-items:start;align-items:center;gap:16px}
+  .eh-meta{justify-items:start;text-align:right}
+  .eh-tl i.hk::after{content:""}
+  .eh-bento{grid-template-columns:minmax(0,1fr)}
+  .eh-bento > .eh-w,.eh-bento > .eh-w2{grid-column:auto}
+  .eh-w .eh-card{grid-template-columns:minmax(0,1fr)}
+  .eh-ctas{width:100%}
+}
+@media (max-width:380px){
+  .eh-out{grid-template-columns:128px minmax(0,1fr)}
+  .eh-prow{gap:5px}
+  .eh-prow .chip{padding:6px 8px;font-size:12px}
+}
+@media (prefers-reduced-motion:reduce){
+  .eh-scene,.eh-prog b,.eh-line,.eh-win .win-top b::before{animation:none}
+  .eh-s2,.eh-s3{opacity:0}
+}
+</style>
+
+<section class="eh-hero" id="top" data-section>
+  <div class="wrap eh-grid">
+    <div class="eh-copy">
+      <div data-block data-agent="פתיחה" data-log="תגית פתיחה · Claude Code ו-edit-agents" data-code='<span class="pill eh-kick">' data-sk="line">
+        <div class="fill"><span class="pill eh-kick"><span class="dot"></span>Claude Code · סוכני עריכה <span class="eh-k-tag">edit-agents</span></span></div>
+      </div>
+      <h1 class="eh-h1" data-block data-agent="פתיחה" data-log="הקליד את הכותרת הראשית" data-code='<h1 class="eh-h1" data-type>' data-type data-sk="title"><span class="fill">סוכנים עורכים לכם <span class="grad-text">כמה רילים במקביל</span></span></h1>
+      <div data-block data-agent="פתיחה" data-log="שורת משנה · הודעה אחת, עורך לכל ריל" data-code='<p class="eh-sub">' data-sk="line">
+        <p class="fill eh-sub">שמים קליפים בתיקייה ושולחים <b>הודעה אחת</b>. כל ריל מקבל עורך משלו, וכולם חותכים <b>באותו זמן</b>, עד קובץ <span class="eh-ltr">9:16</span> שמוכן לאינסטגרם.</p>
+      </div>
+      <div class="eh-ctas" data-block data-agent="פתיחה" data-log="2 כפתורים · למדריך ולחבילה" data-code='<a class="btn btn-primary" href="#steps">' data-sk="btn">
+        <div class="fill ctas">
+          <a class="btn btn-primary" href="#steps">למדריך<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></a>
+          <a class="btn btn-ghost" href="#inside"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8"/><path d="M12 13v8"/></svg>מה בחבילה</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="eh-stage">
+      <div data-block data-agent="פתיחה" data-log="חלון בקרה · 3 עורכים על ציר זמן" data-code='<div class="lane eh-lane" data-lane="2" style=…>' data-sk="media">
+        <div class="fill win eh-win" role="img" aria-label="חלון Claude Code שבו שלושה סוכני עורך חותכים שלושה רילים במקביל">
+          <div class="win-top"><i></i><i></i><i></i><span class="win-title">edit-agents — Claude Code</span><b>3 editors</b></div>
+          <div class="win-body">
+            <div class="eh-ask he">תערוך לי רילים עם הסוכנים.</div>
+            <div class="eh-run"><span class="c">reel-cut</span><span>→ 3 × <span class="v">editor</span> · launched in one message</span></div>
+            <div class="mc eh-mc">
+              <div class="lane eh-lane done" data-lane="1" style="--c:var(--ag1)">
+                <span class="av">1</span>
+                <div><div class="who">עורך · reel-1</div><div class="what"><span class="eh-wip">final.jpg checked · 12.0s</span><span class="eh-fin">reel-1.mp4 · 12.0s · 12 shots</span></div></div>
+                <span class="st">✓ סיים</span>
+                <div class="eh-tl" aria-hidden="true"><i class="on hk" style="--n:2"></i><i class="on" style="--n:1"></i><i class="on" style="--n:2"></i><i class="on" style="--n:1"></i><i class="on" style="--n:1"></i><i class="on" style="--n:2"></i><i class="on" style="--n:3"></i><i class="on" style="--n:1"></i><i class="on" style="--n:2"></i><i class="on" style="--n:2"></i><i class="on" style="--n:3"></i><i class="on" style="--n:4"></i><b class="eh-ph" style="--x:100%"></b></div>
+                <div class="track"><b style="--w:100%"></b></div>
+              </div>
+              <div class="lane eh-lane" data-lane="2" style="--c:var(--ag2)">
+                <span class="av">2</span>
+                <div><div class="who">עורך · reel-2</div><div class="what"><span class="eh-wip">render shot 7/11 · 1080×1920</span><span class="eh-fin">reel-2.mp4 · 12.0s · 11 shots</span></div></div>
+                <span class="st">בונה…</span>
+                <div class="eh-tl" aria-hidden="true"><i class="on hk" style="--n:2"></i><i class="on" style="--n:2"></i><i class="on" style="--n:1"></i><i class="on" style="--n:3"></i><i class="on" style="--n:2"></i><i class="on" style="--n:2"></i><i class="on" style="--n:3"></i><i style="--n:2"></i><i style="--n:1"></i><i style="--n:2"></i><i style="--n:4"></i><b class="eh-ph" style="--x:62.5%"></b></div>
+                <div class="track"><b style="--w:64%"></b></div>
+              </div>
+              <div class="lane eh-lane" data-lane="3" style="--c:var(--ag3)">
+                <span class="av">3</span>
+                <div><div class="who">עורך · reel-3</div><div class="what"><span class="eh-wip">sheet_clip3.jpg · finding cuts</span><span class="eh-fin">reel-3.mp4 · 12.0s · 9 shots</span></div></div>
+                <span class="st">כותב…</span>
+                <div class="eh-tl" aria-hidden="true"><i class="on hk" style="--n:2"></i><i class="on" style="--n:1"></i><i class="on" style="--n:2"></i><i style="--n:3"></i><i style="--n:2"></i><i style="--n:4"></i><i style="--n:2"></i><i style="--n:3"></i><i style="--n:5"></i><b class="eh-ph" style="--x:20.8%"></b></div>
+                <div class="track"><b style="--w:22%"></b></div>
+              </div>
+            </div>
+            <div class="eh-outrow">
+              <span class="folder"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 6.5A2.5 2.5 0 0 1 5.5 4h4l2 2.2h7A2.5 2.5 0 0 1 21 8.7v8.8a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 3 17.5z"/></svg>output/</span>
+              <span class="eh-file ok" data-f="1">reel-1.mp4</span><span class="eh-file" data-f="2">reel-2.mp4</span><span class="eh-file" data-f="3">reel-3.mp4</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div data-block data-agent="פתיחה" data-log="טלפון 9:16 · output/reel-1.mp4" data-code='.eh-phone{width:100%;aspect-ratio:9/16;border-radius:30px;…}' data-sk="media">
+        <div class="fill eh-out">
+          <div class="eh-phone" role="img" aria-label="ריל מוכן במסך טלפון, השליש העליון נשאר נקי לכותרת">
+            <div class="eh-scr">
+              <div class="eh-scene eh-s1"></div>
+              <div class="eh-scene eh-s2"></div>
+              <div class="eh-scene eh-s3"></div>
+              <div class="eh-vig"></div>
+              <div class="eh-safe" dir="rtl">כאן הכותרת שלכם</div>
+              <div class="eh-side" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 12a8 8 0 0 1-11.6 7.1L4 20l1-4.2A8 8 0 1 1 20 12z"/></svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M21 4L3 11l7 2 2 7 9-16z"/></svg>
+              </div>
+              <div class="eh-cap" aria-hidden="true"><span></span><span></span></div>
+              <div class="eh-prog" aria-hidden="true"><b></b></div>
+            </div>
+          </div>
+          <div class="eh-meta">
+            <span class="eh-fn">output/reel-1.mp4</span>
+            <small>1080×1920 · 30fps · H.264</small>
+            <p>בלי טקסט צרוב. השליש העליון נשאר נקי לכותרת.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="what" data-section>
+  <div class="wrap">
+    <div class="sec-head" data-block data-agent="פתיחה" data-log="כותרת סקשן · מה העורך באמת עושה" data-code='<h2>מה העורך <span class="grad-text">' data-sk="title">
+      <div class="fill" style="display:grid;gap:14px">
+        <span class="eyebrow eh-eyebrow">.claude/agents/editor.md</span>
+        <h2>מה העורך <span class="grad-text">באמת עושה</span></h2>
+        <p class="lead">זה לא תבנית שמדביקה קליפים. כל עורך עובר על הקליפים שלו כמו עורך אמיתי: מסתכל, מתכנן, חותך, ובודק את עצמו לפני שהוא מחזיר לכם קובץ.</p>
+      </div>
+    </div>
+
+    <div class="eh-bento">
+      <div class="eh-w" data-block data-agent="פתיחה" data-log="כרטיס · דף פריימים וחיתוכים בקליפ" data-code='<span class="hot" data-t="1.0"></span>' data-sk="media">
+        <article class="fill card eh-card" style="--c:var(--ag1)">
+          <div class="eh-txt">
+            <span class="eh-step">01 · look</span>
+            <h3>מסתכל על כל קליפ לפני שהוא חותך</h3>
+            <p>לכל קליפ הוא מכין דף פריימים, פריים כל חצי שנייה, ובאמת מסתכל עליו. ככה הוא מוצא את הרגעים החזקים ומדלג על מה שרועד, מטושטש או חשוך.</p>
+            <p class="eh-small">קליפ מהטלפון כבר ערוך? הוא מזהה את החיתוכים שבתוכו, ואף שוט לא עובר דרך חיתוך כזה.</p>
+          </div>
+          <div class="eh-vis">
+            <div class="win eh-mini" aria-hidden="true">
+              <div class="win-top"><i></i><i></i><i></i><span class="win-title">work/reel-1/sheet_clip2.jpg</span></div>
+              <div class="win-body">
+                <div class="eh-sheet">
+                  <span data-t="0.0"></span><span data-t="0.5"></span><span class="hot" data-t="1.0"></span><span class="hot" data-t="1.5"></span><span data-t="2.0"></span><span class="blur" data-t="2.5"></span>
+                  <span class="b cut" data-t="3.0"></span><span class="b" data-t="3.5"></span><span class="b" data-t="4.0"></span><span class="b hot" data-t="4.5"></span><span class="b" data-t="5.0"></span><span class="b blur" data-t="5.5"></span>
+                </div>
+                <div class="eh-legend"><em style="--c:var(--ok)">רגע חזק</em><em style="--c:var(--pink)">חיתוך בתוך הקליפ</em><em style="--c:var(--muted)">מטושטש, מדלג</em></div>
+                <div class="eh-cap2"><span>fps=2 · tile 6×5</span><b>scene &gt; 0.3 → cut @ 3.0s</b></div>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <div data-block data-agent="פתיחה" data-log="כרטיס · פתיחה ושליש עליון נקי" data-code='.eh-hookf::before{content:"כותרת";position:absolute;…}' data-sk="media">
+        <article class="fill card eh-card" style="--c:var(--ag2)">
+          <div class="eh-txt">
+            <span class="eh-step">02 · plan · hook</span>
+            <h3>פותח ברגע הכי חזק</h3>
+            <p>השוט הראשון הוא מה שהכי תופס עין מכל מה שהוא ראה, בערך שנייה אחת. את השליש העליון של הפריים הוא משאיר רגוע, כי שם תשימו את הכותרת.</p>
+          </div>
+          <div class="eh-vis eh-hookv" aria-hidden="true">
+            <div class="eh-hookf"></div>
+            <div class="eh-hookl">
+              <div class="on"><i style="width:44px"></i>shot 1 · hook</div>
+              <div><i style="width:28px"></i>shot 2</div>
+              <div><i style="width:52px"></i>shot 3</div>
+              <div><i style="width:22px"></i>shot 4</div>
+              <div><i style="width:38px"></i>…</div>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <div data-block data-agent="פתיחה" data-log="כרטיס · חיתוך ל-9:16 ב-1080×1920" data-code='<span class="eh-win916"></span>' data-sk="media">
+        <article class="fill card eh-card" style="--c:var(--cy)">
+          <div class="eh-txt">
+            <span class="eh-step">03 · render</span>
+            <h3>חותך למסך מלא של טלפון</h3>
+            <p>כל שוט נחתך ל-<span class="eh-ltr">9:16</span> וממורכז על מי שבפריים. הנושא בצד? החיתוך זז אליו. קליפ ברזולוציה נמוכה יותר פשוט מוגדל.</p>
+          </div>
+          <div class="eh-vis" aria-hidden="true">
+            <div class="eh-crop"><span class="eh-src">clip 16:9</span><span class="eh-shift">→</span><span class="eh-win916"></span></div>
+            <div class="eh-specs"><span>1080×1920</span><span>30fps</span><span>H.264 + AAC</span><span>+faststart</span></div>
+          </div>
+        </article>
+      </div>
+
+      <div class="eh-w" data-block data-agent="פתיחה" data-log="כרטיס · גל קול וחיתוך על הביט" data-code='.eh-wave i:nth-child(4n+1){height:92%;…}' data-sk="media">
+        <article class="fill card eh-card" style="--c:var(--amber)">
+          <div class="eh-txt">
+            <span class="eh-step">02 · plan · beat</span>
+            <h3>חותך על הביט של השיר</h3>
+            <p>שמתם קובץ מוזיקה בתיקייה? הוא מוצא את הקצב, וכל שוט נמשך מספר שלם של ביטים. השיר נכנס על ביט חזק, בלי הפתיח השקט.</p>
+            <p class="eh-small">בלי מוזיקה? הוא משתמש בסאונד של הקליפים, עם מעברים רכים בכל חיתוך כדי שלא יישמעו קליקים.</p>
+          </div>
+          <div class="eh-vis win eh-mini" aria-hidden="true">
+            <div class="win-top"><i></i><i></i><i></i><span class="win-title">work/reel-2/plan.md</span></div>
+            <div class="win-body eh-beat">
+              <div class="eh-beatk"><span>music.mp3 · onset envelope</span><b>beat = 60 / BPM</b></div>
+              <div class="eh-wave"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+              <div class="eh-segs"><i style="--n:2"></i><i style="--n:1"></i><i style="--n:1"></i><i style="--n:2"></i><i style="--n:2"></i><i style="--n:1"></i><i style="--n:3"></i></div>
+              <div class="eh-beatk"><span>cuts = whole beats</span><span>70–180 BPM</span></div>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <div class="eh-w2" data-block data-agent="פתיחה" data-log="כרטיס · בדיקת פריימים בקצוות" data-code='<div class="eh-erow"><b>out</b>' data-sk="media">
+        <article class="fill card eh-card" style="--c:var(--pink)">
+          <div class="eh-txt">
+            <span class="eh-step">04 · check</span>
+            <h3>בודק את העבודה של עצמו</h3>
+            <p>הוא מסתכל על 3 הפריימים הראשונים ו-3 האחרונים של כל שוט, ועל דף סיכום של כל הריל. פריים שחור, ראש שנחתך, הבזק של שוט אחר? מזיז כמה פריימים ומרנדר שוב.</p>
+          </div>
+          <div class="eh-vis win eh-mini" aria-hidden="true">
+            <div class="win-top"><i></i><i></i><i></i><span class="win-title">edges · shot 3</span></div>
+            <div class="win-body eh-edges">
+              <div class="eh-erow"><b>in</b><span></span><span></span><span></span></div>
+              <div class="eh-erow"><b>out</b><span></span><span></span><span class="bad"></span></div>
+              <div class="eh-fix"><span class="bad">flash at last frame</span><span class="ok">out −3 frames → ✓</span></div>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <div class="eh-w" data-block data-agent="פתיחה" data-log="כרטיס · עורך לכל תיקייה במקביל" data-code='<div class="eh-prow" style="--c:var(--ag1)">' data-sk="media">
+        <article class="fill card card-glow eh-card" style="--c:var(--v2)">
+          <div class="eh-txt">
+            <span class="eh-step">reel-cut · parallel</span>
+            <h3>כל תיקייה מקבלת עורך משלה</h3>
+            <p>כמה תיקיות יש בתוך <code>input</code>, ככה עורכים יוצאים לדרך. Claude מפעיל את כולם באותה הודעה, ואף אחד לא מחכה לשני. בסוף הוא אוסף הכל ופותח לכם את <code>output</code>.</p>
+            <p class="eh-small">הקבצים המקוריים שלכם לא משתנים.</p>
+          </div>
+          <div class="eh-vis eh-par" aria-hidden="true">
+            <div class="eh-par-h">הודעה אחת <span>←</span> עורך לכל ריל, באותו רגע</div>
+            <div class="eh-prow" style="--c:var(--ag1)"><span class="folder"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 6.5A2.5 2.5 0 0 1 5.5 4h4l2 2.2h7A2.5 2.5 0 0 1 21 8.7v8.8a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 3 17.5z"/></svg>reel-1/</span><span class="eh-line"></span><span class="chip" style="--c:var(--ag1)">עורך 1</span><span class="eh-line"></span><span class="eh-mp4">reel-1.mp4</span></div>
+            <div class="eh-prow" style="--c:var(--ag2)"><span class="folder"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 6.5A2.5 2.5 0 0 1 5.5 4h4l2 2.2h7A2.5 2.5 0 0 1 21 8.7v8.8a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 3 17.5z"/></svg>reel-2/</span><span class="eh-line"></span><span class="chip" style="--c:var(--ag2)">עורך 2</span><span class="eh-line"></span><span class="eh-mp4">reel-2.mp4</span></div>
+            <div class="eh-prow" style="--c:var(--ag3)"><span class="folder"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 6.5A2.5 2.5 0 0 1 5.5 4h4l2 2.2h7A2.5 2.5 0 0 1 21 8.7v8.8a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 3 17.5z"/></svg>reel-3/</span><span class="eh-line"></span><span class="chip" style="--c:var(--ag3)">עורך 3</span><span class="eh-line"></span><span class="eh-mp4">reel-3.mp4</span></div>
+          </div>
+        </article>
+      </div>
+    </div>
+
+    <div class="eh-stats-b" data-block data-agent="פתיחה" data-log="פס עובדות · 4 נתונים אמיתיים" data-code='<div class="stats eh-stats">' data-sk="stat">
+      <div class="fill stats eh-stats">
+        <div class="stat"><b>1</b><span>עורך לכל ריל</span></div>
+        <div class="stat"><b>כולם</b><span>במקביל, מהודעה אחת</span></div>
+        <div class="stat"><b><bdi dir="ltr">9:16</bdi></b><span><bdi dir="ltr">1080×1920</bdi>, מוכן לאינסטגרם</span></div>
+        <div class="stat"><b>0</b><span>עריכה ידנית</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+<style>
+/* ===== edit guide · steps (agent: שלבים) — every selector prefixed .es- ===== */
+.es-sec .step-txt h3{margin:0}
+.es-sec .step-txt a:not(.btn){color:var(--cy);font-weight:700;text-underline-offset:4px}
+.es-kick{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.es-kick small{font:600 12px/1 var(--mono);letter-spacing:.14em;color:var(--muted);direction:ltr}
+.es-dl{justify-self:start;margin-top:4px}
+.es-dl-t{display:grid;gap:6px;text-align:start}
+.es-mk{position:relative;min-width:0}
+.es-he{direction:rtl;text-align:right;font-family:var(--body)}
+.es-ptr{position:absolute;width:18px;height:24px;z-index:5;filter:drop-shadow(0 3px 5px rgba(0,0,0,.6));pointer-events:none}
+.es-ptr path{fill:var(--ink);stroke:var(--bg);stroke-width:1.4;stroke-linejoin:round}
+.es-tip{position:absolute;z-index:6;direction:rtl;font:700 12px/1.2 var(--body);color:var(--bg);background:var(--cy);padding:6px 10px;border-radius:999px;white-space:nowrap;box-shadow:0 8px 20px -6px rgba(34,211,238,.6)}
+.es-tip.v{background:var(--v2);color:var(--on-grad);box-shadow:0 8px 20px -6px rgba(168,85,247,.7)}
+.es-tip.a{background:var(--amber);color:var(--bg);box-shadow:0 8px 20px -6px rgba(251,191,36,.6)}
+
+/* ---- drawn video thumbnails (9:16 scenes, token colours only) ---- */
+.es-th{position:relative;aspect-ratio:9/16;border-radius:6px;overflow:hidden;background:var(--es-s,var(--surface3));box-shadow:0 0 0 1px rgba(255,255,255,.12) inset,0 8px 16px -8px #000}
+.es-th::after{content:"";position:absolute;inset:0;background:linear-gradient(160deg,rgba(255,255,255,.16),transparent 35%),linear-gradient(0deg,rgba(0,0,0,.35),transparent 40%)}
+.es-th.p::before{content:"";position:absolute;inset:0;background:radial-gradient(12% 7% at 50% 52%,color-mix(in srgb,var(--bg) 88%,transparent) 96%,transparent),radial-gradient(34% 22% at 50% 84%,color-mix(in srgb,var(--bg) 88%,transparent) 97%,transparent)}
+.es-s1{--es-s:radial-gradient(circle at 68% 30%,color-mix(in srgb,var(--amber) 80%,var(--ink)) 0 7%,transparent 7.5%),linear-gradient(180deg,color-mix(in srgb,var(--pink) 55%,var(--bg)) 0%,color-mix(in srgb,var(--amber) 72%,var(--pink)) 55%,color-mix(in srgb,var(--cy) 50%,var(--bg)) 55.5%,var(--bg2) 100%)}
+.es-s2{--es-s:linear-gradient(var(--bg),var(--bg)) 4% 100%/16% 34% no-repeat,linear-gradient(var(--bg2),var(--bg2)) 26% 100%/18% 52% no-repeat,linear-gradient(var(--bg),var(--bg)) 50% 100%/14% 28% no-repeat,linear-gradient(var(--bg2),var(--bg2)) 72% 100%/20% 46% no-repeat,linear-gradient(var(--bg),var(--bg)) 98% 100%/14% 38% no-repeat,radial-gradient(70% 40% at 50% 70%,color-mix(in srgb,var(--pink) 60%,transparent),transparent),linear-gradient(180deg,color-mix(in srgb,var(--v1) 70%,var(--bg)),color-mix(in srgb,var(--v2) 50%,var(--bg)))}
+.es-s3{--es-s:radial-gradient(60% 34% at 30% 22%,color-mix(in srgb,var(--cy) 70%,var(--ink)),transparent 70%),linear-gradient(200deg,color-mix(in srgb,var(--cy) 55%,var(--bg)),color-mix(in srgb,var(--v1) 60%,var(--bg)))}
+.es-s4{--es-s:radial-gradient(circle at 50% 46%,var(--ink2) 0 15%,color-mix(in srgb,var(--amber) 75%,var(--pink)) 15.5% 24%,color-mix(in srgb,var(--ok) 60%,var(--bg)) 24.5% 27%,var(--ink2) 27.5% 30%,transparent 30.5%),linear-gradient(135deg,color-mix(in srgb,var(--amber) 35%,var(--bg)),color-mix(in srgb,var(--pink) 25%,var(--bg)))}
+.es-s5{--es-s:radial-gradient(120% 30% at 20% 100%,color-mix(in srgb,var(--ok) 55%,var(--bg)) 98%,transparent),radial-gradient(120% 34% at 90% 100%,color-mix(in srgb,var(--ok) 35%,var(--bg)) 98%,transparent),linear-gradient(180deg,color-mix(in srgb,var(--cy) 60%,var(--ink)),color-mix(in srgb,var(--cy) 30%,var(--bg)))}
+.es-s6{--es-s:repeating-linear-gradient(115deg,transparent 0 9%,rgba(255,255,255,.10) 9% 11%),radial-gradient(60% 40% at 50% 40%,color-mix(in srgb,var(--pink) 70%,transparent),transparent),linear-gradient(180deg,color-mix(in srgb,var(--v2) 60%,var(--bg)),var(--bg))}
+.es-dur{position:absolute;right:4px;bottom:4px;z-index:2;font:600 9.5px/1 var(--mono);color:var(--ink);background:rgba(0,0,0,.6);padding:3px 4px;border-radius:4px}
+.es-play{position:absolute;inset:0;z-index:2;display:grid;place-items:center}
+.es-play::before{content:"";width:28%;aspect-ratio:1;border-radius:50%;background:rgba(0,0,0,.45);box-shadow:0 0 0 1.5px rgba(255,255,255,.7) inset;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
+.es-play::after{content:"";position:absolute;width:0;height:0;border-style:solid;border-width:6px 0 6px 10px;border-color:transparent transparent transparent var(--ink);margin-left:3px}
+
+/* ---- 1 · browser / download page ---- */
+.es-url{flex:1;display:flex;align-items:center;justify-content:center;gap:7px;height:26px;margin-inline-end:8px;border-radius:8px;background:#0b0b16;box-shadow:0 0 0 1px var(--line) inset;font:500 12px/1 var(--mono);color:var(--ink2);min-width:0;overflow:hidden;white-space:nowrap}
+.es-url svg{width:11px;height:11px;color:var(--ok);flex:none}
+.es-br{position:relative;padding:30px 18px 22px;display:grid;justify-items:center;gap:10px;text-align:center;background:radial-gradient(80% 70% at 50% 0%,rgba(124,58,237,.22),transparent 70%)}
+.es-spark{width:54px;height:54px;border-radius:16px;display:grid;place-items:center;background:linear-gradient(135deg,color-mix(in srgb,var(--amber) 80%,var(--pink)),var(--pink));box-shadow:0 14px 34px -10px rgba(244,63,158,.7)}
+.es-spark svg{width:30px;height:30px;color:var(--ink)}
+.es-br-h{font:800 21px/1.15 var(--display);color:var(--ink)}
+.es-br-s{font:500 12.5px/1.4 var(--body);color:var(--muted)}
+.es-br-btns{display:grid;gap:8px;width:min(100%,250px);margin-top:6px;position:relative}
+.es-pb{display:flex;align-items:center;justify-content:center;gap:8px;height:40px;border-radius:999px;font:700 13.5px/1 var(--body);color:var(--ink2);box-shadow:0 0 0 1px var(--line2) inset}
+.es-pb.on{background:var(--ink);color:var(--bg);box-shadow:0 10px 26px -10px rgba(246,242,236,.5)}
+.es-pb svg{width:14px;height:14px}
+.es-br-btns .es-ptr{left:62%;top:22px}
+.es-dlbar{display:flex;align-items:center;gap:10px;padding:10px 14px;border-top:1px solid var(--line);background:#0b0b15}
+.es-dlbar .f{width:26px;height:30px;border-radius:5px;flex:none;background:linear-gradient(180deg,var(--surface3),var(--surface2));box-shadow:0 0 0 1px var(--line2) inset;display:grid;place-items:center;color:var(--v2)}
+.es-dlbar .f svg{width:14px;height:14px}
+.es-dlbar .t{flex:1;min-width:0;display:grid;gap:5px}
+.es-dlbar .t b{font:600 12.5px/1 var(--mono);color:var(--ink)}
+.es-dlbar .bar{height:4px;border-radius:4px;background:var(--ok);box-shadow:0 0 10px var(--ok)}
+.es-dlbar .ok{font:700 12px/1 var(--mono);color:var(--ok)}
+
+/* ---- 2 · unzip ---- */
+.es-uz{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px;padding:22px 16px 14px}
+.es-ico{display:grid;justify-items:center;gap:8px;text-align:center;min-width:0}
+.es-ico svg{width:64px;height:64px;filter:drop-shadow(0 10px 18px rgba(0,0,0,.55))}
+.es-ico b{font:600 12px/1.2 var(--mono);color:var(--ink2);padding:3px 7px;border-radius:6px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.es-ico.on b{background:var(--v1);color:var(--on-grad)}
+.es-ico small{font:500 11px/1 var(--mono);color:var(--muted)}
+.es-arw{display:grid;justify-items:center;gap:4px;font:600 10.5px/1.2 var(--mono);color:var(--cy);text-align:center}
+.es-arw svg{width:34px;height:14px}
+.es-peek{margin:4px 12px 14px;padding:8px;border-radius:12px;background:#10101e;box-shadow:0 0 0 1px var(--line) inset}
+.es-peek .tree{font-size:13px}
+.es-peek .tree .n{padding:7px 8px}
+.es-peek .n.hid{opacity:.55}
+.es-peek .n.hid .tag{opacity:1}
+
+/* ---- finder (3 · input, 7 · output) ---- */
+.es-ftb{display:flex;align-items:center;gap:8px;flex:1;min-width:0}
+.es-ftb .nav{display:flex;gap:2px;color:var(--muted)}
+.es-ftb .nav svg{width:16px;height:16px}
+.es-ftb b{font:700 13px/1 var(--body);color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.es-fd{display:grid;grid-template-columns:132px minmax(0,1fr);min-height:0}
+.es-col{border-right:1px solid var(--line);padding:10px 8px;display:grid;align-content:start;gap:3px;background:#0f0f1c}
+.es-col .h{font:700 10.5px/1 var(--body);color:var(--muted);letter-spacing:.04em;padding:4px 8px 6px}
+.es-fr{display:flex;align-items:center;gap:7px;padding:7px 8px;border-radius:7px;font:500 12.5px/1 var(--mono);color:var(--ink2);white-space:nowrap;min-width:0}
+.es-fr svg{width:15px;height:15px;flex:none}
+.es-fr span{overflow:hidden;text-overflow:ellipsis}
+.es-fr.on{background:color-mix(in srgb,var(--v1) 70%,transparent);color:var(--on-grad)}
+.es-fr.new{outline:1px dashed var(--cy);outline-offset:-1px;color:var(--cy)}
+.es-fr.dim{opacity:.5}
+.es-fr .cnt{margin-left:auto;font-size:10.5px;opacity:.75}
+.es-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px 8px;padding:14px 12px;align-content:start}
+.es-cell{display:grid;justify-items:center;gap:6px;min-width:0}
+.es-box{width:100%;aspect-ratio:1;display:grid;place-items:center}
+.es-box .es-th{height:100%}
+.es-cell b{font:500 10.5px/1.2 var(--mono);color:var(--ink2);max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:2px 5px;border-radius:5px}
+.es-cell.sel .es-th{box-shadow:0 0 0 2px var(--v2),0 8px 16px -8px #000}
+.es-cell.sel b{background:var(--v1);color:var(--on-grad)}
+.es-song{width:62%;aspect-ratio:3/4;border-radius:8px;display:grid;place-items:center;align-content:center;gap:6px;background:linear-gradient(160deg,color-mix(in srgb,var(--pink) 45%,var(--surface2)),var(--surface2));box-shadow:0 0 0 1px color-mix(in srgb,var(--pink) 50%,transparent) inset,0 8px 16px -8px #000}
+.es-song svg{width:42%;height:auto;color:var(--ink)}
+.es-wave{display:flex;align-items:center;gap:2px;height:12px}
+.es-wave i{width:2px;border-radius:2px;background:var(--ink);opacity:.8}
+.es-fst{display:flex;justify-content:space-between;gap:8px;padding:7px 12px;border-top:1px solid var(--line);font:500 11px/1.2 var(--mono);color:var(--muted);background:#0b0b15;white-space:nowrap;overflow:hidden}
+.es-fst span{overflow:hidden;text-overflow:ellipsis}
+.es-in .es-tip{top:-13px;right:14px}
+.es-in .es-ptr{left:calc(132px + 22%);top:70%}
+
+/* ---- claude app (4 · 5 · 6) ---- */
+.es-tabsw{flex:1;display:flex;justify-content:center;padding-inline-end:44px;min-width:0}
+.es-tabsw .tabs{padding:3px}
+.es-tabsw .tabs span{padding:6px 12px;font-size:12.5px}
+.es-app{display:grid;gap:12px;padding:16px}
+.es-ses{display:flex;align-items:center;justify-content:space-between;gap:10px;font:600 12px/1 var(--body);color:var(--muted)}
+.es-ses b{font:700 15px/1.2 var(--display);color:var(--ink)}
+.es-pick{border-radius:14px;background:#14142a;box-shadow:0 0 0 1px var(--line2) inset,0 24px 50px -20px #000;padding:6px;display:grid;gap:4px}
+.es-pick .h{display:flex;align-items:center;justify-content:space-between;padding:8px 10px 6px;font:700 11px/1 var(--body);letter-spacing:.04em;color:var(--muted)}
+.es-pick .folder{box-shadow:none;background:transparent;padding:9px 10px}
+.es-pick .folder.on{background:rgba(168,85,247,.14);box-shadow:0 0 0 1.5px var(--v2) inset,0 0 24px -6px var(--v2)}
+.es-pick .folder small{margin-left:auto;font:500 11px/1 var(--mono);color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.es-pick .folder.on small{color:var(--ink2)}
+.es-pick .folder .ck{color:var(--v2);font-weight:800;flex:none}
+.es-fchip{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:8px;font:600 12px/1 var(--mono);color:var(--ink);background:rgba(251,191,36,.10);box-shadow:0 0 0 1px rgba(251,191,36,.35) inset;white-space:nowrap}
+.es-fchip svg{width:13px;height:13px;color:var(--amber)}
+.es-caret{display:inline-block;width:2px;height:1.1em;vertical-align:-.2em;background:var(--v2);animation:esBlink .9s steps(1) infinite}
+.es-a4 .es-tip{left:232px;bottom:34px}
+.es-a4 .es-ptr{left:58%;top:160px}
+.es-model{display:inline-flex;align-items:center;gap:6px}
+.es-model.on{color:var(--ink);box-shadow:0 0 0 1.5px var(--v2) inset;background:rgba(168,85,247,.14)}
+.es-mwrap{position:relative;display:grid;gap:10px}
+.es-mwrap .menu{width:min(100%,320px)}
+.es-mwrap .menu .opt{align-items:flex-start}
+.es-mwrap .menu .opt small{direction:rtl;text-align:left}
+.es-mn{font:700 11px/1 var(--body);letter-spacing:.04em;color:var(--muted);padding:8px 12px 6px}
+.es-a5 .es-ptr{left:200px;top:42px}
+
+/* chat (6) */
+.es-msg{justify-self:end;max-width:92%;padding:12px 14px;border-radius:16px 16px 4px 16px;background:var(--surface3);box-shadow:0 0 0 1px var(--line2) inset;font:500 13.5px/1.6 var(--body);color:var(--ink);white-space:pre-wrap}
+.es-msg .f{color:var(--amber);background:rgba(251,191,36,.12);border-radius:5px;padding:0 3px}
+.es-sent{justify-self:end;font:500 10.5px/1 var(--mono);color:var(--muted);margin-top:-6px}
+.es-cl{display:grid;grid-template-columns:22px minmax(0,1fr);gap:9px;align-items:start}
+.es-cl .av{width:22px;height:22px;border-radius:7px;display:grid;place-items:center;background:linear-gradient(135deg,color-mix(in srgb,var(--amber) 80%,var(--pink)),var(--pink))}
+.es-cl .av svg{width:13px;height:13px;color:var(--ink)}
+.es-cl p{margin:0;font:500 13.5px/1.55 var(--body);color:var(--ink2)}
+.es-tool{border-radius:12px;background:#08080f;box-shadow:0 0 0 1px var(--line) inset;overflow:hidden}
+.es-tool .h{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:7px 12px;border-bottom:1px solid var(--line);font:600 11px/1 var(--mono);color:var(--muted)}
+.es-tool .h b{color:var(--cy);font-weight:600}
+.es-tool .term{padding:10px 12px;font-size:12px;line-height:1.7}
+.es-pw{display:inline-flex;align-items:center;gap:8px;flex-wrap:wrap}
+.es-pw .dots{letter-spacing:2px;color:var(--ink)}
+.es-pw .k{font:700 11px/1.2 var(--body);direction:rtl;color:var(--bg);background:var(--amber);padding:3px 8px;border-radius:999px}
+.es-pbar{display:block;height:4px;margin:4px 0 2px;border-radius:4px;background:rgba(255,255,255,.07);overflow:hidden}
+.es-pbar b{display:block;height:100%;width:100%;background:linear-gradient(90deg,var(--v2),var(--cy));border-radius:inherit}
+
+/* ---- 7 · parallel lanes + output ---- */
+.es-stack{display:grid}
+.es-stack>.win+.win{margin-top:-30px;margin-inline-start:12%;position:relative;z-index:2}
+.es-stack>.win:first-child .win-body{padding-bottom:46px}
+.es-mch{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:2px}
+.es-mch b{font:700 14px/1.2 var(--body);color:var(--ink)}
+.es-live{display:inline-flex;align-items:center;gap:6px;font:600 11px/1 var(--mono);color:var(--ok)}
+.es-live::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--ok);box-shadow:0 0 10px var(--ok);animation:esPulse 1.4s ease-in-out infinite}
+.es-mc .lane{padding:10px 12px;gap:4px 10px}
+.es-mc .lane .av{width:30px;height:30px;font-size:13px}
+.es-mc .lane>div{min-width:0}
+.es-mc .lane:not(.done):not(.lead) .track b{background-image:linear-gradient(90deg,transparent,rgba(255,255,255,.55),transparent);background-size:40% 100%;background-repeat:no-repeat;animation:esShim 1.8s linear infinite}
+.es-mc .lane.lead{box-shadow:0 0 0 1px color-mix(in srgb,var(--c) 45%,transparent) inset;background:color-mix(in srgb,var(--c) 7%,#11111f)}
+.es-sheet{margin-top:12px;padding:10px;border-radius:12px;background:#0a0a14;box-shadow:0 0 0 1px var(--line) inset}
+.es-sheet .h{display:flex;justify-content:space-between;gap:8px;font:600 10.5px/1 var(--mono);color:var(--muted);margin-bottom:8px;white-space:nowrap;overflow:hidden}
+.es-sheet .row{display:grid;grid-template-columns:repeat(6,minmax(0,54px));gap:6px}
+.es-fm{display:grid;gap:4px;justify-items:center}
+.es-fm .es-th{width:100%;border-radius:4px}
+.es-fm small{font:500 9.5px/1 var(--mono);color:var(--muted)}
+.es-fm.hook .es-th{box-shadow:0 0 0 2px var(--ag2),0 0 16px -2px var(--ag2)}
+.es-fm.hook small{color:var(--ag2);font-weight:700}
+.es-out .es-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:12px 10px}
+.es-out .es-box{aspect-ratio:4/5}
+.es-res{font:600 10px/1 var(--mono);color:var(--ok)}
+
+/* ---- 8 · instagram editor (9:16) ---- */
+.es-phw{display:grid;justify-items:center}
+.win.es-phone{width:min(100%,262px);border-radius:38px;padding:9px;background:linear-gradient(160deg,var(--surface3),#0a0a12 60%);box-shadow:0 0 0 1px var(--line2) inset,0 40px 80px -30px rgba(0,0,0,.9),0 0 80px -30px rgba(124,58,237,.55)}
+.es-scr{position:relative;aspect-ratio:9/16;border-radius:30px;overflow:hidden;background:var(--es-s)}
+.es-scr.p::before{content:"";position:absolute;inset:0;background:radial-gradient(11% 6.2% at 50% 55%,color-mix(in srgb,var(--bg) 90%,transparent) 96%,transparent),radial-gradient(33% 20% at 50% 86%,color-mix(in srgb,var(--bg) 90%,transparent) 97%,transparent)}
+.es-scr::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.45),transparent 22%,transparent 72%,rgba(0,0,0,.55));pointer-events:none}
+.es-notch{position:absolute;top:8px;left:50%;width:74px;height:20px;margin-left:-37px;border-radius:999px;background:#000;z-index:4}
+.es-igt{position:absolute;top:38px;left:12px;right:12px;display:flex;align-items:center;justify-content:space-between;z-index:4;color:var(--ink)}
+.es-igt svg{width:20px;height:20px}
+.es-igt .done{font:700 13px/1 var(--body);direction:rtl}
+.es-igr{position:absolute;top:74px;right:10px;display:grid;gap:10px;z-index:4}
+.es-igr span{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:rgba(0,0,0,.38);color:var(--ink);font:800 13px/1 var(--display)}
+.es-igr span.on{background:var(--ink);color:var(--bg);box-shadow:0 0 0 3px rgba(246,242,236,.25)}
+.es-igr svg{width:17px;height:17px}
+.es-safe{position:absolute;top:0;left:0;right:0;height:33.33%;z-index:3;border-bottom:1.5px dashed color-mix(in srgb,var(--cy) 85%,transparent);background:linear-gradient(180deg,transparent,rgba(34,211,238,.10))}
+.es-safe .es-tip{left:50%;bottom:-12px;transform:translateX(-50%);font-size:11px;padding:5px 9px}
+.es-hl{position:absolute;top:21%;left:14px;right:52px;z-index:5;text-align:center;font:900 21px/1.12 var(--display);color:var(--ink);text-shadow:0 2px 12px rgba(0,0,0,.6);direction:rtl}
+.es-hl i{display:inline-block;width:2.5px;height:.95em;vertical-align:-.12em;margin-inline-start:2px;background:var(--cy);animation:esBlink .9s steps(1) infinite}
+.es-mus{position:absolute;left:50%;top:60%;transform:translateX(-50%) rotate(-4deg);z-index:5;display:flex;align-items:center;gap:8px;padding:8px 12px 8px 9px;border-radius:12px;background:var(--ink);color:var(--bg);box-shadow:0 14px 30px -10px rgba(0,0,0,.8);white-space:nowrap}
+.es-mus .cv{width:28px;height:28px;border-radius:7px;background:var(--grad);display:grid;place-items:center;color:var(--on-grad)}
+.es-mus .cv svg{width:15px;height:15px}
+.es-mus .t{display:grid;gap:3px}
+.es-mus .t b{font:800 11.5px/1 var(--body)}
+.es-mus .t small{font:600 9.5px/1 var(--mono);opacity:.6}
+.es-eq{display:flex;align-items:flex-end;gap:2px;height:14px}
+.es-eq i{width:3px;height:100%;border-radius:2px;background:var(--v1);transform-origin:bottom;animation:esEq .9s ease-in-out infinite alternate}
+.es-eq i:nth-child(2){animation-delay:-.3s}.es-eq i:nth-child(3){animation-delay:-.6s}.es-eq i:nth-child(4){animation-delay:-.15s}
+.es-igb{position:absolute;left:12px;right:12px;bottom:14px;z-index:5;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.es-cols{display:flex;gap:5px}
+.es-cols i{width:16px;height:16px;border-radius:50%;box-shadow:0 0 0 2px var(--ink) inset}
+.es-next{font:700 12px/1 var(--body);padding:9px 14px;border-radius:999px;background:var(--ink);color:var(--bg);direction:rtl}
+
+@keyframes esShim{from{background-position:-60% 0}to{background-position:160% 0}}
+@keyframes esPulse{50%{opacity:.35}}
+@keyframes esBlink{55%{opacity:0}}
+@keyframes esEq{from{transform:scaleY(.3)}to{transform:scaleY(1)}}
+
+@media (max-width:560px){
+  .es-fd{grid-template-columns:minmax(0,1fr)}
+  .es-col{display:flex;gap:6px;overflow:hidden;border-right:0;border-bottom:1px solid var(--line);padding:8px}
+  .es-col .h{display:none}
+  .es-fr{flex:none;padding:6px 8px;font-size:11.5px}
+  .es-fr .cnt{display:none}
+  .es-grid{grid-template-columns:repeat(3,minmax(0,1fr));padding:12px 10px}
+  .es-in .es-ptr{left:58%;top:58%}
+  .es-tabsw{padding-inline-end:0;justify-content:flex-end}
+  .es-tabsw .tabs span{padding:6px 9px;font-size:11.5px}
+  .es-app{padding:12px}
+  .es-a4 .es-tip{left:auto;right:14px;bottom:auto;top:54px}
+  .es-ses span,.es-pick .folder small{display:none}
+  .es-pick .folder.on .ck{margin-left:auto}
+  .es-fst span+span{display:none}
+  .es-a5 .es-ptr{left:62%;top:40px}
+  .es-stack>.win+.win{margin-top:12px;margin-inline-start:0}
+  .es-uz{padding:18px 10px 10px;gap:6px}
+  .es-ico svg{width:52px;height:52px}
+  .es-ico b{font-size:11px;white-space:normal;overflow-wrap:anywhere}
+  .es-sheet .row{grid-template-columns:repeat(6,minmax(0,1fr));gap:4px}
+  .es-stack>.win:first-child .win-body{padding-bottom:12px}
+}
+@media (prefers-reduced-motion:reduce){
+  .es-live::before,.es-hl i,.es-caret,.es-eq i,.es-mc .lane .track b{animation:none}
+}
+</style>
+
+<section class="sec es-sec" id="steps" data-section>
+  <div class="wrap">
+
+    <div class="sec-head" data-block data-agent="שלבים" data-log="פתיחת סקשן השלבים · 8 שלבים" data-code='<section class="sec es-sec" id="steps" data-section>' data-sk="title">
+      <div class="fill" style="display:grid;gap:14px">
+        <span class="eyebrow">Step by step · 8 steps</span>
+        <h2>מתיקייה של קליפים <span class="grad-text">לרילים מוכנים</span></h2>
+        <p class="lead">שמונה שלבים. את השניים הראשונים עושים פעם אחת. מהפעם השנייה זה רק לשים קליפים בתיקיות ולשלוח הודעה.</p>
+      </div>
+    </div>
+
+    <ol class="steps">
+
+      <!-- ============ 1 · install ============ -->
+      <li class="step">
+        <span class="step-n" aria-hidden="true">1</span>
+        <div class="step-body">
+          <div data-block data-agent="שלבים" data-log="שלב 1 · התקנת Claude" data-code='<a href="https://claude.ai/download">' data-sk="line">
+            <div class="fill step-txt">
+              <div class="es-kick"><span class="chip" style="--c:var(--ag4)">פעם אחת</span><small>STEP 01</small></div>
+              <h3>מתקינים את Claude</h3>
+              <p>מורידים את האפליקציה מ-<a href="https://claude.ai/download" target="_blank" rel="noopener">claude.ai/download</a>, מתקינים ומתחברים עם החשבון שלכם.</p>
+              <div class="note"><span aria-hidden="true">●</span><span>צריך מנוי בתשלום, <b>Pro</b> או <b>Max</b>. Claude Code כלול בו.</span></div>
+            </div>
+          </div>
+          <div class="es-mk" data-block data-agent="שלבים" data-log="ציור דף ההורדה של Claude" data-code='.es-url{font:500 12px/1 var(--mono)}' data-sk="media">
+            <div class="fill">
+              <div class="win" role="img" aria-label="דף ההורדה של Claude בדפדפן, עם כפתור הורדה למק ולווינדוס">
+                <div class="win-top"><i></i><i></i><i></i>
+                  <span class="es-url"><svg viewBox="0 0 12 12" fill="currentColor" aria-hidden="true"><path d="M3 5V3.6a3 3 0 0 1 6 0V5h.5a1 1 0 0 1 1 1v4.5a1 1 0 0 1-1 1h-7a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1zm1.4 0h3.2V3.6a1.6 1.6 0 0 0-3.2 0z"/></svg>claude.ai/download</span>
+                </div>
+                <div class="es-br">
+                  <span class="es-spark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 1.5l2.2 7.1 7.3 2.4-7.3 2.4L12 22.5l-2.2-9.1L2.5 11l7.3-2.4z"/></svg></span>
+                  <b class="es-br-h">Claude for desktop</b>
+                  <span class="es-br-s">macOS · Windows</span>
+                  <div class="es-br-btns">
+                    <span class="es-pb on"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v9M4 7.5 8 11l4-3.5M3 14h10"/></svg>Download · macOS</span>
+                    <span class="es-pb"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v9M4 7.5 8 11l4-3.5M3 14h10"/></svg>Download · Windows</span>
+                    <svg class="es-ptr" viewBox="0 0 16 22" aria-hidden="true"><path d="M1.5 1.5v16.5l4.2-3.9 2.9 6.6 2.9-1.3-2.9-6.5h5.9z"/></svg>
+                  </div>
+                </div>
+                <div class="es-dlbar">
+                  <span class="f"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 1l1.6 5 5 1.6-5 1.6L8 15l-1.6-5.8-5-1.6 5-1.6z"/></svg></span>
+                  <span class="t"><b>Claude.dmg</b><span class="bar"></span></span>
+                  <span class="ok">✓ done</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+
+      <!-- ============ 2 · download package ============ -->
+      <li class="step">
+        <span class="step-n" aria-hidden="true">2</span>
+        <div class="step-body">
+          <div data-block data-agent="שלבים" data-log="שלב 2 · כפתור הורדת edit-agents.zip" data-code='<a class="btn btn-primary btn-dl es-dl" href="edit-agents.zip"' data-sk="btn">
+            <div class="fill step-txt">
+              <div class="es-kick"><span class="chip" style="--c:var(--ag4)">פעם אחת</span><small>STEP 02</small></div>
+              <h3>מורידים את החבילה</h3>
+              <p>לוחצים פעמיים על הקובץ, ונפתחת תיקייה בשם <code>edit-agents</code>. הסקיל והסוכן העורך כבר בפנים.</p>
+              <a class="btn btn-primary btn-dl es-dl" href="edit-agents.zip" download>
+                <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M6.5 10 12 15.5 17.5 10M4 20h16"/></svg>
+                <span class="es-dl-t"><span>הורדת החבילה</span><span class="meta">edit-agents.zip · 6 KB</span></span>
+              </a>
+            </div>
+          </div>
+          <div class="es-mk" data-block data-agent="שלבים" data-log="ציור פתיחת ה-zip ומה יש בתיקייה" data-code='<span class="nm">.claude</span>' data-sk="media">
+            <div class="fill">
+              <div class="win" role="img" aria-label="התיקייה הורדות: הקובץ edit-agents.zip נפתח לתיקייה edit-agents ובה input, START.txt ו-.claude">
+                <div class="win-top"><i></i><i></i><i></i><span class="win-title">Downloads</span></div>
+                <div class="es-uz">
+                  <div class="es-ico">
+                    <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M14 4h26l12 12v42a2 2 0 0 1-2 2H14a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z" style="fill:var(--surface3)"/><path d="M40 4v10a2 2 0 0 0 2 2h10z" style="fill:var(--line2)"/><g style="fill:var(--muted)"><rect x="28" y="6" width="5" height="4" rx="1"/><rect x="33" y="11" width="5" height="4" rx="1"/><rect x="28" y="16" width="5" height="4" rx="1"/><rect x="33" y="21" width="5" height="4" rx="1"/><rect x="28" y="26" width="5" height="4" rx="1"/></g><rect x="27" y="33" width="12" height="12" rx="3" style="fill:none;stroke:var(--muted);stroke-width:2.5"/><text x="32" y="56" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="8" font-weight="700" style="fill:var(--ink2)">ZIP</text></svg>
+                    <b>edit-agents.zip</b><small>6 KB</small>
+                  </div>
+                  <div class="es-arw"><svg viewBox="0 0 34 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 7h28M24 2l6 5-6 5"/></svg>double<br>click</div>
+                  <div class="es-ico on">
+                    <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M4 14a4 4 0 0 1 4-4h16l6 6h26a4 4 0 0 1 4 4v4H4z" style="fill:color-mix(in srgb,var(--amber) 70%,var(--bg))"/><rect x="4" y="20" width="56" height="36" rx="5" style="fill:var(--amber)"/><rect x="4" y="20" width="56" height="5" rx="2" style="fill:color-mix(in srgb,var(--amber) 70%,var(--ink))"/></svg>
+                    <b>edit-agents</b><small>folder</small>
+                  </div>
+                </div>
+                <div class="es-peek">
+                  <div class="tree">
+                    <div class="n" style="--c:var(--amber)"><svg class="ic" viewBox="0 0 18 18" fill="currentColor" aria-hidden="true"><path d="M1 4.5A1.5 1.5 0 0 1 2.5 3h4l1.6 1.6h7.4A1.5 1.5 0 0 1 17 6.1v7.4a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 1 13.5z"/></svg><span class="nm">input</span><span class="tag">הקליפים כאן</span></div>
+                    <div class="n d1" style="--c:var(--amber)"><svg class="ic" viewBox="0 0 18 18" fill="currentColor" aria-hidden="true"><path d="M1 4.5A1.5 1.5 0 0 1 2.5 3h4l1.6 1.6h7.4A1.5 1.5 0 0 1 17 6.1v7.4a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 1 13.5z"/></svg><span class="nm">reel-1 · reel-2</span></div>
+                    <div class="n" style="--c:var(--cy)"><svg class="ic" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 1.5h7l3.5 3.5v11.5h-10.5z M6.5 9h5M6.5 12h5"/></svg><span class="nm">START.txt</span><span class="tag">ההודעה</span></div>
+                    <div class="n hid" style="--c:var(--v2)"><svg class="ic" viewBox="0 0 18 18" fill="currentColor" aria-hidden="true"><path d="M1 4.5A1.5 1.5 0 0 1 2.5 3h4l1.6 1.6h7.4A1.5 1.5 0 0 1 17 6.1v7.4a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 1 13.5z"/></svg><span class="nm">.claude</span><span class="tag">מוסתרת · תקין</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+
+      <!-- ============ 3 · arrange clips ============ -->
+      <li class="step">
+        <span class="step-n" aria-hidden="true">3</span>
+        <div class="step-body">
+          <div data-block data-agent="שלבים" data-log="שלב 3 · תיקייה לכל ריל ב-input" data-code='<code>input/reel-1</code>' data-sk="line">
+            <div class="fill step-txt">
+              <div class="es-kick"><span class="chip" style="--c:var(--ag2)">בכל פעם</span><small>STEP 03</small></div>
+              <h3>מסדרים את הקליפים</h3>
+              <ul>
+                <li>בתוך <code>input</code> יש <code>reel-1</code> ו-<code>reel-2</code>. כל תיקייה היא ריל אחד.</li>
+                <li>שמים בכל תיקייה את הקליפים של הריל הזה, <code>mp4</code> או <code>mov</code> מהטלפון.</li>
+                <li>רוצים מוזיקה? קובץ שיר אחד באותה תיקייה, והעורך חותך על הקצב שלו. לא חובה.</li>
+                <li>עוד ריל? יוצרים <code>reel-3</code>, <code>reel-4</code> וכן הלאה.</li>
+              </ul>
+              <div class="note"><span aria-hidden="true">●</span><span>הקבצים המקוריים <b>לא משתנים</b>. העורך רק קורא אותם.</span></div>
+            </div>
+          </div>
+          <div class="es-mk es-in" data-block data-agent="שלבים" data-log="ציור Finder · reel-1 מלאה בקליפים" data-code='.es-th{position:relative;aspect-ratio:9/16;…}' data-sk="media">
+            <div class="fill">
+              <div class="win" role="img" aria-label="Finder: התיקייה input/reel-1 עם חמישה קליפים וקובץ שיר אחד, ולידה reel-2 ו-reel-3">
+                <div class="win-top"><i></i><i></i><i></i>
+                  <span class="es-ftb"><span class="nav"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M10 3 5 8l5 5"/></svg><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="m6 3 5 5-5 5"/></svg></span><b>reel-1</b></span>
+                </div>
+                <div class="es-fd">
+                  <div class="es-col">
+                    <span class="h">input</span>
+                    <span class="es-fr on"><svg viewBox="0 0 18 18" style="fill:var(--amber)" aria-hidden="true"><path d="M1 4.5A1.5 1.5 0 0 1 2.5 3h4l1.6 1.6h7.4A1.5 1.5 0 0 1 17 6.1v7.4a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 1 13.5z"/></svg><span>reel-1</span><span class="cnt">6</span></span>
+                    <span class="es-fr"><svg viewBox="0 0 18 18" style="fill:var(--amber)" aria-hidden="true"><path d="M1 4.5A1.5 1.5 0 0 1 2.5 3h4l1.6 1.6h7.4A1.5 1.5 0 0 1 17 6.1v7.4a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 1 13.5z"/></svg><span>reel-2</span><span class="cnt">4</span></span>
+                    <span class="es-fr new"><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M9 4v10M4 9h10"/></svg><span>reel-3</span></span>
+                  </div>
+                  <div class="es-grid">
+                    <div class="es-cell sel"><span class="es-box"><span class="es-th p es-s1"><span class="es-dur">0:08</span></span></span><b>IMG_4821.MOV</b></div>
+                    <div class="es-cell"><span class="es-box"><span class="es-th es-s2"><span class="es-dur">0:05</span></span></span><b>IMG_4822.MOV</b></div>
+                    <div class="es-cell"><span class="es-box"><span class="es-th p es-s3"><span class="es-dur">0:11</span></span></span><b>IMG_4830.MOV</b></div>
+                    <div class="es-cell"><span class="es-box"><span class="es-th es-s4"><span class="es-dur">0:04</span></span></span><b>IMG_4833.MOV</b></div>
+                    <div class="es-cell"><span class="es-box"><span class="es-th p es-s6"><span class="es-dur">0:07</span></span></span><b>IMG_4836.MOV</b></div>
+                    <div class="es-cell"><span class="es-box"><span class="es-song"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9 17.5V5.2l11-2.2v12.3a3 3 0 1 1-2-2.8V6.4l-7 1.4v9.7a3 3 0 1 1-2-2.8z"/></svg><span class="es-wave"><i style="height:40%"></i><i style="height:90%"></i><i style="height:60%"></i><i style="height:100%"></i><i style="height:50%"></i><i style="height:75%"></i></span></span></span><b>song.mp3</b></div>
+                  </div>
+                </div>
+                <div class="es-fst"><span>edit-agents › input › reel-1</span><span>5 clips · 1 song</span></div>
+              </div>
+              <span class="es-tip" aria-hidden="true">תיקייה אחת = ריל אחד</span>
+              <svg class="es-ptr" viewBox="0 0 16 22" aria-hidden="true"><path d="M1.5 1.5v16.5l4.2-3.9 2.9 6.6 2.9-1.3-2.9-6.5h5.9z"/></svg>
+            </div>
+          </div>
+        </div>
+      </li>
+
+      <!-- ============ 4 · open in Code ============ -->
+      <li class="step">
+        <span class="step-n" aria-hidden="true">4</span>
+        <div class="step-body">
+          <div data-block data-agent="שלבים" data-log="שלב 4 · לשונית Code ובחירת התיקייה" data-code='<span class="on">Code</span>' data-sk="line">
+            <div class="fill step-txt">
+              <div class="es-kick"><span class="chip" style="--c:var(--ag2)">בכל פעם</span><small>STEP 04</small></div>
+              <h3>פותחים את התיקייה ב-Code</h3>
+              <ul>
+                <li>באפליקציה עוברים ללשונית <b>Code</b> שבראש החלון.</li>
+                <li>בוחרים תיקייה ← <code>edit-agents</code>, זו שנפתחה מה-zip.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="es-mk es-a4" data-block data-agent="שלבים" data-log="ציור אפליקציית Claude · Code ותיקייה" data-code='<div class="tabs"><span class="on">Code</span></div>' data-sk="media">
+            <div class="fill">
+              <div class="win" role="img" aria-label="אפליקציית Claude בלשונית Code, בחירת התיקייה edit-agents">
+                <div class="win-top"><i></i><i></i><i></i>
+                  <span class="es-tabsw"><span class="tabs"><span>Chat</span><span>Cowork</span><span class="on">Code</span></span></span>
+                </div>
+                <div class="es-app">
+                  <div class="es-ses"><b>New session</b><span>Select folder</span></div>
+                  <div class="es-pick">
+                    <span class="h"><span>RECENT</span><span>Browse…</span></span>
+                    <span class="folder"><svg viewBox="0 0 18 18" fill="currentColor" aria-hidden="true"><path d="M1 4.5A1.5 1.5 0 0 1 2.5 3h4l1.6 1.6h7.4A1.5 1.5 0 0 1 17 6.1v7.4a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 1 13.5z"/></svg>Desktop<small>~/Desktop</small></span>
+                    <span class="folder on"><svg viewBox="0 0 18 18" fill="currentColor" aria-hidden="true"><path d="M1 4.5A1.5 1.5 0 0 1 2.5 3h4l1.6 1.6h7.4A1.5 1.5 0 0 1 17 6.1v7.4a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 1 13.5z"/></svg>edit-agents<small>~/Downloads/edit-agents</small><span class="ck">✓</span></span>
+                    <span class="folder"><svg viewBox="0 0 18 18" fill="currentColor" aria-hidden="true"><path d="M1 4.5A1.5 1.5 0 0 1 2.5 3h4l1.6 1.6h7.4A1.5 1.5 0 0 1 17 6.1v7.4a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 1 13.5z"/></svg>Documents<small>~/Documents</small></span>
+                  </div>
+                  <div class="input">
+                    <div class="txt"><i class="es-caret"></i></div>
+                    <div class="row">
+                      <span class="es-fchip"><svg viewBox="0 0 18 18" fill="currentColor" aria-hidden="true"><path d="M1 4.5A1.5 1.5 0 0 1 2.5 3h4l1.6 1.6h7.4A1.5 1.5 0 0 1 17 6.1v7.4a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 1 13.5z"/></svg>edit-agents</span>
+                      <span class="send"><svg viewBox="0 0 16 16" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 13V3M3.5 7.5 8 3l4.5 4.5"/></svg></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <span class="es-tip v" aria-hidden="true">התיקייה מה-zip</span>
+              <svg class="es-ptr" viewBox="0 0 16 22" aria-hidden="true"><path d="M1.5 1.5v16.5l4.2-3.9 2.9 6.6 2.9-1.3-2.9-6.5h5.9z"/></svg>
+            </div>
+          </div>
+        </div>
+      </li>
+
+      <!-- ============ 5 · model ============ -->
+      <li class="step">
+        <span class="step-n" aria-hidden="true">5</span>
+        <div class="step-body">
+          <div data-block data-agent="שלבים" data-log="שלב 5 · Fable 5.2, גיבוי Opus 5.5" data-code='<div class="opt on">Claude Fable 5.2</div>' data-sk="line">
+            <div class="fill step-txt">
+              <div class="es-kick"><span class="chip" style="--c:var(--ag1)">שנייה אחת</span><small>STEP 05</small></div>
+              <h3>בוחרים Claude Fable 5.2</h3>
+              <p>ליד תיבת הכתיבה יש בחירת מודל. בוחרים <b>Claude Fable 5.2</b>.</p>
+              <div class="note"><span aria-hidden="true">●</span><span>לא מופיע אצלכם, או שהגעתם למגבלת השימוש שלו? בוחרים <b>Claude Opus 5.5</b>. החבילה נבדקה עליו.</span></div>
+            </div>
+          </div>
+          <div class="es-mk es-a5" data-block data-agent="שלבים" data-log="ציור תפריט מודל · Fable מסומן" data-code='.menu .opt.on{background:rgba(168,85,247,.16)}' data-sk="media">
+            <div class="fill">
+              <div class="win" role="img" aria-label="תפריט בחירת מודל: Claude Fable 5.2 מסומן, Claude Opus 5.5 כגיבוי">
+                <div class="win-top"><i></i><i></i><i></i>
+                  <span class="es-tabsw"><span class="tabs"><span>Chat</span><span>Cowork</span><span class="on">Code</span></span></span>
+                </div>
+                <div class="es-app">
+                  <div class="es-mwrap">
+                    <div class="menu">
+                      <div class="es-mn">MODEL</div>
+                      <div class="opt on"><span>Claude Fable 5.2<small class="es-he">הבחירה למדריך הזה</small></span><span class="check">✓</span></div>
+                      <div class="opt"><span>Claude Opus 5.5<small class="es-he">גיבוי, החבילה נבדקה עליו</small></span></div>
+                    </div>
+                    <svg class="es-ptr" viewBox="0 0 16 22" aria-hidden="true"><path d="M1.5 1.5v16.5l4.2-3.9 2.9 6.6 2.9-1.3-2.9-6.5h5.9z"/></svg>
+                    <div class="input">
+                      <div class="txt"><i class="es-caret"></i></div>
+                      <div class="row">
+                        <span class="model es-model on">Claude Fable 5.2 <svg viewBox="0 0 12 12" width="10" height="10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="m3 7.5 3-3 3 3"/></svg></span>
+                        <span class="send"><svg viewBox="0 0 16 16" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 13V3M3.5 7.5 8 3l4.5 4.5"/></svg></span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+
+      <!-- ============ 6 · START prompt ============ -->
+      <li class="step">
+        <span class="step-n" aria-hidden="true">6</span>
+        <div class="step-body">
+          <div data-block data-agent="שלבים" data-log="שלב 6 · הודעת START עם כפתור העתקה" data-code='<button class="copy" type="button" data-copy="edit-start">' data-sk="line">
+            <div class="fill step-txt">
+              <div class="es-kick"><span class="chip" style="--c:var(--ag2)">בכל פעם</span><small>STEP 06</small></div>
+              <h3>שולחים הודעה אחת</h3>
+              <div class="prompt">
+                <div class="prompt-h"><b>START.txt</b><button class="copy" type="button" data-copy="edit-start">העתקה</button></div>
+                <pre id="edit-start">תערוך לי רילים עם הסוכנים.
+
+שמתי את הקליפים בתיקיות בתוך input (כל תיקייה = ריל אחד).
+אורך כל ריל: <span class="ph">[למשל 12 שניות]</span></pre>
+              </div>
+              <p>מחליפים את מה שבצהוב באורך שאתם רוצים, ושולחים.</p>
+              <div class="note warn"><span aria-hidden="true">●</span><span><b>בפעם הראשונה</b> Claude בודק אם מותקן אצלכם ffmpeg, כלי חינמי לעריכת וידאו. אם הוא חסר, Claude מתקין אותו בעצמו. ב-Mac המחשב יכול לבקש סיסמה: מקלידים את סיסמת המחשב. ב-Windows ההתקנה היא עם winget, ואחריה פותחים את Claude מחדש.</span></div>
+            </div>
+          </div>
+          <div class="es-mk" data-block data-agent="שלבים" data-log="ציור שליחת ההודעה והתקנת ffmpeg" data-code='<span class="p">$</span> brew install ffmpeg' data-sk="media">
+            <div class="fill">
+              <div class="win" role="img" aria-label="ההודעה נשלחה, ו-Claude מתקין את ffmpeg בטרמינל ומבקש את סיסמת המחשב">
+                <div class="win-top"><i></i><i></i><i></i><span class="win-title">Claude Code</span></div>
+                <div class="es-app">
+                  <div class="es-msg es-he">תערוך לי רילים עם הסוכנים.
+שמתי את הקליפים בתיקיות בתוך input (כל תיקייה = ריל אחד).
+אורך כל ריל: <span class="f">12 שניות</span></div>
+                  <span class="es-sent">sent · Claude Fable 5.2</span>
+                  <div class="es-cl">
+                    <span class="av" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 1.5l2.2 7.1 7.3 2.4-7.3 2.4L12 22.5l-2.2-9.1L2.5 11l7.3-2.4z"/></svg></span>
+                    <p class="es-he">חסר ffmpeg, כלי חינמי לעריכת וידאו. מתקין אותו עכשיו. אם המחשב מבקש סיסמה, מקלידים את סיסמת המחשב.</p>
+                  </div>
+                  <div class="es-tool">
+                    <div class="h"><b>Bash</b><span>running…</span></div>
+                    <div class="term"><span class="p">$</span> ffmpeg -version
+<span class="dim">zsh: command not found: ffmpeg</span>
+<span class="p">$</span> <span class="c">/bin/bash -c "$(curl -fsSL …/install.sh)"</span>
+<span class="es-pw">Password: <span class="dots">••••••••</span><span class="k">סיסמת המחשב</span></span>
+<span class="p">$</span> brew install ffmpeg
+<span class="dim">==&gt; Downloading ffmpeg</span><span class="es-pbar"><b></b></span><span class="ok">✓ ffmpeg installed</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+
+      <!-- ============ 7 · editors in parallel ============ -->
+      <li class="step">
+        <span class="step-n" aria-hidden="true">7</span>
+        <div class="step-body">
+          <div data-block data-agent="שלבים" data-log="שלב 7 · עורך לכל ריל, כולם במקביל" data-code='<code>output/reel-1.mp4</code>' data-sk="line">
+            <div class="fill step-txt">
+              <div class="es-kick"><span class="chip" style="--c:var(--ag3)">Claude עובד</span><small>STEP 07</small></div>
+              <h3>העורכים עובדים במקביל</h3>
+              <p>Claude פותח עורך לכל תיקייה, כולם באותו רגע. כל עורך מסתכל על הקליפים שלו פריים אחרי פריים, בוחר פתיחה שעוצרת גלילה, חותך על הקצב ובודק את עצמו: בלי פריים שחור ובלי ראש חתוך.</p>
+              <p>בסוף נפתחת התיקייה <code>output</code>, ובה <code>reel-1.mp4</code>, <code>reel-2.mp4</code>… בגודל 1080×1920, מוכנים להעלאה.</p>
+            </div>
+          </div>
+          <div class="es-mk" data-block data-agent="שלבים" data-log="ציור מסלולי עורכים ותיקיית output" data-code='<div class="lane" style="--c:var(--ag2)">' data-sk="media">
+            <div class="fill es-stack">
+              <div class="win" role="img" aria-label="שלושה עורכים עובדים במקביל, אחד לכל ריל, ו-Claude המנהל מחכה להם">
+                <div class="win-top"><i></i><i></i><i></i><span class="win-title">reel-cut</span></div>
+                <div class="win-body">
+                  <div class="es-mch"><b class="es-he">3 עורכים במקביל</b><span class="es-live">LIVE</span></div>
+                  <div class="mc es-mc">
+                    <div class="lane lead" style="--c:var(--ag1)"><span class="av">C</span><div><div class="who">Claude · מנהל</div><div class="what">3 editors launched in one message</div></div><span class="st">LEAD</span></div>
+                    <div class="lane" style="--c:var(--ag2)"><span class="av">1</span><div><div class="who">עורך · reel-1</div><div class="what">sheet_IMG_4821.jpg · looking</div></div><span class="st">38%</span><span class="track"><b style="--w:38%"></b></span></div>
+                    <div class="lane" style="--c:var(--ag3)"><span class="av">2</span><div><div class="who">עורך · reel-2</div><div class="what">plan.md · cuts on the beat</div></div><span class="st">64%</span><span class="track"><b style="--w:64%"></b></span></div>
+                    <div class="lane done" style="--c:var(--ag4)"><span class="av">3</span><div><div class="who">עורך · reel-3</div><div class="what">edge check · final.jpg clean</div></div><span class="st">✓ done</span><span class="track"><b style="--w:100%"></b></span></div>
+                  </div>
+                  <div class="es-sheet">
+                    <div class="h"><span>reel-1 · sheet_IMG_4821.jpg</span><span>fps=2</span></div>
+                    <div class="row">
+                      <span class="es-fm"><span class="es-th es-s1"></span><small>0.0s</small></span>
+                      <span class="es-fm hook"><span class="es-th p es-s1"></span><small>HOOK</small></span>
+                      <span class="es-fm"><span class="es-th p es-s1"></span><small>1.0s</small></span>
+                      <span class="es-fm"><span class="es-th es-s1"></span><small>1.5s</small></span>
+                      <span class="es-fm"><span class="es-th p es-s1"></span><small>2.0s</small></span>
+                      <span class="es-fm"><span class="es-th es-s1"></span><small>2.5s</small></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="win es-out" role="img" aria-label="Finder: התיקייה output עם reel-1.mp4, reel-2.mp4 ו-reel-3.mp4">
+                <div class="win-top"><i></i><i></i><i></i>
+                  <span class="es-ftb"><span class="nav"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M10 3 5 8l5 5"/></svg><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="m6 3 5 5-5 5"/></svg></span><b>output</b></span>
+                </div>
+                <div class="es-fd">
+                  <div class="es-col">
+                    <span class="h">edit-agents</span>
+                    <span class="es-fr"><svg viewBox="0 0 18 18" style="fill:var(--amber)" aria-hidden="true"><path d="M1 4.5A1.5 1.5 0 0 1 2.5 3h4l1.6 1.6h7.4A1.5 1.5 0 0 1 17 6.1v7.4a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 1 13.5z"/></svg><span>input</span></span>
+                    <span class="es-fr on"><svg viewBox="0 0 18 18" style="fill:var(--amber)" aria-hidden="true"><path d="M1 4.5A1.5 1.5 0 0 1 2.5 3h4l1.6 1.6h7.4A1.5 1.5 0 0 1 17 6.1v7.4a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 1 13.5z"/></svg><span>output</span><span class="cnt">3</span></span>
+                    <span class="es-fr dim"><svg viewBox="0 0 18 18" style="fill:var(--amber)" aria-hidden="true"><path d="M1 4.5A1.5 1.5 0 0 1 2.5 3h4l1.6 1.6h7.4A1.5 1.5 0 0 1 17 6.1v7.4a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 1 13.5z"/></svg><span>work</span></span>
+                  </div>
+                  <div class="es-grid">
+                    <div class="es-cell"><span class="es-box"><span class="es-th p es-s1"><span class="es-play"></span><span class="es-dur">0:12</span></span></span><b>reel-1.mp4</b></div>
+                    <div class="es-cell"><span class="es-box"><span class="es-th es-s2"><span class="es-play"></span><span class="es-dur">0:12</span></span></span><b>reel-2.mp4</b></div>
+                    <div class="es-cell"><span class="es-box"><span class="es-th p es-s5"><span class="es-play"></span><span class="es-dur">0:12</span></span></span><b>reel-3.mp4</b></div>
+                  </div>
+                </div>
+                <div class="es-fst"><span>edit-agents › output</span><span class="es-res">1080×1920 · 9:16</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+
+      <!-- ============ 8 · instagram ============ -->
+      <li class="step">
+        <span class="step-n" aria-hidden="true">8</span>
+        <div class="step-body">
+          <div data-block data-agent="שלבים" data-log="שלב 8 · כותרת וצליל באינסטגרם" data-code='<span class="on">Aa</span>' data-sk="line">
+            <div class="fill step-txt">
+              <div class="es-kick"><span class="chip" style="--c:var(--ag3)">באפליקציה</span><small>STEP 08</small></div>
+              <h3>מעלים לאינסטגרם</h3>
+              <p>את הכותרת והמוזיקה מוסיפים באפליקציה של אינסטגרם: <b>Aa</b> לטקסט, ואייקון המוזיקה לצליל טרנדי. אין טקסט צרוב בסרטון, וככה זה נראה טבעי בפיד.</p>
+              <div class="note"><span aria-hidden="true">●</span><span>העורך משאיר את <b>השליש העליון</b> של הפתיחה נקי, בדיוק בשביל הכותרת.</span></div>
+            </div>
+          </div>
+          <div class="es-mk" data-block data-agent="שלבים" data-log="ציור עורך אינסטגרם 9:16 · Aa וצליל" data-code='.es-safe{height:33.33%;border-bottom:1.5px dashed…}' data-sk="media">
+            <div class="fill es-phw">
+              <div class="win es-phone" role="img" aria-label="עורך הריל של אינסטגרם: כלי הטקסט Aa פעיל, כותרת בשליש העליון ומדבקת מוזיקה">
+                <div class="es-scr p es-s1">
+                  <span class="es-notch"></span>
+                  <div class="es-igt">
+                    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.5 4 6.5 10l6 6"/></svg>
+                    <span class="done">סיום</span>
+                  </div>
+                  <div class="es-igr">
+                    <span class="on">Aa</span>
+                    <span><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9 17.5V5.2l11-2.2v12.3a3 3 0 1 1-2-2.8V6.4l-7 1.4v9.7a3 3 0 1 1-2-2.8z"/></svg></span>
+                    <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16v9l-7 7H4z M13 20v-7h7"/></svg></span>
+                    <span><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l1.9 6.1L20 10l-6.1 1.9L12 18l-1.9-6.1L4 10l6.1-1.9z"/></svg></span>
+                  </div>
+                  <div class="es-safe"><span class="es-tip" aria-hidden="true">שליש עליון נקי לכותרת</span></div>
+                  <div class="es-hl">הריל הזה נערך לבד<i aria-hidden="true"></i></div>
+                  <div class="es-mus">
+                    <span class="cv"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9 17.5V5.2l11-2.2v12.3a3 3 0 1 1-2-2.8V6.4l-7 1.4v9.7a3 3 0 1 1-2-2.8z"/></svg></span>
+                    <span class="t"><b>Trending sound</b><small>Add to reel</small></span>
+                    <span class="es-eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+                  </div>
+                  <div class="es-igb">
+                    <span class="es-cols" aria-hidden="true"><i style="background:var(--ink)"></i><i style="background:var(--bg)"></i><i style="background:var(--cy)"></i><i style="background:var(--amber)"></i><i style="background:var(--pink)"></i></span>
+                    <span class="es-next">הבא</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+
+    </ol>
+  </div>
+</section>
+<style>
+/* ===== edit · חבילה — every selector prefixed .ep- ===== */
+.ep-grid{display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);gap:clamp(18px,3vw,32px);align-items:stretch}
+.ep-side > .fill{position:sticky;top:86px;display:grid;gap:12px}
+.ep-cards{display:grid;gap:clamp(14px,2vw,20px);align-content:start}
+.ep-cards > [data-block] > .fill{height:100%}
+
+/* drawn Finder */
+.ep-bar{display:flex;align-items:center;gap:10px;padding:0 2px 12px;margin-bottom:8px;border-bottom:1px solid var(--line)}
+.ep-nav{display:flex;gap:4px}
+.ep-nav span{width:26px;height:26px;border-radius:8px;display:grid;place-items:center;color:var(--muted);box-shadow:0 0 0 1px var(--line) inset;font:600 14px/1 var(--mono)}
+.ep-path{flex:1;min-width:0;display:flex;align-items:center;gap:6px;font:600 13px/1 var(--mono);color:var(--ink);overflow:hidden;white-space:nowrap}
+.ep-path svg{width:16px;height:16px;flex:none;color:var(--amber)}
+.ep-kbd{display:inline-flex;align-items:center;gap:6px;font:600 11.5px/1 var(--mono);color:var(--cy);padding:6px 9px;border-radius:8px;background:color-mix(in srgb,var(--cy) 10%,transparent);box-shadow:0 0 0 1px color-mix(in srgb,var(--cy) 35%,transparent) inset;white-space:nowrap}
+.ep-kbd::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--cy);box-shadow:0 0 8px var(--cy)}
+.ep-tree .n{transition:background .2s,box-shadow .2s}
+.ep-tree .d4{padding-left:96px}
+.ep-tree .ep-hid{opacity:.62}
+.ep-tree .ep-hid .nm{font-style:italic}
+.ep-tree .ep-ghost{opacity:.7;outline:1px dashed var(--line2);outline-offset:-1px}
+.ep-tree .ep-mut .tag{color:var(--ink2)}
+.ep-status{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:10px;padding-top:12px;border-top:1px solid var(--line);font:500 12px/1.3 var(--mono);color:var(--muted)}
+
+/* file cards */
+.ep-card{--c:var(--ag1);display:grid;gap:16px;align-content:start;overflow:hidden;transition:box-shadow .25s,transform .25s}
+.ep-card::after{content:"";position:absolute;inset:0 0 auto;height:2px;background:linear-gradient(90deg,transparent,var(--c),transparent)}
+.ep-fh{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.ep-file{display:inline-flex;align-items:center;gap:8px;font:600 13px/1 var(--mono);direction:ltr;color:var(--c);padding:8px 11px;border-radius:10px;background:color-mix(in srgb,var(--c) 12%,transparent);box-shadow:0 0 0 1px color-mix(in srgb,var(--c) 40%,transparent) inset;white-space:nowrap}
+.ep-file svg{width:15px;height:15px;flex:none}
+.ep-no{font:600 12px/1 var(--mono);color:var(--muted);direction:ltr;letter-spacing:.08em}
+.ep-card h3 em{font-style:normal;color:var(--c)}
+.ep-card > p{margin:0;color:var(--ink2)}
+.ep-list{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.ep-list li{display:grid;grid-template-columns:24px minmax(0,1fr);gap:12px;color:var(--ink2);font-size:16.5px;line-height:1.55}
+.ep-list li::before{content:"✓";width:24px;height:24px;margin-top:1px;border-radius:8px;display:grid;place-items:center;font:800 12px/1 var(--body);color:var(--c);background:color-mix(in srgb,var(--c) 15%,transparent);box-shadow:0 0 0 1px color-mix(in srgb,var(--c) 40%,transparent) inset}
+.ep-list b{color:var(--ink)}
+.ep-term{border-radius:14px;background:var(--bg);box-shadow:0 0 0 1px var(--line) inset;padding:12px 14px;direction:ltr;text-align:left;font-size:12.5px;line-height:1.85}
+.ep-term .pk{color:var(--ag3)}
+
+/* contact sheet */
+.ep-sheet{direction:ltr;text-align:left;border-radius:14px;background:var(--bg);box-shadow:0 0 0 1px var(--line) inset;padding:10px}
+.ep-sh-top{display:flex;justify-content:space-between;gap:8px;margin-bottom:9px;font:500 11.5px/1 var(--mono);color:var(--muted)}
+.ep-sh-top b{color:var(--ink2);font-weight:600}
+.ep-tiles{display:grid;grid-template-columns:repeat(6,1fr);gap:5px}
+.ep-tiles i{--t:var(--v2);--x:50%;position:relative;display:block;aspect-ratio:9/16;border-radius:6px;overflow:hidden;background:radial-gradient(52% 34% at var(--x) 58%,color-mix(in srgb,var(--t) 62%,transparent),transparent 72%),linear-gradient(180deg,var(--surface3),var(--bg2));box-shadow:0 0 0 1px var(--line) inset}
+.ep-tiles i:nth-child(n+5){--t:var(--cy)}
+.ep-tiles i:nth-child(2n){--x:40%}
+.ep-tiles i:nth-child(3n){--x:63%}
+.ep-tiles i b{position:absolute;inset:auto 0 4px;text-align:center;font:600 8.5px/1 var(--mono);color:var(--ink2)}
+.ep-tiles .bl{filter:blur(1.4px);opacity:.5}
+.ep-tiles .dk{filter:brightness(.32)}
+.ep-tiles .cut{box-shadow:inset 3px 0 0 var(--pink),0 0 0 1px var(--line) inset}
+.ep-tiles .hk{box-shadow:0 0 0 2px var(--ag2) inset,0 0 18px -4px var(--ag2)}
+.ep-legend{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;direction:rtl}
+.ep-legend .chip{font-size:12px}
+
+/* editor flow */
+.ep-flow{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.ep-flow li{display:grid;gap:5px;padding:11px 10px;border-radius:12px;background:color-mix(in srgb,var(--c) 7%,transparent);box-shadow:0 0 0 1px var(--line) inset;font:700 15px/1.2 var(--body);color:var(--ink)}
+.ep-flow li i{font:700 11px/1 var(--mono);font-style:normal;color:var(--c);letter-spacing:.08em}
+.ep-flow li small{font:500 11px/1.2 var(--mono);color:var(--muted);direction:ltr;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* input + START card */
+.ep-folders{display:grid;gap:8px}
+.ep-folders .folder{justify-content:space-between;direction:ltr}
+.ep-folders .folder > span{display:flex;align-items:center;gap:10px;min-width:0}
+.ep-folders .folder em{font:600 12.5px/1.3 var(--body);font-style:normal;color:var(--muted);direction:rtl;text-align:right}
+.ep-folders .ep-more{outline:1px dashed var(--line2);outline-offset:-1px;box-shadow:none;background:transparent}
+.ep-q{margin:0;padding:12px 14px;border-radius:12px;background:color-mix(in srgb,var(--ag5) 8%,transparent);box-shadow:inset -3px 0 0 var(--ag5);color:var(--ink);font-weight:600}
+.ep-q .ph{color:var(--amber);background:color-mix(in srgb,var(--amber) 12%,transparent);border-radius:6px;padding:0 4px}
+
+/* tree <-> card linking (hover either side) */
+.ep-inside:has(.ep-card[data-f="skill"]:hover) .n[data-f="skill"],
+.ep-inside:has(.ep-card[data-f="editor"]:hover) .n[data-f="editor"],
+.ep-inside:has(.ep-card[data-f="input"]:hover) .n[data-f="input"],
+.ep-inside:has(.ep-card[data-f="input"]:hover) .n[data-f="start"]{background:color-mix(in srgb,var(--c) 14%,transparent);box-shadow:0 0 0 1px color-mix(in srgb,var(--c) 45%,transparent) inset}
+.ep-inside:has(.n[data-f="skill"]:hover) .ep-card[data-f="skill"],
+.ep-inside:has(.n[data-f="editor"]:hover) .ep-card[data-f="editor"],
+.ep-inside:has(.n[data-f="input"]:hover) .ep-card[data-f="input"],
+.ep-inside:has(.n[data-f="start"]:hover) .ep-card[data-f="input"]{box-shadow:0 0 0 1px color-mix(in srgb,var(--c) 55%,transparent) inset,0 24px 60px -20px color-mix(in srgb,var(--c) 45%,transparent);transform:translateY(-2px)}
+
+/* fixes */
+.ep-fix{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:clamp(20px,4vw,56px);align-items:center}
+.ep-fix h2{font-size:clamp(34px,5.2vw,64px)}
+.ep-fixbox{display:grid;gap:16px}
+.ep-pf{display:flex;align-items:center;gap:10px;padding:12px 16px 16px;border-top:1px solid var(--line);color:var(--muted);font-size:14.5px;line-height:1.5}
+.ep-pf .ph{color:var(--amber)}
+.ep-pf .sw{width:12px;height:12px;flex:none;border-radius:4px;background:color-mix(in srgb,var(--amber) 30%,transparent);box-shadow:0 0 0 1px var(--amber) inset}
+
+/* stuck */
+.ep-stuck{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:clamp(20px,4vw,56px);align-items:start}
+.ep-stuck > [data-block]:first-child > .fill{position:sticky;top:86px}
+.ep-sq{display:flex;align-items:center;gap:14px;min-width:0}
+.ep-sq i{font:700 12px/1 var(--mono);font-style:normal;color:var(--cy);letter-spacing:.06em;direction:ltr;flex:none;width:30px;height:30px;border-radius:9px;display:grid;place-items:center;background:color-mix(in srgb,var(--cy) 10%,transparent);box-shadow:0 0 0 1px color-mix(in srgb,var(--cy) 30%,transparent) inset}
+.ep-faq details>div{display:grid;gap:10px;padding-inline-start:64px}
+.ep-faq details>div p{margin:0}
+.ep-say{display:block;padding:10px 14px;border-radius:12px;background:color-mix(in srgb,var(--v2) 10%,transparent);box-shadow:inset -3px 0 0 var(--v2);color:var(--ink);font-weight:700}
+.ep-os{display:grid;gap:8px}
+.ep-os > div{display:grid;grid-template-columns:76px minmax(0,1fr);gap:10px;align-items:start}
+.ep-os b{font:700 12px/1 var(--mono);color:var(--ink);padding:7px 0;border-radius:8px;text-align:center;box-shadow:0 0 0 1px var(--line2) inset;direction:ltr}
+.ep-os .ep-say{padding:6px 12px}
+
+/* end band */
+.ep-end{grid-template-columns:minmax(0,1.35fr) minmax(0,.65fr);align-items:center;justify-items:stretch;gap:clamp(24px,4vw,48px);overflow:hidden}
+.ep-endtxt{display:grid;gap:18px;justify-items:start}
+.ep-endtxt h2{max-width:14ch}
+.ep-reels{display:flex;justify-content:center;align-items:center;padding-block:10px}
+.ep-ph{--c:var(--ag4);width:clamp(118px,13vw,156px);aspect-ratio:9/16;border-radius:22px;padding:5px;background:var(--surface2);box-shadow:0 0 0 1px var(--line2) inset,0 30px 60px -24px var(--bg),0 0 60px -20px var(--c);transform:rotate(-5deg) translateY(6px);flex:none}
+.ep-ph + .ep-ph{--c:var(--ag3);transform:rotate(5deg) translateY(-8px);margin-inline-start:-18px}
+.ep-scr{position:relative;height:100%;border-radius:18px;overflow:hidden;background:radial-gradient(60% 38% at 50% 64%,color-mix(in srgb,var(--c) 58%,transparent),transparent 72%),linear-gradient(180deg,var(--surface3),var(--bg))}
+.ep-safe{position:absolute;inset:9% 10% auto;height:22%;border-radius:9px;outline:1px dashed color-mix(in srgb,var(--ink) 38%,transparent);display:grid;place-items:center;font:600 11px/1.2 var(--body);color:var(--ink2);text-align:center;padding:4px}
+.ep-meta{position:absolute;inset:auto 9px 10px;display:grid;gap:6px;direction:ltr;text-align:left}
+.ep-meta b{font:700 11px/1 var(--mono);color:var(--ink)}
+.ep-meta span{font:500 9.5px/1 var(--mono);color:var(--muted)}
+.ep-meta u{display:block;height:3px;border-radius:3px;background:color-mix(in srgb,var(--ink) 12%,transparent);overflow:hidden;text-decoration:none}
+.ep-meta u::before{content:"";display:block;height:100%;width:100%;background:var(--c);box-shadow:0 0 10px var(--c)}
+
+@media (max-width:900px){
+  .ep-grid,.ep-fix,.ep-stuck,.ep-end{grid-template-columns:minmax(0,1fr)}
+  .ep-side > .fill,.ep-stuck > [data-block]:first-child > .fill{position:static}
+  .ep-reels{justify-content:flex-start;padding-inline-start:10px}
+}
+@media (max-width:560px){
+  .ep-tree{font-size:13.5px}
+  .ep-tree .d1{padding-left:22px}.ep-tree .d2{padding-left:36px}.ep-tree .d3{padding-left:50px}.ep-tree .d4{padding-left:64px}
+  .ep-tree .n .tag{font-size:11px;padding:4px 7px}
+  .ep-flow{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .ep-list li{font-size:16px}
+  .ep-faq details>div{padding-inline-start:20px}
+  .ep-os > div{grid-template-columns:minmax(0,1fr)}
+  .ep-os b{justify-self:start;padding:6px 10px}
+  .ep-kbd{display:none}
+  .ep-term{font-size:11.5px;padding:12px}
+  .ep-folders .folder{flex-direction:column;align-items:stretch;gap:6px}
+  .ep-folders .folder em{text-align:right}
+}
+</style>
+
+<!-- ================= מה יש בחבילה ================= -->
+<section class="sec ep-inside" id="inside" data-section>
+  <div class="wrap">
+    <div data-block data-agent="חבילה" data-log="כותרת סקשן · מה יש בחבילה" data-code='<section class="sec ep-inside" id="inside">' data-sk="title">
+      <div class="fill sec-head">
+        <span class="eyebrow">INSIDE · edit-agents</span>
+        <h2>מה יש <span class="grad-text">בחבילה</span></h2>
+        <p class="lead">שני קבצים עושים את כל העבודה: סקיל שמנהל את העריכה, וסוכן עורך שנפתח פעם אחת לכל ריל. כל השאר זה התיקיות שלכם.</p>
+      </div>
+    </div>
+
+    <div class="ep-grid">
+      <div class="ep-side" data-block data-agent="חבילה" data-log="סייר קבצים · עץ החבילה עם תגיות" data-code='<div class="n d3" data-f="editor" style="--c:var(--ag2)">' data-sk="media">
+        <div class="fill">
+          <div class="win">
+            <div class="win-top"><i></i><i></i><i></i><span class="win-title">edit-agents</span></div>
+            <div class="win-body">
+              <div class="ep-bar">
+                <span class="ep-nav" aria-hidden="true"><span>‹</span><span>›</span></span>
+                <span class="ep-path"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>edit-agents</span>
+                <span class="ep-kbd">⌘⇧. hidden: on</span>
+              </div>
+              <div class="tree ep-tree" role="list" aria-label="הקבצים בחבילה">
+                <div class="n" role="listitem" style="--c:var(--amber)"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><span class="nm">edit-agents/</span></div>
+                <div class="n d1 ep-hid ep-mut" role="listitem" style="--c:var(--muted)"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><span class="nm">.claude/</span><span class="tag">מוסתרת</span></div>
+                <div class="n d2 ep-hid" role="listitem" style="--c:var(--muted)"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><span class="nm">skills/</span></div>
+                <div class="n d3" role="listitem" style="--c:var(--ag1)"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><span class="nm">reel-cut/</span></div>
+                <div class="n d4" role="listitem" data-f="skill" style="--c:var(--ag1)"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg><span class="nm">SKILL.md</span><span class="tag">הסקיל</span></div>
+                <div class="n d2 ep-hid" role="listitem" style="--c:var(--muted)"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><span class="nm">agents/</span></div>
+                <div class="n d3" role="listitem" data-f="editor" style="--c:var(--ag2)"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg><span class="nm">editor.md</span><span class="tag">העורך</span></div>
+                <div class="n d1" role="listitem" data-f="input" style="--c:var(--ag4)"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><span class="nm">input/</span><span class="tag">הקליפים</span></div>
+                <div class="n d2" role="listitem" data-f="input" style="--c:var(--ag4)"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><span class="nm">reel-1/</span><span class="tag">ריל 1</span></div>
+                <div class="n d2" role="listitem" data-f="input" style="--c:var(--ag3)"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><span class="nm">reel-2/</span><span class="tag">ריל 2</span></div>
+                <div class="n d1" role="listitem" data-f="start" style="--c:var(--ag5)"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg><span class="nm">START.txt</span><span class="tag">ההודעה</span></div>
+                <div class="n d1 ep-ghost ep-mut" role="listitem" style="--c:var(--muted)"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><span class="nm">output/</span><span class="tag">נוצרת בהרצה</span></div>
+              </div>
+              <div class="ep-status"><span>edit-agents.zip · 6 KB</span><span>1080×1920 · 30fps</span></div>
+            </div>
+          </div>
+          <div class="note"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true" style="flex:none;margin-top:2px;color:var(--cy)"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg><span>התיקייה <code>.claude</code> מוסתרת במחשב, <b>וזה תקין</b>. Claude רואה אותה גם ככה. רוצים לראות אותה בעצמכם? ב-Mac לוחצים <code>⌘⇧.</code> בתוך Finder. ב-Windows: תצוגה ← הצג ← פריטים מוסתרים.</span></div>
+        </div>
+      </div>
+
+      <div class="ep-cards">
+        <div data-block data-agent="חבילה" data-log="כרטיס הסקיל · מנהל ומתקין ffmpeg" data-code='<article class="card ep-card" data-f="skill">' data-sk="line">
+          <article class="fill card ep-card" data-f="skill" style="--c:var(--ag1)">
+            <div class="ep-fh"><span class="ep-file"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg>skills/reel-cut/SKILL.md</span><span class="ep-no">01 / 03</span></div>
+            <h3>הסקיל: <em>המנהל</em> של העריכה</h3>
+            <ul class="ep-list">
+              <li><span><b>בודק שיש ffmpeg.</b> חסר? מתקין לבד: ב-Mac דרך Homebrew, ב-Windows דרך winget, ואומר לכם בשורה אחת מה הוא מתקין.</span></li>
+              <li><span><b>כל תיקייה ב-input היא ריל.</b> תיקייה ריקה הוא מדלג עליה ואומר לכם. לא כתבתם אורך? הוא שואל פעם אחת.</span></li>
+              <li><span><b>עורך לכל תיקייה, כולם באותו רגע.</b> כל העורכים יוצאים בהודעה אחת. הוא לא מחכה שאחד יסיים, ולא עורך בעצמו.</span></li>
+              <li><span><b>אוסף ופותח.</b> לכל ריל: אורך, כמה חיתוכים, אם יש מוזיקה ומה הפתיחה. בסוף פותח לכם את <code>output/</code>.</span></li>
+            </ul>
+            <div class="term ep-term" aria-hidden="true"><span class="p">$</span> ffmpeg -version
+<span class="dim">  missing →</span> brew install ffmpeg
+<span class="c">▶</span> editor <span class="ok">reel-1</span> → output/reel-1.mp4
+<span class="c">▶</span> editor <span class="pk">reel-2</span> → output/reel-2.mp4
+<span class="ok">✓</span> open output</div>
+          </article>
+        </div>
+
+        <div data-block data-agent="חבילה" data-log="כרטיס העורך · גיליון פריימים וחיתוכים" data-code='.ep-tiles{display:grid;grid-template-columns:repeat(6,1fr)' data-sk="line">
+          <article class="fill card ep-card" data-f="editor" style="--c:var(--ag2)">
+            <div class="ep-fh"><span class="ep-file"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg>agents/editor.md</span><span class="ep-no">02 / 03</span></div>
+            <h3>העורך: <em>אחד לכל ריל</em></h3>
+            <ol class="ep-flow">
+              <li><i>01</i>מסתכל<small>sheet.jpg</small></li>
+              <li><i>02</i>מתכנן<small>plan.md</small></li>
+              <li><i>03</i>מרנדר<small>1080×1920</small></li>
+              <li><i>04</i>בודק<small>edges</small></li>
+            </ol>
+            <div class="ep-sheet" aria-hidden="true">
+              <div class="ep-sh-top"><b>sheet_clip.jpg</b><span>1 frame / 0.5 s</span></div>
+              <div class="ep-tiles">
+                <i><b>0.0</b></i><i><b>0.5</b></i><i class="bl"><b>1.0</b></i><i><b>1.5</b></i><i class="cut"><b>2.0</b></i><i><b>2.5</b></i>
+                <i><b>3.0</b></i><i><b>3.5</b></i><i class="hk"><b>4.0</b></i><i><b>4.5</b></i><i class="dk"><b>5.0</b></i><i><b>5.5</b></i>
+              </div>
+              <div class="ep-legend"><span class="chip" style="--c:var(--ag2)">הפתיחה</span><span class="chip" style="--c:var(--pink)">חיתוך בתוך הקליפ</span><span class="chip" style="--c:var(--muted)">מטושטש או חשוך · מדלג</span></div>
+            </div>
+            <ul class="ep-list">
+              <li><span><b>מסתכל לפני שהוא חותך.</b> גיליון פריימים לכל קליפ, פריים כל חצי שנייה, והוא באמת עובר עליו.</span></li>
+              <li><span><b>מוצא חיתוכים בתוך הקליפ.</b> קליפ מהטלפון יכול להיות כבר ערוך. כל שוט שהוא לוקח יושב בתוך קטע רציף אחד.</span></li>
+              <li><span><b>פתיחה שעוצרת גלילה.</b> השוט הראשון הוא הרגע הכי חזק, והשליש העליון שלו נשאר נקי לכותרת.</span></li>
+              <li><span><b>חותך על פעמות שלמות.</b> יש שיר בתיקייה? הוא מוצא את הקצב, וכל שוט נמשך מספר שלם של פעמות.</span></li>
+              <li><span><b>חותך ל-9:16.</b> ‎1080×1920, ומזיז את החיתוך כשהנושא עומד בצד.</span></li>
+              <li><span><b>בודק את עצמו.</b> 3 הפריימים הראשונים ו-3 האחרונים של כל שוט, ואז מבט על כל הריל: פריים שחור, ראש חתוך, שוט קפוא.</span></li>
+              <li><span><b>לא נוגע בקבצים שלכם.</b> הקליפים ב-<code>input/</code> נשארים כמו שהם. הוא עובד רק ב-<code>work/</code> ומוציא קובץ ל-<code>output/</code>.</span></li>
+            </ul>
+          </article>
+        </div>
+
+        <div data-block data-agent="חבילה" data-log="כרטיס input ו-START.txt" data-code='<article class="card ep-card" data-f="input">' data-sk="line">
+          <article class="fill card ep-card" data-f="input" style="--c:var(--ag4)">
+            <div class="ep-fh"><span class="ep-file"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>input/ · START.txt</span><span class="ep-no">03 / 03</span></div>
+            <h3>הקליפים <em>וההודעה</em></h3>
+            <div class="ep-folders">
+              <div class="folder on"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>input/reel-1</span><em>קליפים mp4/mov + שיר אחד, לא חובה</em></div>
+              <div class="folder"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>input/reel-2</span><em>הריל השני, עורך משלו</em></div>
+              <div class="folder ep-more"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>reel-3, reel-4…</span><em>עוד תיקייה = עוד ריל</em></div>
+            </div>
+            <p><b>START.txt</b> זאת ההודעה שמעתיקים ל-Claude. משנים בה רק את האורך:</p>
+            <p class="ep-q">תערוך לי רילים עם הסוכנים. … אורך כל ריל: <span class="ph">[למשל 12 שניות]</span></p>
+          </article>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= תיקונים ================= -->
+<section class="sec" id="fix" data-section>
+  <div class="wrap ep-fix">
+    <h2 data-block data-agent="חבילה" data-log="הקליד את כותרת התיקונים" data-code='<h2 data-block data-type data-sk="title">' data-type data-sk="title"><span class="fill">תיקונים? כותבים במילים.</span></h2>
+    <div data-block data-agent="חבילה" data-log="כרטיס בקשת תיקון עם כפתור העתקה" data-code='<button class="copy" data-copy="ep-fix">' data-sk="line">
+      <div class="fill ep-fixbox">
+        <p class="lead">לא צריך לפתוח תוכנת עריכה. כותבים ל-Claude באותו צ'אט מה לשנות, והעורך חוזר לקליפים וחותך מחדש.</p>
+        <div class="prompt">
+          <div class="prompt-h"><b>FIX · reel-2</b><button class="copy" type="button" data-copy="ep-fix">העתקה</button></div>
+          <pre id="ep-fix">בריל 2 תפתח עם <span class="ph">השוט שבו היא מסתובבת</span>, ותקצר אותו ל-<span class="ph">10 שניות</span></pre>
+          <div class="ep-pf"><span class="sw" aria-hidden="true"></span><span>מחליפים את מה שבצהוב במה שאתם רוצים. אפשר כמה תיקונים באותה הודעה.</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= אם משהו נתקע ================= -->
+<section class="sec" id="stuck" data-section>
+  <div class="wrap ep-stuck">
+    <div data-block data-agent="חבילה" data-log="כותרת סקשן · אם משהו נתקע" data-code='<section class="sec" id="stuck">' data-sk="title">
+      <div class="fill sec-head">
+        <span class="eyebrow">TROUBLESHOOTING</span>
+        <h2>אם משהו <span class="grad-text">נתקע</span></h2>
+        <p class="lead">חמישה דברים שקורים באמת, ומה כותבים ל-Claude כדי לשחרר אותם.</p>
+      </div>
+    </div>
+    <div class="faq ep-faq">
+      <div data-block data-agent="חבילה" data-log="שאלה 1 · עורכים אחד אחרי השני" data-code='<summary><span class="ep-sq"><i>01</i>' data-sk="line">
+        <details class="fill"><summary><span class="ep-sq"><i>01</i>העורכים עובדים אחד אחרי השני</span></summary>
+          <div><p>הם אמורים לרוץ כולם באותו זמן. כתבו לו באותו צ'אט:</p><span class="ep-say">תריץ את כל העורכים במקביל, באותה הודעה</span></div>
+        </details>
+      </div>
+      <div data-block data-agent="חבילה" data-log="שאלה 2 · ffmpeg ב-Mac וב-Windows" data-code='<div class="ep-os"><div><b>Mac</b>' data-sk="line">
+        <details class="fill"><summary><span class="ep-sq"><i>02</i>ffmpeg לא הותקן</span></summary>
+          <div>
+            <div class="ep-os">
+              <div><b>Mac</b><span class="ep-say">תתקין לי Homebrew ו-ffmpeg</span></div>
+              <div><b>Windows</b><span class="ep-say">תתקין ffmpeg עם winget</span></div>
+            </div>
+            <p>ב-Mac המחשב יבקש סיסמה: מקלידים את סיסמת המחשב בחלון שנפתח. אחרי ההתקנה סוגרים את Claude ופותחים אותו מחדש.</p>
+          </div>
+        </details>
+      </div>
+      <div data-block data-agent="חבילה" data-log="שאלה 3 · מגבלת שימוש ו-Opus 5.5" data-code='<details class="fill"><summary>' data-sk="line">
+        <details class="fill"><summary><span class="ep-sq"><i>03</i>הגעתי למגבלת שימוש</span></summary>
+          <div><p>מחליפים מודל ל-<b>Claude Opus 5.5</b> וממשיכים מאותה נקודה. החבילה נבדקה עליו. אפשר גם לחכות שהמגבלה תתאפס.</p></div>
+        </details>
+      </div>
+      <div data-block data-agent="חבילה" data-log="שאלה 4 · הריל חתוך לא טוב" data-code='<span class="ep-say">' data-sk="line">
+        <details class="fill"><summary><span class="ep-sq"><i>04</i>הריל חתוך לא טוב</span></summary>
+          <div><p>תגידו לו במילים מה לא טוב, כמו לעורך אמיתי:</p><span class="ep-say">השוט השלישי מטושטש, תחליף אותו</span><p>הוא חוזר לקליפים וחותך מחדש.</p></div>
+        </details>
+      </div>
+      <div data-block data-agent="חבילה" data-log="שאלה 5 · איפה הכותרת" data-code='box-shadow:inset -3px 0 0 var(--v2)' data-sk="line">
+        <details class="fill"><summary><span class="ep-sq"><i>05</i>איפה הכותרת? אין טקסט על הסרטון</span></summary>
+          <div><p>בכוונה. את הכותרת מוסיפים באפליקציה של אינסטגרם, עם כלי הטקסט שלה, וככה היא נראית טבעית בפיד. לא שמתם שיר בתיקייה? שם בוחרים גם צליל.</p><p>העורך משאיר את השליש העליון של הפתיחה נקי, בדיוק בשביל הכותרת.</p></div>
+        </details>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= סיום ================= -->
+<section class="sec" id="get" data-section>
+  <div class="wrap">
+    <div data-block data-agent="חבילה" data-log="רצועת סיום · הורדה ואינסטגרם" data-code='<a class="btn btn-primary btn-dl" href="edit-agents.zip"' data-sk="btn">
+      <div class="fill end ep-end">
+        <div class="ep-endtxt">
+          <span class="eyebrow">edit-agents.zip</span>
+          <h2>הקליפים כבר בטלפון. <span class="grad-text">העורכים מחכים.</span></h2>
+          <p class="lead">מורידים את החבילה, שמים קליפים בתוך <code>input</code> ושולחים הודעה אחת. כל ריל מקבל עורך משלו, וכולם עובדים באותו זמן.</p>
+          <div class="ctas">
+            <a class="btn btn-primary btn-dl" href="edit-agents.zip" download><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>הורדת החבילה<span class="meta">zip · 6 KB</span></a>
+            <a class="btn btn-ghost" href="https://www.instagram.com/leviorel/" target="_blank" rel="noopener"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/></svg>@leviorel באינסטגרם</a>
+          </div>
+        </div>
+        <div class="ep-reels" aria-hidden="true">
+          <div class="ep-ph"><div class="ep-scr"><span class="ep-safe">כאן הכותרת</span><span class="ep-meta"><b>reel-1.mp4</b><span>1080×1920 · 30fps</span><u></u></span></div></div>
+          <div class="ep-ph"><div class="ep-scr"><span class="ep-safe">כאן הכותרת</span><span class="ep-meta"><b>reel-2.mp4</b><span>1080×1920 · 30fps</span><u></u></span></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+<footer class="foot wrap">
+  <div class="me"><img src="media/avatar.jpg" alt="">אוראל לוי · ‎@leviorel</div>
+  <p>המדריך הזה נבנה מול העיניים על ידי סוכני Claude שעבדו במקביל · 12 דקות של בנייה אמיתית.</p>
+</footer>
+<script>window.AW={agents:[["פתיחה","#a16cff"],["שלבים","#2bd7d6"],["חבילה","#f43f9e"]],title:"יומן הבנייה של הדף הזה",total:"3 סוכנים בנו את הדף הזה במקביל, וסוכן רביעי בנה את ההדגמה · 12 דקות של בנייה אמיתית"};</script>
+<script>/* =====================================================================
+   aw.js — build-replay engine for the agents guides
+   Config (set before this file): window.AW = {
+     agents:[["פתיחה","#a855f7"],["שלבים","#22d3ee"],["חבילה","#f43f9e"]],
+     title:"יומן הבנייה של הדף הזה", total:"<optional summary line>" }
+   Markup: #aw > [data-section] … [data-block data-agent data-log data-code data-sk (data-type) (data-tip)] > .fill
+   Every agent has its own queue and its own cursor; all queues run at the same time.
+   ===================================================================== */
+(function(){
+'use strict';
+var DOC=document,ROOT=DOC.documentElement;
+try{ROOT.classList.add('aw-rv');}catch(e){}
+
+/* ---------------------------------------------------------------
+   Page helpers that work with or without the build replay
+   --------------------------------------------------------------- */
+function initCopy(){
+  DOC.addEventListener('click',function(e){
+    var btn=e.target&&e.target.closest?e.target.closest('.copy[data-copy]'):null;
+    if(!btn)return;
+    var src=DOC.getElementById(btn.getAttribute('data-copy'));if(!src)return;
+    var text=src.textContent.replace(/^\s+|\s+$/g,'');
+    function ok(){
+      if(!btn._lbl)btn._lbl=btn.innerHTML;
+      btn.textContent='הועתק ✓';btn.classList.add('is-done');
+      clearTimeout(btn._t);
+      btn._t=setTimeout(function(){btn.innerHTML=btn._lbl;btn.classList.remove('is-done');},1600);
+    }
+    function fallback(){
+      var done=false;
+      try{
+        var ta=DOC.createElement('textarea');ta.value=text;ta.setAttribute('readonly','');
+        ta.style.cssText='position:fixed;top:0;left:0;width:1px;height:1px;opacity:0';
+        DOC.body.appendChild(ta);ta.select();ta.setSelectionRange(0,text.length);
+        done=DOC.execCommand('copy');DOC.body.removeChild(ta);
+      }catch(err){}
+      if(done){ok();return;}
+      try{var rg=DOC.createRange();rg.selectNodeContents(src);var sel=getSelection();sel.removeAllRanges();sel.addRange(rg);}catch(err){}
+    }
+    try{
+      if(navigator.clipboard&&window.isSecureContext!==false)navigator.clipboard.writeText(text).then(ok,fallback);
+      else fallback();
+    }catch(err){fallback();}
+  });
+}
+function initProgress(){
+  var bars=DOC.querySelectorAll('.bar-progress');if(!bars.length)return;
+  var tick=false;
+  function upd(){
+    tick=false;
+    var max=ROOT.scrollHeight-innerHeight,p=max>0?Math.min(1,Math.max(0,(window.scrollY||ROOT.scrollTop)/max)):0;
+    for(var i=0;i<bars.length;i++)bars[i].style.setProperty('--p',p.toFixed(4));
+  }
+  addEventListener('scroll',function(){if(!tick){tick=true;requestAnimationFrame(upd);}},{passive:true});
+  addEventListener('resize',upd);upd();
+}
+function initReveal(){
+  var els=DOC.querySelectorAll('.rv');if(!els.length)return;
+  if(!('IntersectionObserver' in window)){for(var i=0;i<els.length;i++)els[i].classList.add('in');return;}
+  var io=new IntersectionObserver(function(en){
+    en.forEach(function(x){if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target);}});
+  },{threshold:0.12,rootMargin:'0px 0px -8% 0px'});
+  for(var j=0;j<els.length;j++)io.observe(els[j]);
+}
+function safe(f){try{f();}catch(e){if(window.console)console.error(e);}}
+safe(initCopy);
+function domReady(f){if(DOC.readyState==='loading')DOC.addEventListener('DOMContentLoaded',f);else f();}
+domReady(function(){safe(initProgress);safe(function(){
+  try{initReveal();}catch(e){var r=DOC.querySelectorAll('.rv');for(var i=0;i<r.length;i++)r[i].classList.add('in');throw e;}
+});});
+
+/* ---------------------------------------------------------------
+   Build replay
+   --------------------------------------------------------------- */
+var aw=DOC.getElementById('aw');
+if(!aw&&DOC.readyState!=='loading')return;
+var reduce=false;
+try{reduce=!!(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches);}catch(e){}
+if(reduce||!('IntersectionObserver' in window)||!window.requestAnimationFrame||!window.Promise)return;
+
+var CFG=window.AW||{};
+var AGENTS=(CFG.agents&&CFG.agents.length)?CFG.agents:[['פתיחה','#a855f7'],['שלבים','#22d3ee'],['חבילה','#f43f9e']];
+var PHONE=false;try{PHONE=matchMedia('(max-width: 600px)').matches;}catch(e){}
+var CANCEL={cancel:true};
+var RUN=0;
+var BUDGET=2600,TMIN=300,TMAX=950;  /* ms per section for one agent / per block */
+
+var layer=null,logEl=null,list=null,clockEl=null,skipBtn=null,rebuildBtn=null;
+var CL=[],C={},S=[],ALL=[],HERO=null,lanes=[],io=null;
+var T0=0,running=false,finalT=0,rewinding=false,dead=false;
+
+function now(){return performance.now();}
+function clamp(v,a,b){return v<a?a:v>b?b:v;}
+function eio(t){return t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;}
+function eo(t){return 1-Math.pow(1-t,3);}
+function wait(ms){return new Promise(function(r){setTimeout(r,ms);});}
+function raf(){return new Promise(function(r){var d=0;function f(){if(!d){d=1;r();}}requestAnimationFrame(f);setTimeout(f,60);});}
+function chk(run){if(run!==RUN)throw CANCEL;}
+function lum(hex){var n=parseInt(hex.slice(1),16);function c(v){v/=255;return v<=.03928?v/12.92:Math.pow((v+.055)/1.055,2.4);}return .2126*c(n>>16&255)+.7152*c(n>>8&255)+.0722*c(n&255);}
+function inkFor(hex){try{var L=lum(hex);return (1.05/(L+.05))>=((L+.05)/0.05)?'#ffffff':'#07070d';}catch(e){return '#ffffff';}}
+function AR(){return aw.getBoundingClientRect();}
+function pr(el){var r=el.getBoundingClientRect(),a=AR();return {x:r.left-a.left,y:r.top-a.top,w:r.width,h:r.height};}
+
+/* ---------- fail-safe: content must never stay hidden ---------- */
+function failsafe(err){
+  if(dead)return;dead=true;RUN++;
+  if(err&&err!==CANCEL&&window.console)console.error('[aw] build replay stopped, showing the page as is',err);
+  try{if(io)io.disconnect();}catch(e){}
+  try{aw.classList.remove('is-live');}catch(e){}
+  try{[].forEach.call(aw.querySelectorAll('.aw-type,.aw-mq,.aw-layer'),function(n){n.remove();});}catch(e){}
+  try{ALL.forEach(function(b){b.setAttribute('data-state','done');b.setAttribute('data-instant','');});}catch(e){}
+  try{lanes.forEach(function(l){setLane(l,1,'✓ סיים');});}catch(e){}
+  try{if(logEl)logEl.remove();}catch(e){}
+}
+function guard(f){return function(){if(dead)return;try{return f.apply(this,arguments);}catch(e){failsafe(e);}};}
+window.addEventListener('error',function(e){
+  /* only our own errors */
+  if(e&&e.filename&&/aw\.js/.test(e.filename))failsafe(e.error||e.message);
+});
+
+/* ---------- block states ---------- */
+function setState(b,st){if(st)b.setAttribute('data-state',st);else b.removeAttribute('data-state');}
+function countUp(el,instant){
+  var raw=el.getAttribute('data-count'),n=parseFloat(raw);if(isNaN(n))return;
+  if(instant){el.textContent=raw;return;}
+  var t0=now(),d=900;el.textContent='0';
+  (function st(t1){var t=Math.min(1,(t1-t0)/d);el.textContent=t<1?String(Math.round(eo(t)*n)):raw;if(t<1)requestAnimationFrame(st);})(t0);
+}
+function done(b,instant){
+  if(b._st==='done')return;
+  var c=b._c;
+  if(b._st==='q'){var k=c.queue.indexOf(b);if(k>=0)c.queue.splice(k,1);}
+  b._st='done';
+  if(instant)b.setAttribute('data-instant','');else b.removeAttribute('data-instant');
+  setState(b,'done');
+  [].forEach.call(b.querySelectorAll('[data-count]'),function(el){countUp(el,instant);});
+  c.doneN++;
+  if(c.active===b)c.active=null;
+  checkAll();
+}
+function resetBlock(b){
+  b._st='idle';b._qAt=0;b.removeAttribute('data-instant');setState(b,null);
+}
+
+/* ---------- cursors ---------- */
+function makeCursor(a,i){
+  var el=DOC.createElement('div');el.className='aw-cur';
+  var ci=inkFor(a[1]);
+  el.style.setProperty('--c',a[1]);el.style.setProperty('--ci',ci);
+  el.innerHTML='<svg viewBox="0 0 20 22" aria-hidden="true"><path d="M2 1.5v17.2l4.6-4.1 3.1 6.7 3.2-1.4-3.1-6.6h6.3z"/></svg><span class="aw-tag"></span>';
+  el.querySelector('.aw-tag').textContent='Claude · '+a[0];
+  layer.appendChild(el);
+  return {i:i,key:a[0],name:'Claude · '+a[0],color:a[1],ci:ci,el:el,x:0,y:0,shown:false,job:null,drive:null,
+    queue:[],busy:false,batch:0,total:0,doneN:0,active:null,idleAt:0,ph:Math.random()*6,fl:null};
+}
+function showCursor(c,nearX,nearY){
+  if(!c.shown){c.x=nearX+40+Math.random()*60;c.y=nearY-70-Math.random()*40;c.shown=true;}
+  c.el.classList.remove('is-rest');c.el.classList.add('is-on');
+}
+function travel(c,tx,ty,dur,o){
+  o=o||{};
+  return new Promise(function(res){
+    if(c.job){var pj=c.job;c.job=null;pj.resolve();}
+    c.drive=null;
+    var dx=tx-c.x,dy=ty-c.y,L=Math.hypot(dx,dy)||1,side=Math.random()<.5?-1:1;
+    var job={fx:c.x,fy:c.y,tx:tx,ty:ty,t0:now(),dur:Math.max(16,dur),ease:o.ease||eio,
+      bow:o.bow===0?0:side*Math.min(70,L*.14),nx:-dy/L,ny:dx/L,step:o.step||null,resolve:res};
+    c.job=job;
+    /* if frames stall (background tab, throttling) the build still moves on */
+    setTimeout(function(){if(c.job===job){c.job=null;c.x=tx;c.y=ty;if(job.step)job.step(1);res();}},job.dur+350);
+  });
+}
+function marq(c){
+  var el=DOC.createElement('div');el.className='aw-mq';
+  el.style.setProperty('--c',c.color);el.style.setProperty('--ci',c.ci);
+  var lab=DOC.createElement('b');el.appendChild(lab);layer.appendChild(el);
+  return {el:el,set:function(r,e){
+    /* RTL: drag from the top-right corner to the bottom-left */
+    var w=r.w*e,h=r.h*e;
+    el.style.left=(r.x+r.w-w)+'px';el.style.top=r.y+'px';el.style.width=w+'px';el.style.height=h+'px';
+    lab.textContent=Math.round(w)+' × '+Math.round(h);
+  }};
+}
+
+/* ---------- log ---------- */
+function fmt(ms){ms=Math.max(0,ms);var s=ms/1000,m=Math.floor(s/60);s=s-m*60;return (m<10?'0':'')+m+':'+(s<10?'0':'')+s.toFixed(1);}
+function log(c,msg){
+  if(!list||!msg)return;
+  var li=DOC.createElement('li');if(!c)li.className='is-sys';
+  var t=DOC.createElement('time'),sp=DOC.createElement('span');
+  t.textContent=fmt(running?now()-T0:finalT);
+  li.appendChild(t);
+  if(c){var b=DOC.createElement('b');b.textContent=c.key;b.style.color=c.color;li.appendChild(b);}
+  sp.textContent=msg;li.appendChild(sp);list.appendChild(li);
+  while(list.children.length>24)list.removeChild(list.firstChild);
+}
+function buildLog(){
+  logEl=DOC.createElement('aside');
+  logEl.className='aw-log';logEl.setAttribute('aria-label',CFG.title||'יומן הבנייה');
+  logEl.innerHTML='<div class="aw-log-h"><span class="aw-rec">REPLAY</span><span class="aw-ttl"></span><span class="aw-clock">00:00.0</span>'+
+    '<div class="aw-btns"><button type="button" class="aw-btn" data-act="skip">דלג</button><button type="button" class="aw-btn" data-act="rebuild">בנה שוב</button></div></div><ol aria-live="off"></ol>';
+  logEl.querySelector('.aw-ttl').textContent=CFG.title||'יומן הבנייה של הדף הזה';
+  DOC.body.appendChild(logEl);
+  list=logEl.querySelector('ol');clockEl=logEl.querySelector('.aw-clock');
+  skipBtn=logEl.querySelector('[data-act="skip"]');rebuildBtn=logEl.querySelector('[data-act="rebuild"]');
+  skipBtn.addEventListener('click',guard(skipAll));
+  rebuildBtn.addEventListener('click',guard(function(){rebuild().catch(failsafe);}));
+}
+
+/* ---------- typing (headlines with data-type) ---------- */
+async function typeIt(c,b,run,T){
+  var fill=b.querySelector(':scope > .fill');if(!fill)return;
+  var ov=fill.cloneNode(true);ov.classList.remove('fill');ov.classList.add('aw-type');ov.setAttribute('aria-hidden','true');
+  ov.removeAttribute('id');[].forEach.call(ov.querySelectorAll('[id]'),function(n){n.removeAttribute('id');});
+  var walker=DOC.createTreeWalker(ov,NodeFilter.SHOW_TEXT),tn=[],segs=[],len=0;
+  while(walker.nextNode())tn.push(walker.currentNode);
+  tn.forEach(function(t){
+    var txt=t.nodeValue;if(!txt||/^\s*$/.test(txt))return;
+    var s=DOC.createElement('span'),g=DOC.createElement('span');g.className='aw-g';g.textContent=txt;
+    t.parentNode.replaceChild(g,t);g.parentNode.insertBefore(s,g);segs.push({s:s,g:g,txt:txt});len+=txt.length;
+  });
+  if(!len)return;
+  var caret=DOC.createElement('i');caret.className='aw-caret';caret.style.setProperty('--c',c.color);
+  b.appendChild(ov);setState(b,'typing');
+  var Tt=clamp(len*28,360,1000)*clamp(T/TMAX*1.15,.5,1),t0=now(),k=-1,frames=0;
+  try{
+    while(k<len){
+      await raf();chk(run);
+      var nk=Math.min(len,Math.floor(len*(now()-t0)/Tt));
+      if(nk===k&&nk<len)continue;k=nk;
+      var left=k,placed=false;
+      for(var i=0;i<segs.length;i++){
+        var sg=segs[i],m=Math.min(sg.txt.length,Math.max(0,left));left-=m;
+        sg.s.textContent=sg.txt.slice(0,m);sg.g.textContent=sg.txt.slice(m);
+        if(!placed&&(left<=0||i===segs.length-1)){sg.g.parentNode.insertBefore(caret,sg.g);placed=true;}
+      }
+      if((frames++)%2===0){
+        var cr=caret.getBoundingClientRect(),A=AR();
+        if(c.job){var pj=c.job;c.job=null;pj.resolve();}
+        c.drive={x:cr.left-A.left-3,y:cr.bottom-A.top+5};
+      }
+      if(k>=len)break;
+    }
+    await wait(180);chk(run);
+  }finally{c.drive=null;ov.remove();}
+}
+
+/* ---------- one block: mark → rough → (typing) → done ---------- */
+async function buildBlock(c,b,run,T){
+  b._st='work';c.active=b;
+  b.style.setProperty('--aw-c',c.color);b.style.setProperty('--aw-ci',c.ci);
+  var r=pr(b);
+  showCursor(c,r.x+r.w,r.y);
+  var sx=r.x+r.w,sy=r.y,dist=Math.hypot(sx-c.x,sy-c.y);
+  await travel(c,sx,sy,clamp(T*.24+dist*.16,140,640));chk(run);
+  r=pr(b);setState(b,'mark');
+  var mq=marq(c);mq.set(r,0);
+  try{
+    await travel(c,r.x,r.y+r.h,clamp(T*.3,120,420),{bow:0,ease:eo,step:function(e){mq.set(r,e);}});chk(run);
+  }finally{mq.el.remove();}
+  setState(b,'rough');log(c,b.getAttribute('data-log'));
+  await travel(c,r.x+r.w*(.3+Math.random()*.4),r.y+Math.min(r.h*(.35+Math.random()*.3),160),clamp(T*.42,140,520));chk(run);
+  if(b.hasAttribute('data-type')){await typeIt(c,b,run,T);chk(run);}
+  done(b);
+}
+
+/* ---------- per-agent queues, all running at the same time ---------- */
+function enqueue(b){
+  if(dead||rewinding||b._st!=='idle')return;
+  var c=b._c;b._st='q';b._qAt=now();c.queue.push(b);c.batch++;
+  if(!c.busy)runAgent(c,RUN);
+}
+async function runAgent(c,run){
+  c.busy=true;
+  try{
+    while(c.queue.length){
+      if(run!==RUN)return;
+      var b=c.queue.shift();
+      if(b._st!=='q')continue;
+      var r=b.getBoundingClientRect();
+      if(r.bottom<0){done(b,true);continue;}                       /* the reader is already past it */
+      if(!b._force&&r.top>innerHeight+80){b._st='idle';continue;}  /* scrolled away: wait until it comes back */
+      var T=clamp(BUDGET/Math.max(1,c.batch),TMIN,TMAX);
+      try{await buildBlock(c,b,run,T);}
+      catch(e){if(e===CANCEL)return;if(window.console)console.error(e);done(b,true);}
+    }
+  }finally{
+    if(run===RUN){c.busy=false;c.batch=0;c.active=null;c.idleAt=now();}
+  }
+}
+function checkAll(){
+  if(!running)return;
+  for(var i=0;i<ALL.length;i++)if(ALL[i]._st!=='done')return;
+  finish();
+}
+
+/* ---------- lanes in the hero (illustration in sync with the real queues) ---------- */
+function setLane(l,p,st){
+  if(l.bar)l.bar.style.setProperty('--w',(p*100).toFixed(1)+'%');
+  if(l.st&&l.st.textContent!==st)l.st.textContent=st;
+  l.el.classList.toggle('done',p>=1);
+}
+function updLanes(t){
+  for(var i=0;i<lanes.length;i++){
+    var l=lanes[i],c=CL[l.n-1];
+    if(!running){setLane(l,1,'✓ סיים');continue;}
+    if(c&&c.total){
+      var p=(c.doneN+(c.active?.5:0))/c.total;
+      if(p>=1)setLane(l,1,'✓ סיים');
+      else if(!c.doneN&&!c.busy)setLane(l,.05+.07*(.5+.5*Math.sin(t/700+l.n)),'כותב…');
+      else setLane(l,Math.max(.06,p),c.busy?'בונה…':'כותב…');
+    }else{
+      /* more lanes than agents: a gentle loop */
+      var ph=((t/6200)+l.n*.29)%1,q=Math.min(1,ph/.82);
+      setLane(l,q<1?Math.max(.05,eio(q)):1,q<1?(q<.35?'כותב…':'בונה…'):'✓ סיים');
+    }
+  }
+}
+
+/* ---------- one rAF loop: cursors, clock, lanes, sweep ---------- */
+function frame(t){
+  if(dead)return;
+  try{
+    var A=AR(),W=A.width;
+    for(var i=0;i<CL.length;i++){
+      var c=CL[i];
+      if(c.job){
+        var j=c.job,u=Math.min(1,(t-j.t0)/j.dur),e=j.ease(u);
+        var x=j.fx+(j.tx-j.fx)*e,y=j.fy+(j.ty-j.fy)*e;
+        if(j.bow){var s=Math.sin(Math.PI*u)*j.bow;x+=j.nx*s;y+=j.ny*s;}
+        c.x=x;c.y=y;
+        if(j.step)j.step(e);
+        if(u>=1){c.job=null;j.resolve();}
+      }else if(c.drive){
+        c.x+=(c.drive.x-c.x)*.3;c.y+=(c.drive.y-c.y)*.3;
+      }else if(c.shown){
+        c.x+=Math.cos(t*.0011+c.ph)*.18;c.y+=Math.sin(t*.0014+c.ph)*.14;
+        if(!c.busy&&c.idleAt&&t-c.idleAt>1300)c.el.classList.add('is-rest');
+      }
+      var dx=clamp(c.x,2,Math.max(2,W-22));
+      c.el.style.transform='translate3d('+dx.toFixed(1)+'px,'+c.y.toFixed(1)+'px,0)';
+      var fl=dx>W-(PHONE?120:150);if(fl!==c.fl){c.fl=fl;c.el.classList.toggle('is-flip',fl);}
+    }
+    if(running&&clockEl)clockEl.textContent=fmt(t-T0);
+  }catch(err){failsafe(err);return;}
+  requestAnimationFrame(frame);
+}
+/* blocks the reader skipped past just appear done; nothing waits forever */
+function sweep(t){
+  for(var i=0;i<ALL.length;i++){
+    var b=ALL[i];
+    if(b._st==='idle'||b._st==='q'){
+      if(b.getBoundingClientRect().bottom<0){done(b,true);continue;}
+    }
+    /* never keep the reader waiting: a visible block still queued after 2.6 s just appears */
+    if(b._st==='q'&&b._qAt&&t-b._qAt>2600&&!b._force)done(b,true);
+    else if(b._st!=='done'&&b._qAt&&t-b._qAt>9000)done(b,true);
+  }
+}
+
+/* ---------- run control ---------- */
+function onIO(entries){
+  if(dead||rewinding||!running)return;
+  entries.forEach(function(en){
+    var b=en.target;if(!en.isIntersecting||b._st!=='idle')return;
+    var r=en.boundingClientRect;
+    if(r.top<0&&r.bottom<innerHeight*.6){done(b,true);return;}  /* entering from above = already read */
+    enqueue(b);
+  });
+}
+function observeAll(){
+  if(io)io.disconnect();
+  io=new IntersectionObserver(guard(onIO),{threshold:0,rootMargin:'0px 0px -6% 0px'});
+  ALL.forEach(function(b){if(b._st!=='done')io.observe(b);});
+}
+function start(run){
+  if(run!==RUN)return;
+  list.innerHTML='';T0=now();finalT=0;running=true;
+  logEl.classList.remove('is-fin');skipBtn.disabled=false;
+  log(null,'שחזור · '+CL.length+' סוכנים במקביל · '+ALL.length+' בלוקים');
+  if(HERO)HERO.blocks.forEach(function(b){b._force=true;enqueue(b);});
+  observeAll();
+}
+function finish(){
+  if(!running)return;
+  finalT=now()-T0;running=false;
+  if(clockEl)clockEl.textContent=fmt(finalT);
+  if(CFG.total)log(null,CFG.total);
+  log(null,'הדף מוכן · שחזור '+(finalT/1000).toFixed(1)+' שנ׳');
+  logEl.classList.add('is-fin');skipBtn.disabled=true;
+  CL.forEach(function(c){c.idleAt=now()-1000;});
+  if(io)io.disconnect();
+  updLanes(now());
+}
+function cancelAll(){
+  RUN++;
+  CL.forEach(function(c){
+    if(c.job){var j=c.job;c.job=null;j.resolve();}
+    c.drive=null;c.queue=[];c.busy=false;c.batch=0;c.active=null;c.idleAt=now();
+  });
+  [].forEach.call(aw.querySelectorAll('.aw-mq,.aw-type'),function(n){n.remove();});
+  ALL.forEach(function(b){if(b._st==='q'||b._st==='work'){b._st='idle';setState(b,null);}});
+}
+function skipAll(){
+  if(!running)return;
+  cancelAll();
+  log(null,'דילוג · כל הבלוקים במקום');
+  ALL.forEach(function(b){done(b,true);});
+  finish();
+}
+async function rebuild(){
+  cancelAll();var run=RUN;
+  running=false;rewinding=true;
+  if(io)io.disconnect();
+  list.innerHTML='';log(null,'מפרקים ובונים מחדש…');
+  logEl.classList.remove('is-fin');skipBtn.disabled=true;
+  CL.forEach(function(c){c.doneN=0;c.shown=false;c.el.classList.remove('is-on','is-rest');});
+  ALL.forEach(function(b){resetBlock(b);b._force=false;});
+  try{window.scrollTo({top:0,behavior:'smooth'});}catch(e){window.scrollTo(0,0);}
+  var t0=now();
+  while((window.scrollY||ROOT.scrollTop)>2&&now()-t0<1800){await wait(60);if(run!==RUN)return;}
+  if((window.scrollY||ROOT.scrollTop)>2)window.scrollTo(0,0);
+  await wait(250);if(run!==RUN)return;
+  rewinding=false;
+  start(run);
+}
+
+/* ---------- boot ---------- */
+function boot(){
+  aw.classList.add('aw','is-live','aw-run');
+  layer=DOC.createElement('div');layer.className='aw-layer';layer.setAttribute('aria-hidden','true');
+  aw.appendChild(layer);
+  AGENTS.forEach(function(a,i){var c=makeCursor(a,i);C[a[0]]=c;CL.push(c);});
+  S=[].slice.call(aw.querySelectorAll('[data-section]')).map(function(el){
+    return {el:el,blocks:[].slice.call(el.querySelectorAll('[data-block]'))};
+  });
+  HERO=S[0]||null;
+  var seen=new Set();
+  [].forEach.call(aw.querySelectorAll('[data-block]'),function(b){
+    if(seen.has(b))return;seen.add(b);
+    if(!b.querySelector(':scope > .fill')){b.setAttribute('data-state','done');return;} /* off-contract block: never hide it */
+    var c=C[b.getAttribute('data-agent')]||CL[0];
+    b._c=c;b._st='idle';c.total++;ALL.push(b);
+  });
+  if(HERO)[].forEach.call(HERO.el.querySelectorAll('.lane[data-lane]'),function(el){
+    lanes.push({el:el,n:parseInt(el.getAttribute('data-lane'),10)||0,bar:el.querySelector('.track b'),st:el.querySelector('.st')});
+  });
+  buildLog();
+  addEventListener('beforeprint',function(){if(running)skipAll();});
+  requestAnimationFrame(frame);
+  var hb=setInterval(function(){
+    if(dead){clearInterval(hb);return;}
+    try{var t=now();if(lanes.length)updLanes(t);if(running&&!rewinding)sweep(t);}catch(err){failsafe(err);}
+  },200);
+  var run=++RUN;
+  var fontsReady=(DOC.fonts&&DOC.fonts.ready)?DOC.fonts.ready:Promise.resolve();
+  Promise.race([fontsReady,wait(900)]).then(guard(function(){start(run);}),guard(function(){start(run);}));
+}
+function go(){if(go.d)return;go.d=1;try{boot();}catch(e){failsafe(e);}}
+/* loaded at the end of <body> (after #aw): start now, before the first paint; otherwise on DOMContentLoaded */
+if(aw&&(DOC.readyState!=='loading'||DOC.querySelector('#aw ~ script, #aw ~ * script')))go();
+else domReady(function(){aw=aw||DOC.getElementById('aw');if(aw)go();});
+})();
+</script>
+</body></html>
